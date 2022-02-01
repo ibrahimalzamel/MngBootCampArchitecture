@@ -1,4 +1,4 @@
-﻿using CorePersistence.Reposittories;
+﻿using CorePersistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +10,10 @@ namespace Domain.Entities
     public class Car : Entity
     {
       
-
         public Car()
         {
 
         }
-
         public Car(int id , int colorId, int modelId, string plate, short modelYear)
         {
             Id = id;

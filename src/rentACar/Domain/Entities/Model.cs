@@ -1,4 +1,4 @@
-﻿using CorePersistence.Reposittories;
+﻿using CorePersistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +11,10 @@ namespace Domain.Entities
     {
         public Model()
         {
+            Cars = new HashSet<Car>();
         }
 
-        public Model(int id, string name, double dailyPrice, int transmissionId, int fuelId, int brandId, string imageUrl )
+        public Model(int id, string name, double dailyPrice, int transmissionId, int fuelId, int brandId, string imageUrl ):this() 
         {
             Id = id;
             Name = name;
@@ -33,5 +34,7 @@ namespace Domain.Entities
         public virtual Brand Brand { get; set; }
         public virtual Transmission Transmission { get; set; }  
         public virtual Fuel Fuel { get; set; }
+        public virtual ICollection<Car> Cars { get; set; }
+
     }
 }

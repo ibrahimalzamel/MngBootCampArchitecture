@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CorePersistence.Reposittories
+namespace CorePersistence.Repositories
 {
     public class Entity
     {
