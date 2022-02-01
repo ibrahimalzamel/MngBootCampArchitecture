@@ -11,13 +11,10 @@ namespace Core.Persistence.Repositories
         public Entity()
         {
         }
-
         public Entity(int id) : this()
         {
-
             Id = id;
         }
-
         public int Id { get; set; }
     }
 }
