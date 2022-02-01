@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CorePersistence.Paging
+namespace Core.Persistence.Paging
 {
     public class Paginate<T> : IPaginate<T>
     {

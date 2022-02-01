@@ -11,15 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "rentACar", "rentACar", "{51
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{94EBFA57-BBA6-4AE9-A2B4-7B2974999C52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\rentACar\Domain\Domain.csproj", "{5518AE3F-0695-4866-8753-900A5C36E4FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "src\rentACar\Domain\Domain.csproj", "{5518AE3F-0695-4866-8753-900A5C36E4FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\rentACar\Application\Application.csproj", "{F1ECE036-1787-47D5-8F80-589F89919EF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\rentACar\Application\Application.csproj", "{F1ECE036-1787-47D5-8F80-589F89919EF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "src\rentACar\WebAPI\WebAPI.csproj", "{6198F9A4-2B26-4D3C-9506-9D3F5BDCF83E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "src\rentACar\WebAPI\WebAPI.csproj", "{6198F9A4-2B26-4D3C-9506-9D3F5BDCF83E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "src\rentACar\Persistence\Persistence.csproj", "{31A539D2-76D7-4CB5-9628-45F329252237}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\rentACar\Persistence\Persistence.csproj", "{31A539D2-76D7-4CB5-9628-45F329252237}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorePersistence", "CorePersistence\CorePersistence.csproj", "{7B0BA3A0-5275-4C88-AB04-2C35E3B2C35E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.CrossCuttingConcerns", "src\corePackages\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj", "{BC6669E4-9382-4E6B-AC7E-531ED0346C1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Persistence", "src\corePackages\Core.Persistence\Core.Persistence.csproj", "{5F142947-2D05-4E76-80E6-27633FD4D230}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +45,14 @@ Global
 		{31A539D2-76D7-4CB5-9628-45F329252237}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31A539D2-76D7-4CB5-9628-45F329252237}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31A539D2-76D7-4CB5-9628-45F329252237}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B0BA3A0-5275-4C88-AB04-2C35E3B2C35E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B0BA3A0-5275-4C88-AB04-2C35E3B2C35E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B0BA3A0-5275-4C88-AB04-2C35E3B2C35E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B0BA3A0-5275-4C88-AB04-2C35E3B2C35E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC6669E4-9382-4E6B-AC7E-531ED0346C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC6669E4-9382-4E6B-AC7E-531ED0346C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC6669E4-9382-4E6B-AC7E-531ED0346C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC6669E4-9382-4E6B-AC7E-531ED0346C1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F142947-2D05-4E76-80E6-27633FD4D230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F142947-2D05-4E76-80E6-27633FD4D230}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F142947-2D05-4E76-80E6-27633FD4D230}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F142947-2D05-4E76-80E6-27633FD4D230}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,7 +64,8 @@ Global
 		{F1ECE036-1787-47D5-8F80-589F89919EF7} = {5106C8BF-425A-42CA-8FB0-4E785ECDE276}
 		{6198F9A4-2B26-4D3C-9506-9D3F5BDCF83E} = {5106C8BF-425A-42CA-8FB0-4E785ECDE276}
 		{31A539D2-76D7-4CB5-9628-45F329252237} = {5106C8BF-425A-42CA-8FB0-4E785ECDE276}
-		{7B0BA3A0-5275-4C88-AB04-2C35E3B2C35E} = {D2251A7C-64AB-4D0A-96B9-5DE72806B1B0}
+		{BC6669E4-9382-4E6B-AC7E-531ED0346C1B} = {D2251A7C-64AB-4D0A-96B9-5DE72806B1B0}
+		{5F142947-2D05-4E76-80E6-27633FD4D230} = {D2251A7C-64AB-4D0A-96B9-5DE72806B1B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7D293AF-CBD6-4A84-B50D-5F055147A8EA}

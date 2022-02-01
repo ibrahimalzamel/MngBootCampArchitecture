@@ -1,4 +1,4 @@
-﻿using CorePersistence.Repositories;
+﻿using Core.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +20,7 @@ namespace Domain.Entities
         }
         public string Name { get; set; }
         public virtual ICollection<Model> Models { get; set; }
+
 
     }
 }

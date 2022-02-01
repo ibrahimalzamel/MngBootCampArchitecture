@@ -1,4 +1,4 @@
-﻿using CorePersistence.Repositories;
+﻿using Core.Persistence.Repositories;
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ namespace Application.Services.Repositories
 {
     public interface IBrandRepository: IAsyncRepository<Brand>
     {
+       
 
     }
 }
