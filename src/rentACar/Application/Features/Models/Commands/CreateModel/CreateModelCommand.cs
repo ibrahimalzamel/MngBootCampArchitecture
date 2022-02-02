@@ -16,7 +16,6 @@ namespace Application.Features.Models.Commands.CreateModel
     {
         public string Name { get; set; }
         public double DailyPrice { get; set; }
-        public int ImageUrl { get; set; }
         public int TransmissionId { get; set; }
         public int FuelId { get; set; }
         public int BrandId { get; set; }

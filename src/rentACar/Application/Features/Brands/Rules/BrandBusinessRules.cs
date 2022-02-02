@@ -25,5 +25,6 @@ namespace Application.Features.Brands.Rules
                 throw new BusinessException ("Brand name exists");
             }
         }
+
     }
 }

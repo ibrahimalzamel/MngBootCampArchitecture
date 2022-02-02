@@ -13,13 +13,18 @@ namespace Application.Features.Models.Rules
     {
         IModelRepository _modelRepository;
         IBrandRepository _brandRepository;
+        ITransmissionRepository _transmissionRepository;
 
-        public ModelBusinessRules(IModelRepository modelRepository, IBrandRepository brandRepository)
+        public ModelBusinessRules(IModelRepository modelRepository, 
+                                  IBrandRepository brandRepository,
+                                  ITransmissionRepository transmissionRepository)
         {
             _modelRepository = modelRepository;
-            _brandRepository = brandRepository; 
+            _brandRepository = brandRepository;
+            _transmissionRepository = transmissionRepository;
         }
-        //Gerkhin dili 
+
+      
         public async Task ModelNameCanNotBeDuplicatedWhenInserted(string name)
         {
             var result = await _modelRepository.GetListAsync(m => m.Name == name);
@@ -30,28 +35,30 @@ namespace Application.Features.Models.Rules
         }
         public async Task TransmissionIsExist(int trasmissionId)
         {
-            //todo : check transmission id from transmission id
-            //var result = await _modelRepository.GetListAsync(b => b.Name == name);
-            //if (result.Items.Any())
-            //{
-            //   throw new BusinessException("Brand name exists");
-            //}
+            // check transmission id from transmission id
+            
+         
+            var result = await _modelRepository.GetListAsync(m => m.TransmissionId ==trasmissionId );
+            if (result.Items.Any())
+            {
+                throw new BusinessException("Model name exists");
+            }
         }
 
         public async Task FuelIsExist(int fuelId)
         {
-            //todo : check fuel id from fuel repo
-            //var result = await _modelRepository.GetListAsync(b => b.Name == name);
-            //if (result.Items.Any())
-            //{
-            //   throw new BusinessException("Brand name exists");
-            //}
+            // check fuel id from fuel repo
+            var result = await _modelRepository.GetListAsync(m => m.FuelId == fuelId);
+            if (result.Items.Any())
+            {
+                throw new BusinessException("Brand name exists");
+            }
         }
 
         public async Task BrandIsExist(int brandId)
         {
-
-            var result = await _brandRepository.GetAsync(x => x.Id == brandId);
+            // check Brand id from Brand repo (Result)
+            var result = await _modelRepository.GetListAsync(m => m.Id == brandId);
             if (result == null)
             {
                 throw new BusinessException("Brand name dosent exist");
