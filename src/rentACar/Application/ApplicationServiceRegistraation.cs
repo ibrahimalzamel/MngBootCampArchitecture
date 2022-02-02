@@ -1,5 +1,9 @@
 ﻿using Application.Features.Brands.Rules;
+using Application.Features.Cars.Rules;
+using Application.Features.Colors.Rules;
+using Application.Features.Fuels.Rules;
 using Application.Features.Models.Rules;
+using Application.Features.Transmissions.Rules;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +24,11 @@ namespace Application
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddScoped<BrandBusinessRules>();
             services.AddScoped<ModelBusinessRules>();
+            services.AddScoped<ColorBusinessRules>();
+            services.AddScoped<CarBusinessRules>();
+            services.AddScoped<FuelBusinessRules>();
+            services.AddScoped<TransmissionBusinessRules>();
+
             return services;
         }
 
