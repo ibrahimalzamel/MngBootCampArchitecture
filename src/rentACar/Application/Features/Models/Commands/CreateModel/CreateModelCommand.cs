@@ -15,6 +15,11 @@ namespace Application.Features.Models.Commands.CreateModel
     public class CreateModelCommand : IRequest<Model>
     {
         public string Name { get; set; }
+        public double DailyPrice { get; set; }
+        public int ImageUrl { get; set; }
+        public int TransmissionId { get; set; }
+        public int FuelId { get; set; }
+        public int BrandId { get; set; }
         public class CreateModelCommandHandler : IRequestHandler<CreateModelCommand, Model>
         {
             IModelRepository _modelRepository;
@@ -31,6 +36,10 @@ namespace Application.Features.Models.Commands.CreateModel
             public async Task<Model> Handle(CreateModelCommand request, CancellationToken cancellationToken)
             {
                 await _modelBusinessRules.ModelNameCanNotBeDuplicatedWhenInserted(request.Name);
+                await _modelBusinessRules.BrandIsExist(request.BrandId);
+                await _modelBusinessRules.FuelIsExist(request.FuelId);
+                await _modelBusinessRules.TransmissionIsExist(request.TransmissionId);
+
                 var mappedModel = _mapper.Map<Model>(request);
 
                 var createModel = await _modelRepository.AddAsync(mappedModel);

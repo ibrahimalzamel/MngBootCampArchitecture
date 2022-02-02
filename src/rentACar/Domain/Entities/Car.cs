@@ -1,5 +1,6 @@
 ﻿
 using Core.Persistence.Repositories;
+using Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +16,22 @@ namespace Domain.Entities
         {
 
         }
-        public Car(int id , int colorId, int modelId, string plate, short modelYear)
+        public Car(int id , int colorId, int modelId, short modelYear ,string plate, CarState carState)
         {
             Id = id;
             ColorId = colorId;
             ModelId = modelId;
-            Plate = plate;
             ModelYear = modelYear;
+            Plate = plate;
+            CarState = carState;
+            
+             
         }
         public int ColorId { get; set; }
         public int ModelId { get; set; }
         public string Plate { get; set; }
         public short ModelYear { get; set; }
+        public CarState  CarState { get; set; }
         public virtual Color Color { get; set; }
         public virtual Model Model { get; set; }
 

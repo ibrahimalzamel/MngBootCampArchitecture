@@ -1,5 +1,6 @@
 ﻿using AutoMapper.Configuration;
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -22,7 +23,7 @@ namespace Persistence.Contexts
         public DbSet<Model> Models { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<Color> Colors { get; set; }    
-        public DbSet<Fuel> Fuel { get; set; }
+        public DbSet<Fuel> Fuels { get; set; }
         public DbSet<Transmission> Transmissions { get; set; }  
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder )
@@ -43,29 +44,83 @@ namespace Persistence.Contexts
             modelBuilder.Entity<Brand>(b =>
             {
                 b.ToTable("Brands").HasKey(k =>k.Id);
-                b.Property(p=>p.Id).HasColumnName("id");
-                b.Property(p=>p.Name).HasColumnName("name");
+                b.Property(p=>p.Id).HasColumnName("Id");
+                b.Property(p=>p.Name).HasColumnName("Name");
                 b.HasMany(p => p.Models);
+            });
+            modelBuilder.Entity<Color>(c =>
+            {
+                c.ToTable("Colors").HasKey(k => k.Id);
+                c.Property(p => p.Id).HasColumnName("Id");
+                c.Property(p => p.Name).HasColumnName("Name");
+                c.HasMany(p => p.Cars);
+            });
+            modelBuilder.Entity<Fuel>(f =>
+            {
+                f.ToTable("Fuels").HasKey(k => k.Id);
+                f.Property(p => p.Id).HasColumnName("Id");
+                f.Property(p => p.Name).HasColumnName("Name");
+                f.HasMany(p => p.Models);
+            });
+            modelBuilder.Entity<Transmission>(t =>
+            {
+                t.ToTable("Transmissions").HasKey(k => k.Id);
+                t.Property(p => p.Id).HasColumnName("Id");
+                t.Property(p => p.Name).HasColumnName("Name");
+                t.HasMany(p => p.Models);
+            });
+            modelBuilder.Entity<Car>(t =>
+            {
+                t.ToTable("Cars").HasKey(k => k.Id);
+                t.Property(p => p.Id).HasColumnName("Id");
+                t.Property(p => p.ModelYear).HasColumnName("ModelYear");
+                t.Property(p => p.Plate).HasColumnName("Plate");
+                t.Property(p => p.ColorId).HasColumnName("ColorId");
+                t.Property(p => p.ModelId).HasColumnName("ModelId");
+                t.Property(p => p.CarState).HasColumnName("State");
+                t.HasOne(p => p.Color);
+                t.HasOne(p => p.Model);
             });
             modelBuilder.Entity<Model>(m =>
             {
                 m.ToTable("Models").HasKey(k => k.Id);
-                m.Property(p => p.Id).HasColumnName("id");
-                m.Property(p => p.Name).HasColumnName("name");
-                m.Property(p => p.DailyPrice).HasColumnName("dailyPrice");
-                m.Property(p => p.TransmissionId).HasColumnName("transmissionId");
-                m.Property(p => p.FuelId).HasColumnName("fuelId");
-                m.Property(p => p.BrandId).HasColumnName("brandId");
-                m.Property(p => p.ImageUrl).HasColumnName("imageUrl");
-                m.Property(p => p.BrandId).HasColumnName("brandId");
-                m.HasOne(p => p.Cars);
+                m.Property(p => p.Id).HasColumnName("Id");
+                m.Property(p => p.Name).HasColumnName("Name");
+                m.Property(p => p.DailyPrice).HasColumnName("DailyPrice");
+                m.Property(p => p.TransmissionId).HasColumnName("TransmissionId");
+                m.Property(p => p.FuelId).HasColumnName("FuelId");
+                m.Property(p => p.BrandId).HasColumnName("BrandId");
+                m.Property(p => p.ImageUrl).HasColumnName("ImageUrl");
+                m.HasMany(p => p.Cars);
                 m.HasOne(p => p.Fuel);
                 m.HasOne(p => p.Transmission);
                 m.HasOne(p => p.Brand);
 
             });
+            var brand1 = new Brand(1, "BMW");
+            var brand2 = new Brand(2, "Mercedes");
+            modelBuilder.Entity<Brand>().HasData(brand1,brand2);
 
+            var color1 = new Color(1, "Red");
+            var color2 = new Color(2, "Blue");
+            modelBuilder.Entity<Color>().HasData(color1,color2);
+
+            var transmission1 = new Transmission(1, "Manuel");
+            var transmission2 = new Transmission(2, "Automatic");
+            modelBuilder.Entity<Transmission>().HasData(transmission1, transmission2);
+
+            var fuel1 = new Fuel(1, "Diesel");
+            var fuel2 = new Fuel(2, "Electric");
+            modelBuilder.Entity<Fuel>().HasData(fuel1, fuel2);
+
+            var model1 = new Model(1, "418i", 1000, 2, 1, 1, "");
+            var model2 = new Model(2, "CLA 180D", 1000, 2, 1, 1, "");
+            modelBuilder.Entity<Model>().HasData(model1, model2);
+
+            modelBuilder.Entity<Car>().HasData(
+                new Car(1, 1, 1, 2018, "06ABC06", CarState.Rented),
+                new Car(2, 2, 2, 2018, "34ABC34", CarState.Rented)
+                );
         }
-
     }
 }

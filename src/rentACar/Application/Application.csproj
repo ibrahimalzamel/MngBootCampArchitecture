@@ -22,8 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Brands\Dtos\" />
-    <Folder Include="Features\Brands\Models\" />
     <Folder Include="Features\Brands\Queries\" />
     <Folder Include="Features\Brands\Tests\" />
     <Folder Include="Features\Cars\Dtos\" />
@@ -31,10 +29,28 @@
     <Folder Include="Features\Cars\Profiles\" />
     <Folder Include="Features\Cars\Queries\" />
     <Folder Include="Features\Cars\Tests\" />
+    <Folder Include="Features\Colors\Dtos\" />
+    <Folder Include="Features\Colors\Models\" />
+    <Folder Include="Features\Colors\Profiles\" />
+    <Folder Include="Features\Colors\Queries\" />
+    <Folder Include="Features\Colors\Rules\" />
+    <Folder Include="Features\Colors\Tests\" />
+    <Folder Include="Features\Fuels\Dtos\" />
+    <Folder Include="Features\Fuels\Models\" />
+    <Folder Include="Features\Fuels\Rules\" />
+    <Folder Include="Features\Fuels\Profiles\" />
+    <Folder Include="Features\Fuels\Queries\" />
+    <Folder Include="Features\Fuels\Tests\" />
     <Folder Include="Features\Models\Dtos\" />
     <Folder Include="Features\Models\Models\" />
     <Folder Include="Features\Models\Queries\" />
     <Folder Include="Features\Models\Tests\" />
+    <Folder Include="Features\Transmissions\Dtos\" />
+    <Folder Include="Features\Transmissions\Models\" />
+    <Folder Include="Features\Transmissions\Profiles\" />
+    <Folder Include="Features\Transmissions\Queries\" />
+    <Folder Include="Features\Transmissions\Rules\" />
+    <Folder Include="Features\Transmissions\Tests\" />
   </ItemGroup>
 
 </Project>
