@@ -1,4 +1,5 @@
 ﻿using Application.Features.Brands.Rules;
+using Application.Features.Models.Rules;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ namespace Application
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddScoped<BrandBusinessRules>();
+            services.AddScoped<ModelBusinessRules>();
             return services;
         }
 

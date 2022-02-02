@@ -20,6 +20,12 @@ namespace Application.Features.Brands.Commands.CreateBrand
             IMapper _mapper;
             BrandBusinessRules _brandBusinessRules;
 
+            public CreateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, BrandBusinessRules brandBusinessRules)
+            {
+                _brandRepository = brandRepository;
+                _mapper = mapper;
+                _brandBusinessRules = brandBusinessRules;
+            }
             public async Task<Brand> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
             {
                 await _brandBusinessRules.BrandNameCanNotBeDuplicatedWhenInserted(request.Name);
@@ -29,6 +35,8 @@ namespace Application.Features.Brands.Commands.CreateBrand
                 return createBrand; 
             }
         }
+      
     }
 }
+
 //BTK C#  Design pattre

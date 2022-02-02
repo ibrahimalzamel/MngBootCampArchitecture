@@ -20,13 +20,19 @@ namespace Persistence.Contexts
         }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Model> Models { get; set; }
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<Color> Colors { get; set; }    
+        public DbSet<Fuel> Fuel { get; set; }
+        public DbSet<Transmission> Transmissions { get; set; }  
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder )
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                base.OnConfiguring(optionsBuilder.UseSqlServer(Configuration.GetConnectionString("RentACarConnectionString")));
-            }
+            // optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=RentACarDatebase;Trusted_Connection=true");
+
+            //if (!optionsBuilder.IsConfigured)
+            //{
+            //    base.OnConfiguring(optionsBuilder.UseSqlServer(Configuration.GetConnectionString("RentACarConnectionString")));
+            //}
 
         }
 
@@ -40,6 +46,23 @@ namespace Persistence.Contexts
                 b.Property(p=>p.Id).HasColumnName("id");
                 b.Property(p=>p.Name).HasColumnName("name");
                 b.HasMany(p => p.Models);
+            });
+            modelBuilder.Entity<Model>(m =>
+            {
+                m.ToTable("Models").HasKey(k => k.Id);
+                m.Property(p => p.Id).HasColumnName("id");
+                m.Property(p => p.Name).HasColumnName("name");
+                m.Property(p => p.DailyPrice).HasColumnName("dailyPrice");
+                m.Property(p => p.TransmissionId).HasColumnName("transmissionId");
+                m.Property(p => p.FuelId).HasColumnName("fuelId");
+                m.Property(p => p.BrandId).HasColumnName("brandId");
+                m.Property(p => p.ImageUrl).HasColumnName("imageUrl");
+                m.Property(p => p.BrandId).HasColumnName("brandId");
+                m.HasOne(p => p.Cars);
+                m.HasOne(p => p.Fuel);
+                m.HasOne(p => p.Transmission);
+                m.HasOne(p => p.Brand);
+
             });
 
         }
