@@ -1,11 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Application.Features.Transmissions.Commands.CreateTransmission;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TransmissionsController : ControllerBase
+    public class TransmissionsController : BaseController
     {
+        [HttpPost("add")]
+        public async Task<IActionResult> Add([FromBody] CreateTransmissionCommand createTransmissionCommand)
+        {
+            var result = await Mediator.Send(createTransmissionCommand);
+            return Created("", result);
+        }
     }
 }
