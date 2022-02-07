@@ -15,7 +15,7 @@ namespace Application.Features.Cars.Dtos
         public string Plate { get; set; }
         public short ModelYear { get; set; }
         public CarState CarState { get; set; }
-        public virtual Color Color { get; set; }
-        public virtual Model Model { get; set; }
+        //public virtual Color Color { get; set; }
+        //public virtual Model Model { get; set; }
     }
 }

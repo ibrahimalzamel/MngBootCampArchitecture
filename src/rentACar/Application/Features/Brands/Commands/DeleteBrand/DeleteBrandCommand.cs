@@ -21,13 +21,11 @@ namespace Application.Features.Brands.Commands.DeleteBrand
         public class DeleteBrandCommandHandler : IRequestHandler<DeleteBrandCommand, IResult>
         {
             IBrandRepository _brandRepository;
-            IMapper _mapper;
-            BrandBusinessRules _brandBusinessRules;
-            public DeleteBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, BrandBusinessRules brandBusinessRules )
+           
+            public DeleteBrandCommandHandler(IBrandRepository brandRepository )
             {
                 _brandRepository = brandRepository;
-                _mapper = mapper;
-                _brandBusinessRules = brandBusinessRules;
+               
             }
 
             public async Task<IResult> Handle(DeleteBrandCommand request, CancellationToken cancellationToken)

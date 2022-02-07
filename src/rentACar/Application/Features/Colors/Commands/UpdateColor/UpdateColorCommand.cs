@@ -1,6 +1,7 @@
 ﻿using Application.Features.Colors.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.CrossCuttingConcerns.Exceptions;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
 using Domain.Entities;
@@ -14,13 +15,13 @@ using System.Threading.Tasks;
 namespace Application.Features.Colors.Commands.UpdateColor
 {
     
-    public class UpdateColorCommand : IRequest<Color>
+    public class UpdateColorCommand : IRequest<IResult>
     {
 
         public int Id { get; set; }
         public string Name { get; set; }    
 
-        public class UpdateColorCommandHandler : IRequestHandler<UpdateColorCommand, Color>
+        public class UpdateColorCommandHandler : IRequestHandler<UpdateColorCommand, IResult>
         {
             IColorRepository _colorRepository;
             ColorBusinessRules _colorBusinessRules;
@@ -32,23 +33,15 @@ namespace Application.Features.Colors.Commands.UpdateColor
                 _mapper = mapper;
             }
 
-            public async Task<Color> Handle(UpdateColorCommand request, CancellationToken cancellationToken)
+            public async Task<IResult> Handle(UpdateColorCommand request, CancellationToken cancellationToken)
             {
-                //var updateToColor = await _colorRepository.GetAsync(c => c.Id == request.Id);
-                //if (updateToColor == null)
-                //    return new ErrorResult(ErrorMessages.ColorNameAlreadyExistsError);
-                //Color mappedColor =   _mapper.Map<Color>(request);
-                //await _colorRepository.UpdateAsync(mappedColor);
-                //return new SuccessResult(SuccessMessages.ColorUpdate);
-
+                var updateColor = await _colorRepository.GetAsync(c => c.Id == request.Id);
+                if (updateColor == null) throw new BusinessException("Color is not found");
                 await _colorBusinessRules.ColorNameCanNotBeDuplicatedWhenInserted(request.Name);
-                var mappedColor =  _mapper.Map<Color>(request);
-                var updateColor =  await _colorRepository.UpdateAsync(mappedColor);
+                _mapper.Map(request,updateColor);           
+                await _colorRepository.UpdateAsync(updateColor);
 
-               // _mapper.Map(request, updateToColor); 
-                
-             
-                return updateColor;
+                return new SuccessResult(SuccessMessages.ColorUpdate);
             }
         }
 

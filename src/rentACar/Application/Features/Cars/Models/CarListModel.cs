@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Cars.Models
 {
-    internal class CarListModel : BasePageableModel
+    public class CarListModel : BasePageableModel
     {
         public IList<CarListDto> Items { get; set; }
     }

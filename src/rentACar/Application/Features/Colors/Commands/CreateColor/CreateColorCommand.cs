@@ -35,7 +35,7 @@ namespace Application.Features.Colors.Commands.CreateColor
             {
                 await _colorBusinessRules.ColorNameCanNotBeDuplicatedWhenInserted(request.Name);
                 var mappedColor = _mapper.Map<Color>(request);
-                var addColor = await _colorRepository.AddAsync(mappedColor);
+                 await _colorRepository.AddAsync(mappedColor);
                 return new SuccessResult(SuccessMessages.ColorAdded);
             }
         }

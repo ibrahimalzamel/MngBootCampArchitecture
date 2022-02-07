@@ -2,6 +2,8 @@
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Requests;
+using Core.Utilities.DataResults;
+using Core.Utilities.Messages;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,11 +14,11 @@ using System.Threading.Tasks;
 namespace Application.Features.Colors.Queries.GetColorList
 {
     
-    public class GetColorListQuery : IRequest<ColorListModel>
+    public class GetColorListQuery : IRequest<IDataResult<ColorListModel>>
     {
         public PageRequest PageRequest { get; set; }
 
-        public class GetColorListQueryHandler : IRequestHandler<GetColorListQuery, ColorListModel>
+        public class GetColorListQueryHandler : IRequestHandler<GetColorListQuery, IDataResult<ColorListModel>>
         {
             IColorRepository _colorRepository;
             IMapper _mapper;
@@ -27,14 +29,14 @@ namespace Application.Features.Colors.Queries.GetColorList
                 _mapper = mapper;
             }
 
-            public async Task<ColorListModel> Handle(GetColorListQuery request, CancellationToken cancellationToken)
+            public async Task<IDataResult<ColorListModel>> Handle(GetColorListQuery request, CancellationToken cancellationToken)
             {
                 var colors = await _colorRepository.GetListAsync(
                     index: request.PageRequest.Page,
                     size: request.PageRequest.PageSize);
 
-                var mappedBrands = _mapper.Map<ColorListModel>(colors);
-                return mappedBrands;
+                var mappedColors = _mapper.Map<ColorListModel>(colors);
+                return new SuccessDataResult<ColorListModel>(mappedColors,SuccessMessages.ColorListed);
             }
         }
     }

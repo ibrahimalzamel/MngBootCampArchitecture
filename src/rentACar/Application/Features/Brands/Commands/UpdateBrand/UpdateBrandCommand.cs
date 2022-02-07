@@ -36,8 +36,7 @@ namespace Application.Features.Brands.Commands.UpdateBrand
             public async Task<IResult> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
             {
                 var updatedBrand = await _brandRepository.GetAsync(x => x.Id == request.Id);
-                if (updatedBrand == null)
-                    throw new BusinessException("Brand cannot found");
+                if (updatedBrand == null)  throw new BusinessException("Brand cannot found");
              
                 await _brandBusinessRules.BrandNameCanNotBeDuplicatedWhenInserted(request.Name);
                 _mapper.Map(request, updatedBrand);

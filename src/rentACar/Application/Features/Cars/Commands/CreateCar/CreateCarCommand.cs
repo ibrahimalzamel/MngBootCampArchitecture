@@ -1,6 +1,8 @@
 ﻿using Application.Features.Cars.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Utilities.Messages;
+using Core.Utilities.Results;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -11,14 +13,14 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Cars.Commands.CreateCar
 {
-    public class CreateCarCommand : IRequest<Car>
+    public class CreateCarCommand : IRequest<IResult>
     {
         public string Plate { get; set; }
         public int ColorId { get; set; }
         public int ModelId { get; set; }
         public short ModelYear { get; set; }
 
-        public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, Car>
+        public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, IResult>
         {
             ICarRepository _carRepository;
             IMapper _mapper;
@@ -30,17 +32,14 @@ namespace Application.Features.Cars.Commands.CreateCar
                 _mapper = mapper;
                 _carBusinessRules = carBusinessRules;
             }
-            public async Task<Car> Handle(CreateCarCommand request, CancellationToken cancellationToken)
+            public async Task<IResult> Handle(CreateCarCommand request, CancellationToken cancellationToken)
             {
                 await _carBusinessRules.CarNameCanNotBeDuplicatedWhenInserted(request.Plate);
                 await _carBusinessRules.ColorIsExist(request.ColorId);
                 await _carBusinessRules.ModelIsExist(request.ModelId);
-
-
                 var mappedCar = _mapper.Map<Car>(request);
-
-                var createCar = await _carRepository.AddAsync(mappedCar);
-                return createCar;
+                await _carRepository.AddAsync(mappedCar);
+                return new SuccessResult(SuccessMessages.CarAdded);
             }
         }
 

@@ -1,6 +1,8 @@
 ﻿using Application.Features.Fuels.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Utilities.Messages;
+using Core.Utilities.Results;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -11,10 +13,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Fuels.Commands.CreateFuel
 {
-    public class CreateFuelCommand : IRequest<Fuel>
+    public class CreateFuelCommand : IRequest<IResult>
     {
         public string Name { get; set; }
-        public class CreateFuelCommandHandler : IRequestHandler<CreateFuelCommand, Fuel>
+        public class CreateFuelCommandHandler : IRequestHandler<CreateFuelCommand, IResult>
         {
             IFuelRepository _fuelRepository;
             IMapper _mapper;
@@ -26,13 +28,13 @@ namespace Application.Features.Fuels.Commands.CreateFuel
                 _mapper = mapper;
                 _fuelBusinessRules = fuelBusinessRules;
             }
-            public async Task<Fuel> Handle(CreateFuelCommand request, CancellationToken cancellationToken)
+            public async Task<IResult> Handle(CreateFuelCommand request, CancellationToken cancellationToken)
             {
                 await _fuelBusinessRules.FuelNameCanNotBeDuplicatedWhenInserted(request.Name);
                 var mappedFuel = _mapper.Map<Fuel>(request);
 
-                var createFuel = await _fuelRepository.AddAsync(mappedFuel);
-                return createFuel;
+                 await _fuelRepository.AddAsync(mappedFuel);
+                return new SuccessResult(SuccessMessages.BrandAdded);
             }
         }
     }
