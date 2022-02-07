@@ -21,7 +21,7 @@ namespace Application
         public static IServiceCollection AddApplicationService(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(Assembly.GetExecutingAssembly());  
             services.AddScoped<BrandBusinessRules>();
             services.AddScoped<ModelBusinessRules>();
             services.AddScoped<ColorBusinessRules>();
@@ -31,7 +31,5 @@ namespace Application
 
             return services;
         }
-
-      
     }
 }

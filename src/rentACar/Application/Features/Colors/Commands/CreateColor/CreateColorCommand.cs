@@ -1,6 +1,9 @@
 ﻿using Application.Features.Colors.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Utilities.DataResults;
+using Core.Utilities.Messages;
+using Core.Utilities.Results;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -12,10 +15,10 @@ using System.Threading.Tasks;
 namespace Application.Features.Colors.Commands.CreateColor
 {
    
-    public class CreateColorCommand : IRequest<Color>
+    public class CreateColorCommand : IRequest<IResult>
     {
         public string Name { get; set; }
-        public class CreateColorCommandHandler : IRequestHandler<CreateColorCommand, Color>
+        public class CreateColorCommandHandler : IRequestHandler<CreateColorCommand, IResult>
         {
             IColorRepository _colorRepository;
             IMapper _mapper;
@@ -27,13 +30,13 @@ namespace Application.Features.Colors.Commands.CreateColor
                 _mapper = mapper;
                 _colorBusinessRules = colorBusinessRules;
             }
-            public async Task<Color> Handle(CreateColorCommand request, CancellationToken cancellationToken)
+
+            public async Task<IResult> Handle(CreateColorCommand request, CancellationToken cancellationToken)
             {
                 await _colorBusinessRules.ColorNameCanNotBeDuplicatedWhenInserted(request.Name);
                 var mappedColor = _mapper.Map<Color>(request);
-
-                var createColor = await _colorRepository.AddAsync(mappedColor);
-                return createColor;
+                var addColor = await _colorRepository.AddAsync(mappedColor);
+                return new SuccessResult(SuccessMessages.ColorAdded);
             }
         }
 

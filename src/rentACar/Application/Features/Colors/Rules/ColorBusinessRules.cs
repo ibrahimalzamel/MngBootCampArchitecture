@@ -25,5 +25,13 @@ namespace Application.Features.Colors.Rules
                 throw new BusinessException("Color name exists");
             }
         }
+        public async Task ColorIdCanNotBeDuplicatedWhenInserted(int id)
+        {
+            var result = await _colorRepository.GetListAsync(b => b.Id == id);
+            if (result.Items.Any())
+            {
+                throw new BusinessException("Color Id exists");
+            }
+        }
     }
 }

@@ -19,6 +19,8 @@ namespace Application.Features.Models.Commands.CreateModel
         public int TransmissionId { get; set; }
         public int FuelId { get; set; }
         public int BrandId { get; set; }
+        public string ImageUrl { get; set; }
+
         public class CreateModelCommandHandler : IRequestHandler<CreateModelCommand, Model>
         {
             IModelRepository _modelRepository;

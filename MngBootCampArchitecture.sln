@@ -19,9 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "src\rentACar\WebA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence", "src\rentACar\Persistence\Persistence.csproj", "{31A539D2-76D7-4CB5-9628-45F329252237}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.CrossCuttingConcerns", "src\corePackages\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj", "{BC6669E4-9382-4E6B-AC7E-531ED0346C1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.CrossCuttingConcerns", "src\corePackages\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj", "{BC6669E4-9382-4E6B-AC7E-531ED0346C1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Persistence", "src\corePackages\Core.Persistence\Core.Persistence.csproj", "{5F142947-2D05-4E76-80E6-27633FD4D230}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Persistence", "src\corePackages\Core.Persistence\Core.Persistence.csproj", "{5F142947-2D05-4E76-80E6-27633FD4D230}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application", "src\corePackages\Core.Application\Core.Application.csproj", "{6544C148-015E-460D-B52A-5333F3DF7510}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Utilities", "src\corePackages\Core.Utilities\Core.Utilities.csproj", "{E5960B68-5BD1-4401-A0AC-B1793C83E770}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,14 @@ Global
 		{5F142947-2D05-4E76-80E6-27633FD4D230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F142947-2D05-4E76-80E6-27633FD4D230}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F142947-2D05-4E76-80E6-27633FD4D230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6544C148-015E-460D-B52A-5333F3DF7510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6544C148-015E-460D-B52A-5333F3DF7510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6544C148-015E-460D-B52A-5333F3DF7510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6544C148-015E-460D-B52A-5333F3DF7510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5960B68-5BD1-4401-A0AC-B1793C83E770}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5960B68-5BD1-4401-A0AC-B1793C83E770}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5960B68-5BD1-4401-A0AC-B1793C83E770}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5960B68-5BD1-4401-A0AC-B1793C83E770}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +78,8 @@ Global
 		{31A539D2-76D7-4CB5-9628-45F329252237} = {5106C8BF-425A-42CA-8FB0-4E785ECDE276}
 		{BC6669E4-9382-4E6B-AC7E-531ED0346C1B} = {D2251A7C-64AB-4D0A-96B9-5DE72806B1B0}
 		{5F142947-2D05-4E76-80E6-27633FD4D230} = {D2251A7C-64AB-4D0A-96B9-5DE72806B1B0}
+		{6544C148-015E-460D-B52A-5333F3DF7510} = {D2251A7C-64AB-4D0A-96B9-5DE72806B1B0}
+		{E5960B68-5BD1-4401-A0AC-B1793C83E770} = {D2251A7C-64AB-4D0A-96B9-5DE72806B1B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7D293AF-CBD6-4A84-B50D-5F055147A8EA}

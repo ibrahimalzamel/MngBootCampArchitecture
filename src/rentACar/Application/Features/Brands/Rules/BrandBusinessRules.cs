@@ -25,6 +25,14 @@ namespace Application.Features.Brands.Rules
                 throw new BusinessException ("Brand name exists");
             }
         }
+        public async Task BrandIdCanNotBeDuplicatedWhenInserted(int id)
+        {
+            var result = await _brandRepository.GetListAsync(b => b.Id == id);
+            if (result.Items.Any())
+            {
+                throw new BusinessException("Brand id exists");
+            }
+        }
 
     }
 }
