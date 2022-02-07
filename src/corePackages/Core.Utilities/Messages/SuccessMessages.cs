@@ -20,7 +20,7 @@ namespace Core.Utilities.Messages
 
         private static string brandAdded = "Marka başarıyla veritabanına eklendi.";
         private static string brandUpdate = "Marka başarıyla güncellendi.";
-        private static string brandsListed = "Markalar Listeleniyor...";
+        private static string brandsListed = "Markalar Listelendi...";
         private static string brandDeleted = "Marka başarıyla veritabanından silindi.";
 
         private static string colorAdded = "Renk Eklendi";
@@ -31,18 +31,18 @@ namespace Core.Utilities.Messages
         private static string userAdded = "Kullanıcı Eklendi";
         private static string userDeleted = "Kullanıcı Silindi";
         private static string userUpdated = "Kullanıcı Güncellendi";
-        private static string usersListed = "Kullanıcılar Listeleniyor...";
+        private static string usersListed = "Kullanıcılar Listelendi...";
 
         private static string customerAdded = "Müşteri Eklendi";
         private static string customerDeleted = "Müşteri Silindi";
         private static string customerUpdated = "Müşteri Güncellendi";
-        private static string customersListed = "Müşteriler Listeleniyor...";
+        private static string customersListed = "Müşteriler Listelendi...";
 
         private static string rentalAdded = "Kiralama Bilgisi Eklendi";
         private static string rentalUpdateReturnDate = "Araç Teslim Alındı";
         private static string rentalUpdateReturnDateError = "Araç Teslim Alınmış";
         private static string rentalUpdated = "Kiralama Bilgisi Güncellendi";
-        private static string rentalListed = "Kiralama Bilgileri Listeleniyor...";
+        private static string rentalListed = "Kiralama Bilgileri Listelendi...";
         private static string rentalDeleted = "Kiralama Bilgisi Silindi";
 
         public static string CarAdded { get => carAdded; set => carAdded = value; }

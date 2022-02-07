@@ -1,6 +1,9 @@
 ﻿using Application.Features.Brands.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Mailing;
+using Core.Utilities.Messages;
+using Core.Utilities.Results;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -11,28 +14,39 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Brands.Commands.CreateBrand
 {
-    public class CreateBrandCommand:IRequest<Brand>
+    public class CreateBrandCommand:IRequest<IResult>
     {
         public string Name { get; set; }
-        public class CreateBrandCommandHandler:IRequestHandler<CreateBrandCommand,Brand>
+        public class CreateBrandCommandHandler:IRequestHandler<CreateBrandCommand, IResult>
         {
             IBrandRepository _brandRepository;
             IMapper _mapper;
             BrandBusinessRules _brandBusinessRules;
-
-            public CreateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, BrandBusinessRules brandBusinessRules)
+            IMailService _mailService;
+            public CreateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, BrandBusinessRules brandBusinessRules, IMailService mailService)
             {
                 _brandRepository = brandRepository;
                 _mapper = mapper;
                 _brandBusinessRules = brandBusinessRules;
+                _mailService = mailService;
             }
-            public async Task<Brand> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
+            public async Task<IResult> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
             {
+              
                 await _brandBusinessRules.BrandNameCanNotBeDuplicatedWhenInserted(request.Name);
+                
                 var mappedBrand = _mapper.Map<Brand>(request);
-             
-                var createBrand = await _brandRepository.AddAsync(mappedBrand);
-                return createBrand; 
+                await _brandRepository.AddAsync(mappedBrand);
+
+                var mail = new Mail
+                {
+                    ToFullName = "System admins",
+                    ToEmail ="admins@mngkargo.com.tr",
+                    Subject ="New Brand Added",
+                    HtmlBody ="Hey , check the system"
+                };
+                _mailService.SendMail(mail);
+                return new SuccessResult(SuccessMessages.BrandDeleted);
             }
         }
       

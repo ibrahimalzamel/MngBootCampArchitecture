@@ -1,4 +1,5 @@
 ﻿using Application.Features.Colors.Commands.CreateColor;
+using Application.Features.Colors.Commands.DeleteColor;
 using Application.Features.Colors.Dtos;
 using Application.Features.Colors.Models;
 using AutoMapper;
@@ -18,6 +19,7 @@ namespace Application.Features.Colors.Profiles
         public MappingProfiles()
         {
             CreateMap<Color, CreateColorCommand>().ReverseMap();
+            CreateMap<Color, DeleteColorCommand>().ReverseMap();
             CreateMap<Color, ColorListDto>().ReverseMap();
             CreateMap<IPaginate<Color>, ColorListModel>().ReverseMap();
         }

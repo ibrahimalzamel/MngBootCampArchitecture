@@ -25,7 +25,9 @@ namespace Persistence.Contexts
         public DbSet<Color> Colors { get; set; }    
         public DbSet<Fuel> Fuels { get; set; }
         public DbSet<Transmission> Transmissions { get; set; }  
-
+        public DbSet<Customer> Customers { get; set; }  
+        public DbSet<CorporateCustomer> Corporations { get; set; }
+        public DbSet<IndividualCustomer> Individuals { get; set; }  
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder )
         {
             // optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=RentACarDatebase;Trusted_Connection=true");
@@ -97,6 +99,27 @@ namespace Persistence.Contexts
                 m.HasOne(p => p.Brand);
 
             });
+            modelBuilder.Entity<Customer>(c =>
+            {
+                c.ToTable("Customers").HasKey(k => k.Id);
+                c.Property(p => p.Id).HasColumnName("Id");
+                c.Property(p => p.Email).HasColumnName("Email");
+            });
+            modelBuilder.Entity<CorporateCustomer>(c =>
+            {
+                c.ToTable("CorporateCustomers");
+                c.Property(p => p.CompanyName).HasColumnName("CompanyName");
+                c.Property(p => p.TaxNumber).HasColumnName("TaxNumber");
+              
+            });
+            modelBuilder.Entity<IndividualCustomer>(c =>
+            {
+                c.ToTable("IndividualCustomers");
+                c.Property(p => p.FirstName).HasColumnName("FirstName");
+                c.Property(p => p.LastName).HasColumnName("LastName");
+                c.Property(p => p.NationalId).HasColumnName("NationalId");
+
+            });
             var brand1 = new Brand(1, "BMW");
             var brand2 = new Brand(2, "Mercedes");
             modelBuilder.Entity<Brand>().HasData(brand1,brand2);
@@ -121,6 +144,18 @@ namespace Persistence.Contexts
                 new Car(1, 1, 1, 2018, "06ABC06", CarState.Rented),
                 new Car(2, 2, 2, 2018, "34ABC34", CarState.Rented)
                 );
+            var customer1 = new Customer(1, "ibrahim@gmail");
+            var customer2 = new Customer(2,"alzamel@gmail");
+            modelBuilder.Entity<Customer>().HasData(customer1, customer2);
+
+            //var customer3 = new CorporateCustomer(1, "mail1@gmail.com", "A12345", "SRE");
+            //var customer4 = new CorporateCustomer(2, "mail2@gmail.com", "A12345", "SRE");
+
+           // modelBuilder.Entity<CorporateCustomer>().HasData(customer3, customer3);
+
+            //var customer5 = new IndividualCustomer(3,"mail3@gmail.com","124545","ibrahim","alzamel");
+            //modelBuilder.Entity<IndividualCustomer>().HasData(customer5);
+
         }
     }
 }

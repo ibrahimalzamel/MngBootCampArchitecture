@@ -18,6 +18,7 @@
     <ProjectReference Include="..\..\..\CorePersistence\CorePersistence.csproj" />
     <ProjectReference Include="..\..\corePackages\Core.Application\Core.Application.csproj" />
     <ProjectReference Include="..\..\corePackages\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj" />
+    <ProjectReference Include="..\..\corePackages\Core.Mailing\Core.Mailing.csproj" />
     <ProjectReference Include="..\..\corePackages\Core.Persistence\Core.Persistence.csproj" />
     <ProjectReference Include="..\..\corePackages\Core.Utilities\Core.Utilities.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
@@ -27,6 +28,14 @@
     <Folder Include="Features\Brands\Tests\" />
     <Folder Include="Features\Cars\Tests\" />
     <Folder Include="Features\Colors\Tests\" />
+    <Folder Include="Features\Customers\CorporateCustomers\Commands\" />
+    <Folder Include="Features\Customers\CorporateCustomers\Dtos\" />
+    <Folder Include="Features\Customers\CorporateCustomers\Models\" />
+    <Folder Include="Features\Customers\CorporateCustomers\Profiles\" />
+    <Folder Include="Features\Customers\CorporateCustomers\Queries\" />
+    <Folder Include="Features\Customers\CorporateCustomers\Rules\" />
+    <Folder Include="Features\Customers\CorporateCustomers\Tests\" />
+    <Folder Include="Features\Customers\IndividualCustomers\Tests\" />
     <Folder Include="Features\Fuels\Tests\" />
     <Folder Include="Features\Models\Tests\" />
     <Folder Include="Features\Transmissions\Tests\" />

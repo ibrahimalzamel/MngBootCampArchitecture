@@ -14,13 +14,13 @@ using System.Threading.Tasks;
 namespace Application.Features.Colors.Commands.UpdateColor
 {
     
-    public class UpdateColorCommand : IRequest<IResult>
+    public class UpdateColorCommand : IRequest<Color>
     {
 
         public int Id { get; set; }
         public string Name { get; set; }    
 
-        public class UpdateColorCommandHandler : IRequestHandler<UpdateColorCommand, IResult>
+        public class UpdateColorCommandHandler : IRequestHandler<UpdateColorCommand, Color>
         {
             IColorRepository _colorRepository;
             ColorBusinessRules _colorBusinessRules;
@@ -32,9 +32,9 @@ namespace Application.Features.Colors.Commands.UpdateColor
                 _mapper = mapper;
             }
 
-            public async Task<IResult> Handle(UpdateColorCommand request, CancellationToken cancellationToken)
+            public async Task<Color> Handle(UpdateColorCommand request, CancellationToken cancellationToken)
             {
-                var updateToColor = await _colorRepository.GetAsync(c => c.Id == request.Id);
+                //var updateToColor = await _colorRepository.GetAsync(c => c.Id == request.Id);
                 //if (updateToColor == null)
                 //    return new ErrorResult(ErrorMessages.ColorNameAlreadyExistsError);
                 //Color mappedColor =   _mapper.Map<Color>(request);
@@ -42,12 +42,13 @@ namespace Application.Features.Colors.Commands.UpdateColor
                 //return new SuccessResult(SuccessMessages.ColorUpdate);
 
                 await _colorBusinessRules.ColorNameCanNotBeDuplicatedWhenInserted(request.Name);
-                await _colorRepository.UpdateAsync(updateToColor);
+                var mappedColor =  _mapper.Map<Color>(request);
+                var updateColor =  await _colorRepository.UpdateAsync(mappedColor);
 
-                _mapper.Map(request, updateToColor); 
-                _mapper.Map<Color>(request);
+               // _mapper.Map(request, updateToColor); 
+                
              
-                return new SuccessResult(SuccessMessages.BrandUpdate);
+                return updateColor;
             }
         }
 

@@ -3,6 +3,8 @@ using Application.Features.Brands.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions;
+using Core.Utilities.Messages;
+using Core.Utilities.Results;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -13,12 +15,12 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Brands.Commands.UpdateBrand
 {
-    public class UpdateBrandCommand : IRequest<Brand>
+    public class UpdateBrandCommand : IRequest<IResult>
     {
         public int Id { get; set;}
         public string Name { get; set;}
 
-        public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, Brand>
+        public class UpdateBrandCommandHandler : IRequestHandler<UpdateBrandCommand, IResult>
         {
             IBrandRepository _brandRepository;
             IMapper _mapper;
@@ -31,23 +33,16 @@ namespace Application.Features.Brands.Commands.UpdateBrand
                 _brandBusinessRules = brandBusinessRules;
             }
 
-            public async Task<Brand> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
+            public async Task<IResult> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
             {
                 var updatedBrand = await _brandRepository.GetAsync(x => x.Id == request.Id);
                 if (updatedBrand == null)
                     throw new BusinessException("Brand cannot found");
-
-
+             
                 await _brandBusinessRules.BrandNameCanNotBeDuplicatedWhenInserted(request.Name);
-
-                //  Brand mappedBrand = _mapper.Map<Brand>(request);
-                Brand mappedBrand =_mapper.Map(request,updatedBrand);
-                Brand brand = new Brand();
-                brand = mappedBrand;
-                 mappedBrand = await _brandRepository.UpdateAsync(mappedBrand);
-               
-
-                return mappedBrand;
+                _mapper.Map(request, updatedBrand);
+                await _brandRepository.UpdateAsync(updatedBrand);              
+                return new SuccessResult(SuccessMessages.BrandUpdate);
 
             }
         }

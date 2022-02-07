@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromBody] DeleteBrandCommand deleteBrandCommand)
         {
-            Brand result = await Mediator.Send(deleteBrandCommand);
+            var result = await Mediator.Send(deleteBrandCommand);
             return Ok(result);
         }
         [HttpPut("update")]
