@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Models.Commands.UpdateModel
 {
-    internal class UpdateModelCommand
+    public class UpdateModelCommand
     {
     }
 }

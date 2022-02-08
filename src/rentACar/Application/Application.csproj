@@ -37,7 +37,16 @@
     <Folder Include="Features\Customers\CorporateCustomers\Tests\" />
     <Folder Include="Features\Customers\IndividualCustomers\Tests\" />
     <Folder Include="Features\Fuels\Tests\" />
+    <Folder Include="Features\Invoices\Models\" />
+    <Folder Include="Features\Invoices\Queries\" />
+    <Folder Include="Features\Invoices\Tests\" />
+    <Folder Include="Features\Invoices\Profiles\" />
     <Folder Include="Features\Models\Tests\" />
+    <Folder Include="Features\Rentals\Dtos\" />
+    <Folder Include="Features\Rentals\Models\" />
+    <Folder Include="Features\Rentals\Profiles\" />
+    <Folder Include="Features\Rentals\Queries\" />
+    <Folder Include="Features\Rentals\Tests\" />
     <Folder Include="Features\Transmissions\Tests\" />
   </ItemGroup>
 

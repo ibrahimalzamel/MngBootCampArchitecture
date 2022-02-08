@@ -1,6 +1,8 @@
 ﻿using Application.Features.Customers.IndividualCustomers.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Utilities.Messages;
+using Core.Utilities.Results;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Customers.IndividualCustomers.Commands.CreateIndividualCustomer
 {
-    public class CreateIndividualCustomerCommand : IRequest<IndividualCustomer>
+    public class CreateIndividualCustomerCommand : IRequest<IResult>
     {
 
         public string Email { get; set; }
@@ -19,7 +21,7 @@ namespace Application.Features.Customers.IndividualCustomers.Commands.CreateIndi
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public class CreateIndividualCustomerCommandHandlar : IRequestHandler<CreateIndividualCustomerCommand, IndividualCustomer>
+        public class CreateIndividualCustomerCommandHandlar : IRequestHandler<CreateIndividualCustomerCommand, IResult>
         {
             IIndividualCustomerRepository _individualCustomerRepository;
             IMapper _mapper;
@@ -32,13 +34,13 @@ namespace Application.Features.Customers.IndividualCustomers.Commands.CreateIndi
                 _individualCustomerBusinessRules = individualCustomerBusinessRules;
             }
 
-            public async Task<IndividualCustomer> Handle(CreateIndividualCustomerCommand request, CancellationToken cancellationToken)
+            public async Task<IResult> Handle(CreateIndividualCustomerCommand request, CancellationToken cancellationToken)
             {
                 await _individualCustomerBusinessRules.NationalIdCanBotBeDublicated(request.NationalId);
 
                 var mappedIndividualCustomer = _mapper.Map<IndividualCustomer>(request);
                 var createdIndividualCustomer = await _individualCustomerRepository.AddAsync(mappedIndividualCustomer);
-                return createdIndividualCustomer;
+                return new SuccessResult(SuccessMessages.CustomerAdded);
 
             }
         }

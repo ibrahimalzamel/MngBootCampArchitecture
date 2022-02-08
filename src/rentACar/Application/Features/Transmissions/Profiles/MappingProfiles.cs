@@ -1,4 +1,6 @@
 ﻿using Application.Features.Transmissions.Commands.CreateTransmission;
+using Application.Features.Transmissions.Commands.DeleteTransmission;
+using Application.Features.Transmissions.Commands.UpdateTransmission;
 using Application.Features.Transmissions.Dtos;
 using Application.Features.Transmissions.Models;
 using AutoMapper;
@@ -17,6 +19,8 @@ namespace Application.Features.Transmissions.Profiles
         public MappingProfiles()
         {
             CreateMap<Transmission, CreateTransmissionCommand>().ReverseMap();
+            CreateMap<Transmission, UpdateTransmissionCommand>().ReverseMap();
+            CreateMap<Transmission, DeleteTransmissionCommand>().ReverseMap();
             CreateMap<Transmission, TransmissionListDto>().ReverseMap();
             CreateMap<IPaginate<Transmission>, TransmissionListModel>().ReverseMap();
         }

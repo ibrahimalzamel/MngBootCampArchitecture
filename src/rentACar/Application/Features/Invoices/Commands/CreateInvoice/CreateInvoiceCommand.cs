@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Models.Commands.DeleteModel
+namespace Application.Features.Invoices.Commands.CreateInvoice
 {
-    public class DeleteModelCommand
+    public class CreateInvoiceCommand
     {
     }
 }

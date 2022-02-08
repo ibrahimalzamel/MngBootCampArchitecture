@@ -16,7 +16,7 @@ namespace Domain.Entities
         {
 
         }
-        public Car(int id , int colorId, int modelId, short modelYear ,string plate, CarState carState)
+        public Car(int id , int colorId, int modelId, short modelYear ,string plate, CarState carState):this()
         {
             Id = id;
             ColorId = colorId;

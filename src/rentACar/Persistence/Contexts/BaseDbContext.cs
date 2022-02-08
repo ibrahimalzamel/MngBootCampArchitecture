@@ -22,8 +22,10 @@ namespace Persistence.Contexts
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Model> Models { get; set; }
         public DbSet<Car> Cars { get; set; }
-        public DbSet<Color> Colors { get; set; }    
+        public DbSet<Color> Colors { get; set; }
         public DbSet<Fuel> Fuels { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<Rental> Rentals { get; set; }
         public DbSet<Transmission> Transmissions { get; set; }  
         public DbSet<Customer> Customers { get; set; }  
         public DbSet<CorporateCustomer> Corporations { get; set; }
@@ -83,6 +85,8 @@ namespace Persistence.Contexts
                 t.HasOne(p => p.Color);
                 t.HasOne(p => p.Model);
             });
+
+           
             modelBuilder.Entity<Model>(m =>
             {
                 m.ToTable("Models").HasKey(k => k.Id);
@@ -120,6 +124,33 @@ namespace Persistence.Contexts
                 c.Property(p => p.NationalId).HasColumnName("NationalId");
 
             });
+            modelBuilder.Entity<Invoice>(t =>
+            {
+                t.ToTable("Invoices").HasKey(k => k.Id);
+                t.Property(p => p.Id).HasColumnName("Id");
+                t.Property(p => p.CustomerId).HasColumnName("CustomerId");
+                t.Property(p => p.No).HasColumnName("No");
+                t.Property(p => p.CreatedDate).HasColumnName("CreatedDate");
+                t.Property(p => p.RentalStratDate).HasColumnName("RentalStratDate");
+                t.Property(p => p.RentalEndDate).HasColumnName("RentalEndDate");
+                t.Property(p => p.TotalRentalDate).HasColumnName("TotalRentalDate");
+                t.Property(p => p.RentalPrice).HasColumnName("RentalPrice");
+                t.HasOne(p => p.Customer);
+            });
+
+
+            modelBuilder.Entity<Rental>(t =>
+            {
+                t.ToTable("Rentals").HasKey(k => k.Id);
+                t.Property(p => p.Id).HasColumnName("Id");
+                t.Property(p => p.CustomerId).HasColumnName("CustomerId");
+                t.Property(p => p.CarId).HasColumnName("CarId");
+                t.Property(p => p.RentStartDate).HasColumnName("RentStartDate");
+                t.Property(p => p.RentEndDate).HasColumnName("RentEndDate");
+                t.Property(p => p.ReturnDate).HasColumnName("ReturnDate");
+                t.HasOne(p => p.Car);
+                t.HasOne(p => p.Customer);
+            });
             var brand1 = new Brand(1, "BMW");
             var brand2 = new Brand(2, "Mercedes");
             modelBuilder.Entity<Brand>().HasData(brand1,brand2);
@@ -148,10 +179,14 @@ namespace Persistence.Contexts
             var customer2 = new Customer(2,"alzamel@gmail");
             modelBuilder.Entity<Customer>().HasData(customer1, customer2);
 
+            var invoice1 = new Invoice(1, 2, "152646", DateTime.Today,DateTime.Today,DateTime.Today.AddDays(2), 3, 100);
+            modelBuilder.Entity<Invoice>().HasData(invoice1);
+            var rental1 = new Rental(1, 1, 1, DateTime.Today, DateTime.Today, DateTime.Today);
+            modelBuilder.Entity<Rental>().HasData(rental1);
             //var customer3 = new CorporateCustomer(1, "mail1@gmail.com", "A12345", "SRE");
             //var customer4 = new CorporateCustomer(2, "mail2@gmail.com", "A12345", "SRE");
 
-           // modelBuilder.Entity<CorporateCustomer>().HasData(customer3, customer3);
+            // modelBuilder.Entity<CorporateCustomer>().HasData(customer3, customer3);
 
             //var customer5 = new IndividualCustomer(3,"mail3@gmail.com","124545","ibrahim","alzamel");
             //modelBuilder.Entity<IndividualCustomer>().HasData(customer5);

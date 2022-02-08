@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Transmissions.Commands.DeleteTransmission
 {
-    internal class DeleteTransmissionCommand
+    public class DeleteTransmissionCommand
     {
     }
 }

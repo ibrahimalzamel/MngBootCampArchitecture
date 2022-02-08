@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Transmissions.Commands.UpdateTransmission
 {
-    internal class UpdateTransmissionCommand
+    public class UpdateTransmissionCommand
     {
     }
 }

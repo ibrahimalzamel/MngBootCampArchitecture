@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.Contexts;
 
@@ -11,9 +12,10 @@ using Persistence.Contexts;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(BaseDbContext))]
-    partial class BaseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220208085153_All")]
+    partial class All
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -331,55 +333,6 @@ namespace Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.Rental", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CarId")
-                        .HasColumnType("int")
-                        .HasColumnName("CarId");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int")
-                        .HasColumnName("CustomerId");
-
-                    b.Property<DateTime>("RentEndDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("RentEndDate");
-
-                    b.Property<DateTime>("RentStartDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("RentStartDate");
-
-                    b.Property<DateTime?>("ReturnDate")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("ReturnDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CarId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Rentals", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CarId = 1,
-                            CustomerId = 1,
-                            RentEndDate = new DateTime(2022, 2, 8, 0, 0, 0, 0, DateTimeKind.Local),
-                            RentStartDate = new DateTime(2022, 2, 8, 0, 0, 0, 0, DateTimeKind.Local),
-                            ReturnDate = new DateTime(2022, 2, 8, 0, 0, 0, 0, DateTimeKind.Local)
-                        });
-                });
-
             modelBuilder.Entity("Domain.Entities.Transmission", b =>
                 {
                     b.Property<int>("Id")
@@ -505,25 +458,6 @@ namespace Persistence.Migrations
                     b.Navigation("Fuel");
 
                     b.Navigation("Transmission");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Rental", b =>
-                {
-                    b.HasOne("Domain.Entities.Car", "Car")
-                        .WithMany()
-                        .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Car");
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Domain.Entities.CorporateCustomer", b =>
