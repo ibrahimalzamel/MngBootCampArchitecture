@@ -18,12 +18,10 @@ namespace Application.Features.Rentals.Commands.DeleteRental
         public class DeleteRentalCommandHandler : IRequestHandler<DeleteRentalCommand,IResult>
         {
             IRentalRepository _rentalRepository;
-            IMapper _mapper;
 
-            public DeleteRentalCommandHandler(IRentalRepository rentalRepository, IMapper mapper)
+            public DeleteRentalCommandHandler(IRentalRepository rentalRepository)
             {
                 _rentalRepository = rentalRepository;
-                _mapper = mapper;
             }
 
             public async Task<IResult> Handle(DeleteRentalCommand request, CancellationToken cancellationToken)
