@@ -6,11 +6,7 @@ using Application.Features.Customers.IndividualCustomers.Models;
 using AutoMapper;
 using Core.Persistence.Paging;
 using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.Features.Customers.IndividualCustomers.Profiles
 {
@@ -22,7 +18,6 @@ namespace Application.Features.Customers.IndividualCustomers.Profiles
             CreateMap<IndividualCustomer, DeleteIndividualCustomerCommand>().ReverseMap();
             CreateMap<IndividualCustomer, UpdateIndividualCustomerCommand>().ReverseMap();
             CreateMap<IndividualCustomer, IndividualCustomerListDto>().ReverseMap();
-            //CreateMap<IPaginate<IndividualCustomer>, IndividualCustomerListModel>().ReverseMap();
             CreateMap<IPaginate<IndividualCustomer>, IndividualCustomerListModel>().ReverseMap();
         }
     }

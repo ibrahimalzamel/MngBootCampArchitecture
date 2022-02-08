@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services.Repositories
 {
-    public interface IInvoiceRepository :IAsyncRepository<Invoice>
+    public interface IInvoiceRepository : IAsyncRepository<Invoice>, IRepository<Invoice>
     {
     }
 }

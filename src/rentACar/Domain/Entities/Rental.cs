@@ -21,7 +21,7 @@ namespace Domain.Entities
         {
         }
 
-        public Rental(int id, int customerId, int carId, DateTime rentStartDate, DateTime rentEndDate, DateTime? returnDate)
+        public Rental(int id, int customerId, int carId, DateTime rentStartDate, DateTime rentEndDate, DateTime? returnDate):this()
         {
             Id = id;
             CustomerId = customerId;

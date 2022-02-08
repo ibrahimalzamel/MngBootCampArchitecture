@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    internal class FindeksCreditRate : Entity
+    public class FindeksCreditRate : Entity
     {
         public int CustomerId { get; set; }
         public short Score { get; set; }
 
-        public virtual Customer Customer { get; set; }
+        public virtual Customer? Customer { get; set; }
 
         public FindeksCreditRate()
         {

@@ -18,11 +18,16 @@ namespace Application.Features.Brands.Profiles
     {
         public MappingProfiles()
         {
+            //CreateBrandCommandValidator
             CreateMap<Brand, CreateBrandCommand>().ReverseMap();
+            CreateMap<Brand, CreateBrandDto>().ReverseMap();
             CreateMap<Brand, UpdateBrandCommand>().ReverseMap();
+            CreateMap<Brand, UpdatedBrandDto>().ReverseMap();
             CreateMap<Brand, DeleteBrandCommand>().ReverseMap();
-            CreateMap<Brand,BrandListDto>().ReverseMap();
-            CreateMap<IPaginate<Brand>,BrandListModel>().ReverseMap();
+            CreateMap<Brand, DeletedBrandDto>().ReverseMap();
+            CreateMap<Brand, BrandDto>().ReverseMap();
+            CreateMap<Brand, BrandListDto>().ReverseMap();
+            CreateMap<IPaginate<Brand>, BrandListModel>().ReverseMap();
         }
     }
 }

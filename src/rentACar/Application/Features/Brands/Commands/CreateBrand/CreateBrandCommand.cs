@@ -38,14 +38,14 @@ namespace Application.Features.Brands.Commands.CreateBrand
                 var mappedBrand = _mapper.Map<Brand>(request);
                 await _brandRepository.AddAsync(mappedBrand);
 
-                var mail = new Mail
-                {
-                    ToFullName = "System admins",
-                    ToEmail ="admins@mngkargo.com.tr",
-                    Subject ="New Brand Added",
-                    HtmlBody ="Hey , check the system"
-                };
-                _mailService.SendMail(mail);
+                //var mail = new Mail
+                //{
+                //    ToFullName = "System admins",
+                //    ToEmail ="admins@.com.tr",
+                //    Subject ="New Brand Added",
+                //    HtmlBody ="Hey , check the system"
+                //};
+                //_mailService.SendMail(mail);
                 return new SuccessResult(SuccessMessages.BrandDeleted);
             }
         }
