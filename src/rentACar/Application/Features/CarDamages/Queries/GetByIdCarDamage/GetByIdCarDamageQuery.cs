@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.CarDamages.Queries.GetByIdCarDamage
 {
-    public class GetByIdCarDamageQuery : IRequest<CarDamageDto>
+    public class GetByIdCarDamageQuery : IRequest<UserDto>
     {
         public int Id { get; set; }
 
-        public class GetByIdCarDamageQueryHandler : IRequestHandler<GetByIdCarDamageQuery, CarDamageDto>
+        public class GetByIdCarDamageQueryHandler : IRequestHandler<GetByIdCarDamageQuery, UserDto>
         {
             private readonly ICarDamageRepository _carDamageRepository;
             private readonly IMapper _mapper;
@@ -31,12 +31,12 @@ namespace Application.Features.CarDamages.Queries.GetByIdCarDamage
             }
 
 
-            public async Task<CarDamageDto> Handle(GetByIdCarDamageQuery request, CancellationToken cancellationToken)
+            public async Task<UserDto> Handle(GetByIdCarDamageQuery request, CancellationToken cancellationToken)
             {
                 await _carDamageBusinessRules.CarDamageIdShouldExistWhenSelected(request.Id);
 
                 CarDamage? carDamage = await _carDamageRepository.GetAsync(b => b.Id == request.Id);
-                CarDamageDto carDamageDto = _mapper.Map<CarDamageDto>(carDamage);
+                UserDto carDamageDto = _mapper.Map<UserDto>(carDamage);
                 return carDamageDto;
             }
         }

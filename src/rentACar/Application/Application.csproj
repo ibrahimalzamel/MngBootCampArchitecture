@@ -21,6 +21,7 @@
     <ProjectReference Include="..\..\corePackages\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj" />
     <ProjectReference Include="..\..\corePackages\Core.Mailing\Core.Mailing.csproj" />
     <ProjectReference Include="..\..\corePackages\Core.Persistence\Core.Persistence.csproj" />
+    <ProjectReference Include="..\..\corePackages\Core.Security\Core.Security.csproj" />
     <ProjectReference Include="..\..\corePackages\Core.Utilities\Core.Utilities.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
@@ -31,27 +32,6 @@
     <Folder Include="Features\Cars\Validations\" />
     <Folder Include="Features\Cars\Tests\" />
     <Folder Include="Features\Colors\Tests\" />
-    <Folder Include="Features\CorporateCustomers\Commands\" />
-    <Folder Include="Features\CorporateCustomers\Dtos\" />
-    <Folder Include="Features\CorporateCustomers\Models\" />
-    <Folder Include="Features\CorporateCustomers\Profiles\" />
-    <Folder Include="Features\CorporateCustomers\Queries\" />
-    <Folder Include="Features\CorporateCustomers\Rules\" />
-    <Folder Include="Features\CorporateCustomers\Tests\" />
-    <Folder Include="Features\Customers\Commands\" />
-    <Folder Include="Features\Customers\CorporateCustomers\Commands\" />
-    <Folder Include="Features\Customers\CorporateCustomers\Dtos\" />
-    <Folder Include="Features\Customers\CorporateCustomers\Models\" />
-    <Folder Include="Features\Customers\CorporateCustomers\Profiles\" />
-    <Folder Include="Features\Customers\CorporateCustomers\Queries\" />
-    <Folder Include="Features\Customers\CorporateCustomers\Rules\" />
-    <Folder Include="Features\Customers\CorporateCustomers\Tests\" />
-    <Folder Include="Features\Customers\Dtos\" />
-    <Folder Include="Features\Customers\IndividualCustomers\Tests\" />
-    <Folder Include="Features\Customers\Models\" />
-    <Folder Include="Features\Customers\Profiles\" />
-    <Folder Include="Features\Customers\Queries\" />
-    <Folder Include="Features\Customers\Rules\" />
     <Folder Include="Features\Customers\Tests\" />
     <Folder Include="Features\FindeksCreditRates\Commands\" />
     <Folder Include="Features\FindeksCreditRates\Dtos\" />
@@ -61,17 +41,19 @@
     <Folder Include="Features\FindeksCreditRates\Rules\" />
     <Folder Include="Features\FindeksCreditRates\Tests\" />
     <Folder Include="Features\Fuels\Tests\" />
-    <Folder Include="Features\IndividualCustomers\Commands\" />
-    <Folder Include="Features\IndividualCustomers\Dtos\" />
-    <Folder Include="Features\IndividualCustomers\Models\" />
-    <Folder Include="Features\IndividualCustomers\Profiles\" />
-    <Folder Include="Features\IndividualCustomers\Queries\" />
-    <Folder Include="Features\IndividualCustomers\Rules\" />
-    <Folder Include="Features\IndividualCustomers\Tests\" />
     <Folder Include="Features\Invoices\Tests\" />
     <Folder Include="Features\Models\Tests\" />
+    <Folder Include="Features\OperationClaims\Tests\" />
     <Folder Include="Features\Rentals\Tests\" />
     <Folder Include="Features\Transmissions\Tests\" />
+    <Folder Include="Features\Users\Tests\" />
+    <Folder Include="Services\CarService\" />
+    <Folder Include="Services\CustomerServices\" />
+    <Folder Include="Services\FindexScoreService\" />
+    <Folder Include="Services\InvoiceService\" />
+    <Folder Include="Services\ModelService\" />
+    <Folder Include="Services\PaymentService\" />
+    <Folder Include="Services\PosSystemService\" />
   </ItemGroup>
 
 </Project>

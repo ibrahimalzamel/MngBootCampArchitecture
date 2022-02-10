@@ -26,9 +26,6 @@ namespace Domain.Entities
             IsFixed = isFixed;
         }
 
-        public static implicit operator object?(CarDamage? v)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

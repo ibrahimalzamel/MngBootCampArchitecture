@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Utilities", "src\coreP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Mailing", "src\corePackages\Core.Mailing\Core.Mailing.csproj", "{B8C1E83F-BD39-4FAF-99E3-EABD573A1FCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\rentACar\Infrastructure\Infrastructure.csproj", "{D7598A5D-157B-4E89-9018-2B5D09019967}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\rentACar\Infrastructure\Infrastructure.csproj", "{D7598A5D-157B-4E89-9018-2B5D09019967}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Security", "src\corePackages\Core.Security\Core.Security.csproj", "{E3125E34-2E85-45B1-9204-715A01B68926}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{D7598A5D-157B-4E89-9018-2B5D09019967}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7598A5D-157B-4E89-9018-2B5D09019967}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7598A5D-157B-4E89-9018-2B5D09019967}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3125E34-2E85-45B1-9204-715A01B68926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3125E34-2E85-45B1-9204-715A01B68926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3125E34-2E85-45B1-9204-715A01B68926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3125E34-2E85-45B1-9204-715A01B68926}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{E5960B68-5BD1-4401-A0AC-B1793C83E770} = {D2251A7C-64AB-4D0A-96B9-5DE72806B1B0}
 		{B8C1E83F-BD39-4FAF-99E3-EABD573A1FCB} = {D2251A7C-64AB-4D0A-96B9-5DE72806B1B0}
 		{D7598A5D-157B-4E89-9018-2B5D09019967} = {5106C8BF-425A-42CA-8FB0-4E785ECDE276}
+		{E3125E34-2E85-45B1-9204-715A01B68926} = {D2251A7C-64AB-4D0A-96B9-5DE72806B1B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7D293AF-CBD6-4A84-B50D-5F055147A8EA}

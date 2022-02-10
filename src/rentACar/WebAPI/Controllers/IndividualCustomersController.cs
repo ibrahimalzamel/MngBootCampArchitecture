@@ -1,7 +1,7 @@
-﻿using Application.Features.Customers.IndividualCustomers.Commands.CreateIndividualCustomer;
-using Application.Features.Customers.IndividualCustomers.Commands.DeleteIndividualCustomer;
-using Application.Features.Customers.IndividualCustomers.Commands.UpdateIndividualCustomer;
-using Application.Features.Customers.IndividualCustomers.Queries.GetIndividualCustomerList;
+﻿using Application.Features.IndividualCustomers.Commands.CreateIndividualCustomer;
+using Application.Features.IndividualCustomers.Commands.DeleteIndividualCustomer;
+using Application.Features.IndividualCustomers.Commands.UpdateIndividualCustomer;
+using Application.Features.IndividualCustomers.Queries.GetIndividualCustomerList;
 using Core.Application.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Http;

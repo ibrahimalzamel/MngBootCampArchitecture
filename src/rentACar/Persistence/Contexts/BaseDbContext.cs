@@ -1,4 +1,5 @@
 ﻿using AutoMapper.Configuration;
+using Core.Security.Entities;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,10 @@ namespace Persistence.Contexts
         public DbSet<Customer> Customers { get; set; }  
         public DbSet<CorporateCustomer> Corporations { get; set; }
         public DbSet<IndividualCustomer> Individuals { get; set; }
+
+        public DbSet<OperationClaim> OperationClaims { get; set; }
+        public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<RentalBranch> RentalBranches { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder )
@@ -63,6 +68,25 @@ namespace Persistence.Contexts
                 r.Property(r => r.City).HasColumnName("City");
                 r.HasMany(r => r.Cars);
             });
+            modelBuilder.Entity<OperationClaim>(o =>
+            {
+                o.ToTable("OperationClaims").HasKey(o => o.Id);
+                o.Property(o => o.Id).HasColumnName("Id");
+                o.Property(o => o.Name).HasColumnName("Name");
+            });
+
+            modelBuilder.Entity<User>(u =>
+            {
+                u.ToTable("Users").HasKey(u => u.Id);
+                u.Property(u => u.Id).HasColumnName("Id");
+                u.Property(u => u.FirstName).HasColumnName("FirstName");
+                u.Property(u => u.LastName).HasColumnName("LastName");
+                u.Property(u => u.Email).HasColumnName("Email");
+                u.Property(u => u.PasswordSalt).HasColumnName("PasswordSalt");
+                u.Property(u => u.PasswordHash).HasColumnName("PasswordHash");
+                u.Property(u => u.Status).HasColumnName("Status");
+            });
+
             modelBuilder.Entity<Color>(c =>
             {
                 c.ToTable("Colors").HasKey(k => k.Id);
@@ -232,8 +256,12 @@ namespace Persistence.Contexts
             IndividualCustomer[] individualCustomers = { new(1, 1, "123123123123", "İbrahim", "ALZAMEL") };
             modelBuilder.Entity<IndividualCustomer>().HasData(individualCustomers);
 
+            OperationClaim[] operationClaimSeeds = { new(1, "Admin") };
+            modelBuilder.Entity<OperationClaim>().HasData(operationClaimSeeds);
+
             CorporateCustomer[] corporateCustomers = { new(1, 2, "ibrahim alzamel", "5522452556") };
             modelBuilder.Entity<CorporateCustomer>().HasData(corporateCustomers);
+
             RentalBranch[] rentalBranchSeeds = { new(1, City.Ankara), new(2, City.Antalya) };
             modelBuilder.Entity<RentalBranch>().HasData(rentalBranchSeeds);
         }

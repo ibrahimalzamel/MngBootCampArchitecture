@@ -1,6 +1,7 @@
 ﻿using Application.Features.Brands.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Logging;
 using Core.Mailing;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
@@ -14,8 +15,8 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Brands.Commands.CreateBrand
 {
-    public class CreateBrandCommand:IRequest<IResult>
-    {
+    public class CreateBrandCommand:IRequest<IResult>, ILoggableRequest
+    { 
         public string Name { get; set; }
         public class CreateBrandCommandHandler:IRequestHandler<CreateBrandCommand, IResult>
         {

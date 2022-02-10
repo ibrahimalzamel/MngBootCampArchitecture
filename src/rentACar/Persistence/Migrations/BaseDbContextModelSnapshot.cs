@@ -22,6 +22,75 @@ namespace Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Core.Security.Entities.OperationClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OperationClaims", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Admin"
+                        });
+                });
+
+            modelBuilder.Entity("Core.Security.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Email");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("FirstName");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("LastName");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("PasswordHash");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("PasswordSalt");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit")
+                        .HasColumnName("Status");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -410,12 +479,12 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2022, 2, 8, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2022, 2, 9, 0, 0, 0, 0, DateTimeKind.Local),
                             CustomerId = 2,
                             No = "152646",
-                            RentalEndDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentalEndDate = new DateTime(2022, 2, 11, 0, 0, 0, 0, DateTimeKind.Local),
                             RentalPrice = 100m,
-                            RentalStratDate = new DateTime(2022, 2, 8, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentalStratDate = new DateTime(2022, 2, 9, 0, 0, 0, 0, DateTimeKind.Local),
                             TotalRentalDate = (short)3
                         });
                 });
@@ -531,9 +600,9 @@ namespace Persistence.Migrations
                             Id = 1,
                             CarId = 1,
                             CustomerId = 1,
-                            RentEndDate = new DateTime(2022, 2, 8, 0, 0, 0, 0, DateTimeKind.Local),
-                            RentStartDate = new DateTime(2022, 2, 8, 0, 0, 0, 0, DateTimeKind.Local),
-                            ReturnDate = new DateTime(2022, 2, 8, 0, 0, 0, 0, DateTimeKind.Local)
+                            RentEndDate = new DateTime(2022, 2, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentStartDate = new DateTime(2022, 2, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            ReturnDate = new DateTime(2022, 2, 9, 0, 0, 0, 0, DateTimeKind.Local)
                         });
                 });
 

@@ -20,15 +20,21 @@ namespace Persistence
                             (configuration.GetConnectionString("rentACarConnectionString")));
 
             services.AddScoped<IBrandRepository, BrandRepository>();
-            services.AddScoped<IModelRepository, ModelRepository>();
-            services.AddScoped<IColorRepository, ColorRepository>();
             services.AddScoped<ICarRepository, CarRepository>();
-            services.AddScoped<IFuelRepository, FuelRepository>();
-            services.AddScoped<ITransmissionRepository, TransmissionRepository>();
-            services.AddScoped<IIndividualCustomerRepository,IndividualCustomerRepository>();
+            services.AddScoped<ICarDamageRepository, CarDamageRepository>();
+            services.AddScoped<IColorRepository, ColorRepository>();
             services.AddScoped<ICorporateCustomerRepository, CorporateCustomerRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IFindeksCreditRateRepository, FindeksCreditRateRepository>();
+            services.AddScoped<IFuelRepository, FuelRepository>();
+            services.AddScoped<IIndividualCustomerRepository, IndividualCustomerRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            services.AddScoped<IModelRepository, ModelRepository>();
             services.AddScoped<IRentalRepository, RentalRepository>();
-            services.AddScoped<IInvoiceRepository, InvoiceRepository>();    
+            services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITransmissionRepository, TransmissionRepository>();
+
             return services; 
         }
     }

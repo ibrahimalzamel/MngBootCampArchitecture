@@ -37,7 +37,7 @@ namespace Application.Features.CarDamages.Profiles
                 .ForMember(c => c.CarModelBrandName, opt => opt.MapFrom(c => c.Car.Model.Brand.Name))
                 .ForMember(c => c.CarModelName, opt => opt.MapFrom(c => c.Car.Model.Name))
                 .ReverseMap();
-            CreateMap<CarDamage, CarDamageDto>()
+            CreateMap<CarDamage, UserDto>()
                 .ForMember(c => c.CarModelBrandName, opt => opt.MapFrom(c => c.Car.Model.Brand.Name))
                 .ForMember(c => c.CarModelName, opt => opt.MapFrom(c => c.Car.Model.Name))
                 .ForMember(c => c.CarModelYear, opt => opt.MapFrom(c => c.Car.ModelYear))
