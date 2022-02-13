@@ -1,8 +1,8 @@
-﻿using Application.Features.Invoices.Rules;
+﻿using Application.Features.Invoices.Dtos;
+using Application.Features.Invoices.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
-using Core.Utilities.Messages;
-using Core.Utilities.Results;
+
 using Domain.Entities;
 using MediatR;
 using System;
@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Invoices.Commands.CreateInvoice
 {
-    public class CreateInvoiceCommand : IRequest<IResult>
+    public class CreateInvoiceCommand : IRequest<CreatedInvoiceDto>
     {
 
         public string No { get; set; }
-        public class CreateRentalCommandHandler : IRequestHandler<CreateInvoiceCommand, IResult>
+        public class CreateRentalCommandHandler : IRequestHandler<CreateInvoiceCommand, CreatedInvoiceDto>
         {
             IInvoiceRepository _rentalRepository;
             IMapper _mapper;
@@ -29,12 +29,12 @@ namespace Application.Features.Invoices.Commands.CreateInvoice
                 _mapper = mapper;
                 _rentalBusinessRules = rentalBusinessRules;
             }
-            public async Task<IResult> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
+            public async Task<CreatedInvoiceDto> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
             {
-                await _rentalBusinessRules.InvoiceNoCanNotBeDuplicatedWhenInserted(request.No);
-                var mappedRental = _mapper.Map<Invoice>(request);
-                await _rentalRepository.AddAsync(mappedRental);
-                return new SuccessResult(SuccessMessages.CarAdded);
+                Invoice mappedInvoice = _mapper.Map<Invoice>(request);
+                Invoice createdInvoice = await _rentalRepository.AddAsync(mappedInvoice);
+                CreatedInvoiceDto createdInvoiceDto = _mapper.Map<CreatedInvoiceDto>(createdInvoice);
+                return createdInvoiceDto;
             }
         }
 

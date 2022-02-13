@@ -1,9 +1,9 @@
-﻿using Application.Features.Cars.Rules;
+﻿using Application.Features.Cars.Dtos;
+using Application.Features.Cars.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions;
-using Core.Utilities.Messages;
-using Core.Utilities.Results;
+using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,32 +13,28 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Cars.Commands.DeleteCar
 {
-    public class DeleteCarCommand : IRequest<IResult>
+    public class DeleteCarCommand : IRequest<DeletedCarDto>
     {
         public int Id { get; set; }
-        public string Name { get; set; }
 
-        public class DeleteCarCommandHandler : IRequestHandler<DeleteCarCommand, IResult>
+        public class DeleteCarCommandHandler : IRequestHandler<DeleteCarCommand, DeletedCarDto>
         {
-            ICarRepository _carRepository;
+            private readonly ICarRepository _carRepository;
+            private readonly IMapper _mapper;
 
-            public DeleteCarCommandHandler(ICarRepository carRepository)
+            public DeleteCarCommandHandler(ICarRepository carRepository, IMapper mapper)
             {
                 _carRepository = carRepository;
-            
+                _mapper = mapper;
             }
 
-            public async Task<IResult> Handle(DeleteCarCommand request, CancellationToken cancellationToken)
+            public async Task<DeletedCarDto> Handle(DeleteCarCommand request, CancellationToken cancellationToken)
             {
-               var deleteCar =  await _carRepository.GetAsync(c=>c.Id==request.Id);
-                if (deleteCar==null)
-                {
-                    throw new BusinessException("Car cannot found");
-                }
-                await _carRepository.DeleteAsync(deleteCar);    
-                return new SuccessResult(SuccessMessages.CarDeleted);
-
-            }   
+                Car mappedCar = _mapper.Map<Car>(request);
+                Car deletedCar = await _carRepository.DeleteAsync(mappedCar);
+                DeletedCarDto deletedCarDto = _mapper.Map<DeletedCarDto>(deletedCar);
+                return deletedCarDto;
+            }
         }
     }
 }

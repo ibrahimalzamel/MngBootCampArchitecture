@@ -10,7 +10,6 @@ namespace Application.Services.AuthService
 {
     public interface IAuthService
     {
-        Task<bool> UserExists(string email);
-        Task<AccessToken> CreateAccessToken(User user);
+        public Task<AccessToken> CreateAccessToken(User user);
     }
 }

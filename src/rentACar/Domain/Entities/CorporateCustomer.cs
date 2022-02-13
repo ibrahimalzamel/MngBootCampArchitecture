@@ -9,23 +9,21 @@ namespace Domain.Entities
 {
     public class CorporateCustomer : Entity
     {
+        public int CustomerId { get; set; }
+        public string TaxNumber { get; set; }
+        public string CompanyName { get; set; }
+        public virtual Customer Customer { get; set; }
         public CorporateCustomer()
         {
         }
 
-        public CorporateCustomer(int id , int customerId ,string taxNumber, string companyName):base(id)
+        public CorporateCustomer(int id , int customerId ,string taxNumber, string companyName):this()
         {
+            Id = id;
             CustomerId = customerId;    
             TaxNumber = taxNumber;
             CompanyName = companyName;
         }
-
-        //tax number
-        public int CustomerId { get; set; }
-        public string TaxNumber { get; set; }
-        public string CompanyName { get; set; }
-        public virtual Customer? Customer { get; set; }
-
 
     }
 }

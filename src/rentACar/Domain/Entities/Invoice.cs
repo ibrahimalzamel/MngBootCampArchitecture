@@ -28,8 +28,12 @@ Belirli tarih aralığında tüm faturalar listelenebilmelidir.
         public Invoice()
         {
         }
-        public Invoice(int id , int customerId, string no, DateTime createdDate, DateTime rentalStratDate, DateTime rentalEndDate, short totalRentalDate, decimal rentalPrice):base(id)
+        public Invoice(int id , int customerId, string no,
+            DateTime createdDate, DateTime rentalStratDate, 
+            DateTime rentalEndDate, short totalRentalDate, 
+            decimal rentalPrice):this()
         {
+            Id = id;
             CustomerId = customerId;
             No = no;
             CreatedDate = createdDate;

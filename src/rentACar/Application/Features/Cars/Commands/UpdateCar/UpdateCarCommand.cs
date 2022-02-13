@@ -1,9 +1,10 @@
-﻿using Application.Features.Cars.Rules;
+﻿using Application.Features.Cars.Dtos;
+using Application.Features.Cars.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions;
-using Core.Utilities.Messages;
-using Core.Utilities.Results;
+using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -13,36 +14,33 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Cars.Commands.UpdateCar
 {
-    public class UpdateCarCommand : IRequest<IResult>
+    public class UpdateCarCommand : IRequest<UpdatedCarDto>
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public class UpdateCarCommandHnadler : IRequestHandler<UpdateCarCommand,IResult>
-        {
-            ICarRepository _carRepository;
-            IMapper _mapper;
-            CarBusinessRules _carBusinessRules;
+        public int ColorId { get; set; }
+        public int ModelId { get; set; }
+        public CarState CarState { get; set; }
+        public short ModelYear { get; set; }
+        public string Plate { get; set; }
 
-            public UpdateCarCommandHnadler(ICarRepository carRepository, IMapper mapper, CarBusinessRules carBusinessRules)
+        public class UpdateCarCommandHandler : IRequestHandler<UpdateCarCommand, UpdatedCarDto>
+        {
+            private ICarRepository _carRepository { get; }
+            private IMapper _mapper { get; }
+
+            public UpdateCarCommandHandler(ICarRepository carRepository, IMapper mapper)
             {
                 _carRepository = carRepository;
                 _mapper = mapper;
-                _carBusinessRules = carBusinessRules;
             }
 
-            public async Task<IResult> Handle(UpdateCarCommand request, CancellationToken cancellationToken)
+            public async Task<UpdatedCarDto> Handle(UpdateCarCommand request, CancellationToken cancellationToken)
             {
-                var updateCar =  await _carRepository.GetAsync(c=>c.Id == request.Id);
-                if (updateCar == null) throw new BusinessException("Car is not found");
-
-               await _carBusinessRules.CarNameCanNotBeDuplicatedWhenInserted(request.Name);
-               _mapper.Map( request,updateCar);
-                await _carRepository.UpdateAsync(updateCar);
-
-                return new SuccessResult(SuccessMessages.CarUpdated);
-
+                Car mappedCar = _mapper.Map<Car>(request);
+                Car updatedCar = await _carRepository.UpdateAsync(mappedCar);
+                UpdatedCarDto updatedCarDto = _mapper.Map<UpdatedCarDto>(updatedCar);
+                return updatedCarDto;
             }
         }
-
     }
 }

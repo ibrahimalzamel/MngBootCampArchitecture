@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
         [HttpGet("getall")]
         public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
         {
-            var query = new GetBrandListQuery();
+            var query = new GetListBrandQuery();
             query.PageRequest = pageRequest;
             var result = await Mediator.Send(query);
             return Ok(result);

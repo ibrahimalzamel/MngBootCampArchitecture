@@ -19,8 +19,9 @@ namespace Domain.Entities
         {
         }
 
-        public CarDamage(int id, int carId, string damageDescription, bool isFixed) : base(id)
+        public CarDamage(int id, int carId, string damageDescription, bool isFixed) : this()
         {
+            Id = id;
             CarId = carId;
             DamageDescription = damageDescription;
             IsFixed = isFixed;

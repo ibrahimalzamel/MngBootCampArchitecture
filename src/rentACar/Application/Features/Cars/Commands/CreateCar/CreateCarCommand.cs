@@ -1,48 +1,50 @@
-﻿using Application.Features.Cars.Rules;
+﻿using Application.Features.Cars.Dtos;
+using Application.Features.Cars.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
-using Core.Utilities.Messages;
-using Core.Utilities.Results;
+using Core.Application.Pipelines.Logging;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.Features.Cars.Commands.CreateCar
 {
-    public class CreateCarCommand : IRequest<IResult>
+    public class CreateCarCommand : IRequest<CreatedCarDto>, ILoggableRequest
     {
-        public string Plate { get; set; }
         public int ColorId { get; set; }
         public int ModelId { get; set; }
+        public CarState CarState { get; set; }
         public short ModelYear { get; set; }
+        public string Plate { get; set; }
 
-        public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, IResult>
+        public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, CreatedCarDto>
         {
-            ICarRepository _carRepository;
-            IMapper _mapper;
-            CarBusinessRules _carBusinessRules;
+            private readonly ICarRepository _carRepository;
+            private readonly IMapper _mapper;
 
-            public CreateCarCommandHandler(ICarRepository carRepository, IMapper mapper, CarBusinessRules carBusinessRules)
+            public CreateCarCommandHandler(ICarRepository carRepository, IMapper mapper)
             {
                 _carRepository = carRepository;
                 _mapper = mapper;
-                _carBusinessRules = carBusinessRules;
             }
-            public async Task<IResult> Handle(CreateCarCommand request, CancellationToken cancellationToken)
+
+            public async Task<CreatedCarDto> Handle(CreateCarCommand request, CancellationToken cancellationToken)
             {
-                await _carBusinessRules.CarNameCanNotBeDuplicatedWhenInserted(request.Plate);
-                await _carBusinessRules.ColorIsExist(request.ColorId);
-                await _carBusinessRules.ModelIsExist(request.ModelId);
+
                 var mappedCar = _mapper.Map<Car>(request);
-                await _carRepository.AddAsync(mappedCar);
-                return new SuccessResult(SuccessMessages.CarAdded);
+                mappedCar.CarState = CarState.Avaliable;
+
+                var createdCar = await _carRepository.AddAsync(mappedCar);
+                var carToReturn = _mapper.Map<CreatedCarDto>(createdCar);
+                return carToReturn;
+
+                //Car mappedCar = _mapper.Map<Car>(request);
+                //Car createdCar = await _carRepository.AddAsync(mappedCar);
+                //CreatedCarDto createdCarDto = _mapper.Map<CreatedCarDto>(createdCar);
+                //return createdCarDto;
             }
         }
-
     }
 }
 

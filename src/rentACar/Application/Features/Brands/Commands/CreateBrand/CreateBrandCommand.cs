@@ -1,10 +1,10 @@
-﻿using Application.Features.Brands.Rules;
+﻿using Application.Features.Brands.Dtos;
+using Application.Features.Brands.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Logging;
 using Core.Mailing;
-using Core.Utilities.Messages;
-using Core.Utilities.Results;
+
 using Domain.Entities;
 using MediatR;
 using System;
@@ -15,10 +15,10 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Brands.Commands.CreateBrand
 {
-    public class CreateBrandCommand:IRequest<IResult>, ILoggableRequest
+    public class CreateBrandCommand:IRequest<CreateBrandDto>, ILoggableRequest
     { 
         public string Name { get; set; }
-        public class CreateBrandCommandHandler:IRequestHandler<CreateBrandCommand, IResult>
+        public class CreateBrandCommandHandler:IRequestHandler<CreateBrandCommand, CreateBrandDto>
         {
             IBrandRepository _brandRepository;
             IMapper _mapper;
@@ -31,13 +31,14 @@ namespace Application.Features.Brands.Commands.CreateBrand
                 _brandBusinessRules = brandBusinessRules;
                 _mailService = mailService;
             }
-            public async Task<IResult> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
+            public async Task<CreateBrandDto> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
             {
               
                 await _brandBusinessRules.BrandNameCanNotBeDuplicatedWhenInserted(request.Name);
-                
-                var mappedBrand = _mapper.Map<Brand>(request);
-                await _brandRepository.AddAsync(mappedBrand);
+
+                Brand mappedBrand = _mapper.Map<Brand>(request);
+                Brand createdBrand = await _brandRepository.AddAsync(mappedBrand);
+                CreateBrandDto createdBrandDto = _mapper.Map<CreateBrandDto>(createdBrand);
 
                 //var mail = new Mail
                 //{
@@ -47,7 +48,7 @@ namespace Application.Features.Brands.Commands.CreateBrand
                 //    HtmlBody ="Hey , check the system"
                 //};
                 //_mailService.SendMail(mail);
-                return new SuccessResult(SuccessMessages.BrandDeleted);
+                return createdBrandDto;
             }
         }
       

@@ -14,13 +14,14 @@ namespace Domain.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public virtual Customer? Customer { get; set; }
+        public virtual Customer Customer { get; set; }
         public IndividualCustomer()
         {
         }
 
-        public IndividualCustomer(int id, int custmerId,string natianaId, string firstname, string lastName):base(id)
+        public IndividualCustomer(int id, int custmerId,string natianaId, string firstname, string lastName):this()
         {
+            Id = id;
             CustomerId = custmerId;
             NationalId = natianaId;
             FirstName = firstname;

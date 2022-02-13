@@ -19,8 +19,9 @@ namespace Domain.Entities
         public Car (int id, int colorId, int modelId, int rentalBranchId, CarState carState, int kilometer,
                    short modelYear,
                    string plate,
-                   short minFindeksCreditRate) : base(id)
+                   short minFindeksCreditRate) : this()
         {
+            Id = id;
             ColorId = colorId;
             ModelId = modelId;
             RentalBranchId = rentalBranchId;

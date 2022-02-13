@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,30 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="11.0.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    <PackageReference Include="FluentValidation" Version="10.3.6" />
-    <PackageReference Include="MediatR" Version="10.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\CorePersistence\CorePersistence.csproj" />
-    <ProjectReference Include="..\..\corePackages\Core.Application\Core.Application.csproj" />
-    <ProjectReference Include="..\..\corePackages\Core.CrossCuttingConcerns\Core.CrossCuttingConcerns.csproj" />
-    <ProjectReference Include="..\..\corePackages\Core.Mailing\Core.Mailing.csproj" />
-    <ProjectReference Include="..\..\corePackages\Core.Persistence\Core.Persistence.csproj" />
-    <ProjectReference Include="..\..\corePackages\Core.Security\Core.Security.csproj" />
-    <ProjectReference Include="..\..\corePackages\Core.Utilities\Core.Utilities.csproj" />
-    <ProjectReference Include="..\Domain\Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Features\Brands\Tests\" />
     <Folder Include="Features\CarDamages\Tests\" />
-    <Folder Include="Features\Cars\Validations\" />
     <Folder Include="Features\Cars\Tests\" />
+    <Folder Include="Features\Cars\Validations\" />
     <Folder Include="Features\Colors\Tests\" />
     <Folder Include="Features\Customers\Tests\" />
     <Folder Include="Features\FindeksCreditRates\Commands\" />
@@ -46,14 +26,23 @@
     <Folder Include="Features\OperationClaims\Tests\" />
     <Folder Include="Features\Rentals\Tests\" />
     <Folder Include="Features\Transmissions\Tests\" />
+    <Folder Include="Features\UserOperationClaims\" />
     <Folder Include="Features\Users\Tests\" />
-    <Folder Include="Services\CarService\" />
-    <Folder Include="Services\CustomerServices\" />
-    <Folder Include="Services\FindexScoreService\" />
-    <Folder Include="Services\InvoiceService\" />
-    <Folder Include="Services\ModelService\" />
-    <Folder Include="Services\PaymentService\" />
-    <Folder Include="Services\PosSystemService\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection.Libraries" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\corePackages\Core.Application\Core.Application.csproj" />
+    <ProjectReference Include="..\..\corePackages\Core.Mailing\Core.Mailing.csproj" />
+    <ProjectReference Include="..\..\corePackages\Core.Persistence\Core.Persistence.csproj" />
+    <ProjectReference Include="..\..\corePackages\Core.Utilities\Core.Utilities.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>

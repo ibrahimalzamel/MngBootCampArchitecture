@@ -1,5 +1,5 @@
 ﻿using Application.Services.Repositories;
-using Application.Services.UserService;
+
 using Core.Persistence.Paging;
 using Core.Security.Entities;
 using Core.Security.Jwt;
@@ -13,27 +13,37 @@ using System.Threading.Tasks;
 
 namespace Application.Services.AuthService
 {
-    public class AuthService : IAuthService
+    public class AuthManager : IAuthService
     {
-        private IUserService _userService;
-        private ITokenHelper _tokenHelper;
+        private readonly IUserRepository _userRepository;
+        private readonly IUserOperationClaimRepository _userOperationClaimRepository;
+        private readonly IOperationClaimRepository _operationClaimRepository;
+        private readonly ITokenHelper _tokenHelper;
 
-        public AuthService(IUserService userService, ITokenHelper tokenHelper)
+        public AuthManager(IUserRepository userRepository, 
+            IUserOperationClaimRepository userOperationClaimRepository,
+            IOperationClaimRepository operationClaimRepository, 
+            ITokenHelper tokenHelper)
         {
-            _userService = userService;
+            _userRepository = userRepository;
+            _userOperationClaimRepository = userOperationClaimRepository;
+            _operationClaimRepository = operationClaimRepository;
             _tokenHelper = tokenHelper;
-        }
-
-        public async Task<bool> UserExists(string email)
-        {
-            return await _userService.GetByMail(email) != null;
         }
 
         public async Task<AccessToken> CreateAccessToken(User user)
         {
-            var claims = await _userService.GetClaims(user);
-            var accessToken = await _tokenHelper.CreateToken(user, claims);
+            IPaginate<UserOperationClaim> userOperationClaims =
+                await _userOperationClaimRepository.GetListAsync(u => u.UserId == user.Id,
+                                                                 include: u =>
+                                                                     u.Include(u => u.OperationClaim)
+                );
+            IList<OperationClaim> operationClaims =
+                userOperationClaims.Items.Select(u => new OperationClaim
+                { Id = u.OperationClaim.Id, Name = u.OperationClaim.Name }).ToList();
+
+            AccessToken accessToken = _tokenHelper.CreateToken(user, operationClaims);
             return accessToken;
         }
     }
-}
+   }

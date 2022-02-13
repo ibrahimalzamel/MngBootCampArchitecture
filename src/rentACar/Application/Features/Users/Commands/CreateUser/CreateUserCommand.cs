@@ -9,7 +9,7 @@ using MediatR;
 
 namespace Application.Features.Users.Commands.CreateUser;
 
-public class CreateUserCommand : IRequest<CreatedUserDto> , ILoggableRequest
+public class CreateUserCommand : IRequest<CreatedUserDto>,ILoggableRequest
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -38,11 +38,17 @@ public class CreateUserCommand : IRequest<CreatedUserDto> , ILoggableRequest
             HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
             mappedUser.PasswordHash = passwordHash;
             mappedUser.PasswordSalt = passwordSalt;
-           // mappedUser.Status = true;
 
             User createdUser = await _userRepository.AddAsync(mappedUser);
             CreatedUserDto createdUserDto = _mapper.Map<CreatedUserDto>(createdUser);
             return createdUserDto;
+
+
+
+           // await _colorBusinessRules.ColorNameCanNotBeDuplicatedWhenInserted(request.Name);
+            //Color mappedColor = _mapper.Map<Color>(request);
+            //await _colorRepository.AddAsync(mappedColor);
+            //return new SuccessResult(SuccessMessages.ColorAdded);
         }
     }
 }

@@ -83,12 +83,40 @@ namespace Persistence.Migrations
                         .HasColumnName("PasswordSalt");
 
                     b.Property<bool>("Status")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
+                        .HasDefaultValue(true)
                         .HasColumnName("Status");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("Core.Security.Entities.UserOperationClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("OperationClaimId")
+                        .HasColumnType("int")
+                        .HasColumnName("OperationClaimId");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OperationClaimId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserOperationClaims", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Brand", b =>
@@ -179,24 +207,24 @@ namespace Persistence.Migrations
                             Id = 1,
                             CarState = 2,
                             ColorId = 1,
-                            Kilometer = 13000,
-                            MinFindeksCreditRate = (short)1500,
+                            Kilometer = 1000,
+                            MinFindeksCreditRate = (short)500,
                             ModelId = 1,
                             ModelYear = (short)2018,
-                            Plate = "06ABC06",
+                            Plate = "07ABC07",
                             RentalBranchId = 1
                         },
                         new
                         {
                             Id = 2,
                             CarState = 2,
-                            ColorId = 1,
-                            Kilometer = 13000,
-                            MinFindeksCreditRate = (short)1500,
-                            ModelId = 1,
+                            ColorId = 2,
+                            Kilometer = 1000,
+                            MinFindeksCreditRate = (short)1100,
+                            ModelId = 2,
                             ModelYear = (short)2018,
-                            Plate = "34ABC34",
-                            RentalBranchId = 1
+                            Plate = "15ABC15",
+                            RentalBranchId = 2
                         });
                 });
 
@@ -295,9 +323,9 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CompanyName = "5522452556",
-                            CustomerId = 2,
-                            TaxNumber = "ibrahim alzamel"
+                            CompanyName = "54154512",
+                            CustomerId = 1,
+                            TaxNumber = "Ahmet Çetinkaya"
                         });
                 });
 
@@ -310,48 +338,54 @@ namespace Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Email");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers", (string)null);
+                    b.HasIndex("UserId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "ibrahim@gmail.com"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "ibrahim@gmail.com"
-                        });
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.FindeksCreditRate", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<int>("CustomerId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("CustomerId");
 
                     b.Property<short>("Score")
-                        .HasColumnType("smallint");
+                        .HasColumnType("smallint")
+                        .HasColumnName("Score");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId")
                         .IsUnique();
 
-                    b.ToTable("FindeksCreditRates");
+                    b.ToTable("FindeksCreditRates", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CustomerId = 1,
+                            Score = (short)1000
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CustomerId = 2,
+                            Score = (short)1900
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Fuel", b =>
@@ -425,9 +459,9 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             CustomerId = 1,
-                            FirstName = "İbrahim",
-                            LastName = "ALZAMEL",
-                            NationalId = "123123123123"
+                            FirstName = "Çetinkaya",
+                            LastName = "123123123123",
+                            NationalId = "Ahmet"
                         });
                 });
 
@@ -441,7 +475,9 @@ namespace Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2022, 2, 10, 20, 2, 59, 102, DateTimeKind.Local).AddTicks(3474))
                         .HasColumnName("CreatedDate");
 
                     b.Property<int>("CustomerId")
@@ -479,13 +515,24 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2022, 2, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            CustomerId = 2,
-                            No = "152646",
-                            RentalEndDate = new DateTime(2022, 2, 11, 0, 0, 0, 0, DateTimeKind.Local),
-                            RentalPrice = 100m,
-                            RentalStratDate = new DateTime(2022, 2, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            TotalRentalDate = (short)3
+                            CreatedDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            CustomerId = 1,
+                            No = "123123",
+                            RentalEndDate = new DateTime(2022, 2, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentalPrice = 1000m,
+                            RentalStratDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            TotalRentalDate = (short)2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            CustomerId = 1,
+                            No = "123123",
+                            RentalEndDate = new DateTime(2022, 2, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentalPrice = 2000m,
+                            RentalStratDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            TotalRentalDate = (short)2
                         });
                 });
 
@@ -543,14 +590,14 @@ namespace Persistence.Migrations
                             FuelId = 1,
                             ImageUrl = "",
                             Name = "418i",
-                            TransmissionId = 2
+                            TransmissionId = 1
                         },
                         new
                         {
                             Id = 2,
                             BrandId = 1,
-                            DailyPrice = 1000.0,
-                            FuelId = 1,
+                            DailyPrice = 600.0,
+                            FuelId = 2,
                             ImageUrl = "",
                             Name = "CLA 180D",
                             TransmissionId = 2
@@ -578,9 +625,25 @@ namespace Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("RentEndDate");
 
+                    b.Property<int?>("RentEndKilometer")
+                        .HasColumnType("int")
+                        .HasColumnName("RentEndKilometer");
+
+                    b.Property<int?>("RentEndRentalBranchId")
+                        .HasColumnType("int")
+                        .HasColumnName("RentEndRentalBranchId");
+
                     b.Property<DateTime>("RentStartDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("RentStartDate");
+
+                    b.Property<int>("RentStartKilometer")
+                        .HasColumnType("int")
+                        .HasColumnName("RentStartKilometer");
+
+                    b.Property<int>("RentStartRentalBranchId")
+                        .HasColumnType("int")
+                        .HasColumnName("RentStartRentalBranchId");
 
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2")
@@ -592,17 +655,36 @@ namespace Persistence.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("RentEndRentalBranchId");
+
+                    b.HasIndex("RentStartRentalBranchId");
+
                     b.ToTable("Rentals", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CarId = 1,
+                            CarId = 2,
                             CustomerId = 1,
-                            RentEndDate = new DateTime(2022, 2, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            RentStartDate = new DateTime(2022, 2, 9, 0, 0, 0, 0, DateTimeKind.Local),
-                            ReturnDate = new DateTime(2022, 2, 9, 0, 0, 0, 0, DateTimeKind.Local)
+                            RentEndDate = new DateTime(2022, 2, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentEndKilometer = 1200,
+                            RentEndRentalBranchId = 2,
+                            RentStartDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentStartKilometer = 1000,
+                            RentStartRentalBranchId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CarId = 1,
+                            CustomerId = 2,
+                            RentEndDate = new DateTime(2022, 2, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentEndKilometer = 1200,
+                            RentEndRentalBranchId = 1,
+                            RentStartDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentStartKilometer = 1000,
+                            RentStartRentalBranchId = 2
                         });
                 });
 
@@ -667,6 +749,25 @@ namespace Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Security.Entities.UserOperationClaim", b =>
+                {
+                    b.HasOne("Core.Security.Entities.OperationClaim", "OperationClaim")
+                        .WithMany()
+                        .HasForeignKey("OperationClaimId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Security.Entities.User", "User")
+                        .WithMany("UserOperationClaims")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OperationClaim");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.Car", b =>
                 {
                     b.HasOne("Domain.Entities.Color", "Color")
@@ -714,6 +815,17 @@ namespace Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Customer", b =>
+                {
+                    b.HasOne("Core.Security.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.FindeksCreditRate", b =>
@@ -790,9 +902,28 @@ namespace Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.RentalBranch", "RentEndRentalBranch")
+                        .WithMany()
+                        .HasForeignKey("RentEndRentalBranchId");
+
+                    b.HasOne("Domain.Entities.RentalBranch", "RentStartRentalBranch")
+                        .WithMany()
+                        .HasForeignKey("RentStartRentalBranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Car");
 
                     b.Navigation("Customer");
+
+                    b.Navigation("RentEndRentalBranch");
+
+                    b.Navigation("RentStartRentalBranch");
+                });
+
+            modelBuilder.Entity("Core.Security.Entities.User", b =>
+                {
+                    b.Navigation("UserOperationClaims");
                 });
 
             modelBuilder.Entity("Domain.Entities.Brand", b =>
