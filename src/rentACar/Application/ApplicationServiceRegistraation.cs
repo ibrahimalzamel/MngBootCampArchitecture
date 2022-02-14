@@ -37,6 +37,7 @@ using Core.Mailing;
 using Core.Mailing.MailkitImplementations;
 using Application.Features.Auths.Rules;
 using Core.Application.Pipelines.Caching;
+using Core.ElasticSearch;
 
 namespace Application
 {
@@ -85,7 +86,9 @@ namespace Application
             services.AddScoped<IInvoiceService, InvoiceManager>();
             services.AddScoped<IModelService, ModelManager>();
             services.AddSingleton<IMailService, MailkitMailService>();
+
             services.AddSingleton<LoggerServiceBase, FileLogger>();
+            services.AddSingleton < IElasticSearch, ElasticSearchManager>();
 
 
             return services;

@@ -1,5 +1,4 @@
 ﻿using Core.ElasticSearch.Models;
-using Core.Utilities.Results;
 using Elasticsearch.Net;
 using Microsoft.Extensions.Configuration;
 using Nest;
@@ -13,6 +12,27 @@ using System.Threading.Tasks;
 
 namespace Core.ElasticSearch
 {
+    public interface IResult
+    {
+        bool Success { get; }
+        string Message { get; }
+    }
+    public class Result : IResult
+    {
+
+
+        public Result(bool success, string message) : this(success)
+        {
+            Message = message;
+        }
+        public Result(bool success)
+        {
+            Success = success;
+        }
+        public bool Success { get; }
+        public string Message { get; }
+    }
+
     public class ElasticSearchManager : IElasticSearch
     {
         private readonly ConnectionSettings _connectionSettings;
@@ -33,7 +53,7 @@ namespace Core.ElasticSearch
             var elasticClient = GetElasticClient(indexModel.IndexName);
             if (elasticClient.Indices.Exists(indexModel.IndexName).Exists)
             {
-                return new Utilities.Results.Result(success: false, message: "Index already exists");
+                return new Result(success: false, message: "Index already exists");
             }
 
             var response = await elasticClient.Indices.CreateAsync(indexModel.IndexName, se =>
@@ -41,7 +61,7 @@ namespace Core.ElasticSearch
                         .NumberOfShards(indexModel.NumberOfShards))
                     .Aliases(x => x.Alias(indexModel.AliasName)));
 
-            return new Utilities.Results.Result(
+            return new Result(
                 success: response.IsValid,
                 message: response.IsValid ? "Success" : response.ServerError.Error.Reason);
         }
@@ -52,7 +72,7 @@ namespace Core.ElasticSearch
         {
             var elasticClient = GetElasticClient(model.IndexName);
             var response = await elasticClient.DeleteAsync<object>(model.ElasticId, x => x.Index(model.IndexName));
-            return new Utilities.Results.Result(
+            return new Result(
                 success: response.IsValid,
                 message: response.IsValid ? "Success" : response.ServerError.Error.Reason);
         }
@@ -152,7 +172,7 @@ namespace Core.ElasticSearch
                 .Id(model.ElasticId)
                 .Refresh(Refresh.True));
 
-            return new Utilities.Results.Result(
+            return new Result(
                 success: response.IsValid,
                 message: response.IsValid ? "Success" : response.ServerError.Error.Reason);
         }
@@ -166,7 +186,7 @@ namespace Core.ElasticSearch
                 a.Index(indexName)
                     .IndexMany(items));
 
-            return new Utilities.Results.Result(
+            return new Result(
                 success: response.IsValid,
                 message: response.IsValid ? "Success" : response.ServerError.Error.Reason);
         }
@@ -176,7 +196,7 @@ namespace Core.ElasticSearch
             var elasticClient = GetElasticClient(model.IndexName);
             var response =
                 await elasticClient.UpdateAsync<object>(model.ElasticId, u => u.Index(model.IndexName).Doc(model.Item));
-            return new Utilities.Results.Result(
+            return new Result(
                 success: response.IsValid,
                 message: response.IsValid ? "Success" : response.ServerError.Error.Reason);
         }

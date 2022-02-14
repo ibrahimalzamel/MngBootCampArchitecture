@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Brands.Queries.GetBrandList
 {
-    public class GetListBrandQuery : IRequest<BrandListModel>,ICachableRequest
+    public class GetListBrandQuery : IRequest<BrandListModel>/*,ICachableRequest*/
     {
         public PageRequest PageRequest { get; set; }
 
