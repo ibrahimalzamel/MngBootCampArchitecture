@@ -1,6 +1,9 @@
 ﻿using Application.Features.Models.Commands.CreateModel;
 using Application.Features.Models.Commands.DeleteModel;
 using Application.Features.Models.Commands.UpdateModel;
+using Application.Features.Models.Dtos;
+using Application.Features.Models.Models;
+using Application.Features.Models.Queries.GetByIdModel;
 using Application.Features.Models.Queries.GetModelList;
 using Core.Application.Requests;
 using Microsoft.AspNetCore.Http;
@@ -13,30 +16,39 @@ namespace WebAPI.Controllers
     
     public class ModelsController : BaseController
     {
-        [HttpPost("add")]
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById([FromRoute] GetByIdModelQuery getByIdModelQuery)
+        {
+            ModelDto result = await Mediator.Send(getByIdModelQuery);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+        {
+            GetListModelQuery getListModelQuery = new() { PageRequest = pageRequest };
+            var result = await Mediator.Send(getListModelQuery);
+            return Ok(result);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateModelCommand createModelCommand)
         {
-            var result = await Mediator.Send(createModelCommand);
+            CreatedModelDto result = await Mediator.Send(createModelCommand);
             return Created("", result);
         }
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateModelCommand updateCarCommand)
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateModelCommand updateModelCommand)
         {
-            var result = await Mediator.Send(updateCarCommand);
+            UpdatedModelDto result = await Mediator.Send(updateModelCommand);
             return Ok(result);
         }
-        [HttpDelete("delete")]
-        public async Task<IActionResult> Delete([FromBody] DeleteModelCommand deleteCarCommand)
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] DeleteModelCommand deleteModelCommand)
         {
-            var result = await Mediator.Send(deleteCarCommand);
-            return Ok(result);
-        }
-        [HttpGet("getall")]
-        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
-        {
-            var query = new GetModelListQuery();
-            query.PageRequest = pageRequest;
-            var result = await Mediator.Send(query);
+            DeletedModelDto result = await Mediator.Send(deleteModelCommand);
             return Ok(result);
         }
     }

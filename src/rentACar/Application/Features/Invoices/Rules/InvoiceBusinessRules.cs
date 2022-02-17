@@ -1,5 +1,6 @@
 ﻿using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,28 +11,17 @@ namespace Application.Features.Invoices.Rules
 {
     public class InvoiceBusinessRules
     {
-        IInvoiceRepository _invoiceRepository;
+        private readonly IInvoiceRepository _invoiceRepository;
 
         public InvoiceBusinessRules(IInvoiceRepository invoiceRepository)
         {
             _invoiceRepository = invoiceRepository;
         }
-        //Gerkhin dili 
-        public async Task InvoiceIdCanNotBeDuplicatedWhenInserted(int id)
+
+        public async Task InvoiceIdShouldExistWhenSelected(int id)
         {
-            var result = await _invoiceRepository.GetListAsync(b => b.Id == id);
-            if (result.Items.Any())
-            {
-                throw new BusinessException("Invoice Id exists");
-            }
-        }
-        public async Task InvoiceNoCanNotBeDuplicatedWhenInserted(string no)
-        {
-            var result = await _invoiceRepository.GetListAsync(b => b.No== no);
-            if (result.Items.Any())
-            {
-                throw new BusinessException("Invoice No exists");
-            }
+            Invoice? result = await _invoiceRepository.GetAsync(b => b.Id == id);
+            if (result == null) throw new BusinessException("Invoice not exists.");
         }
     }
 }

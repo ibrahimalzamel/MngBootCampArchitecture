@@ -4,11 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;
 using Persistence.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Persistence
 {
@@ -18,6 +14,8 @@ namespace Persistence
         {
             services.AddDbContext<BaseDbContext>(option => option.UseSqlServer
                             (configuration.GetConnectionString("rentACarConnectionString")));
+
+            services.AddScoped<IAdditionalServiceRepository, AdditionalServiceRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<ICarRepository, CarRepository>();
             services.AddScoped<ICarDamageRepository, CarDamageRepository>();
@@ -29,8 +27,10 @@ namespace Persistence
             services.AddScoped<IIndividualCustomerRepository, IndividualCustomerRepository>();
             services.AddScoped<IInvoiceRepository, InvoiceRepository>();
             services.AddScoped<IModelRepository, ModelRepository>();
-            services.AddScoped<IRentalRepository, RentalRepository>();
             services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
+            services.AddScoped<IRentalRepository, RentalRepository>();
+            services.AddScoped<IRentalsAdditionalServiceRepository, RentalsAdditionalServiceRepository>();
+            services.AddScoped<IRentalBranchRepository, RentalBranchRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
             services.AddScoped<ITransmissionRepository, TransmissionRepository>();

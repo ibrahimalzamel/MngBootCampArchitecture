@@ -12,7 +12,8 @@ namespace Core.CrossCuttingConcerns.Exceptions
 {
     public class ExceptionMiddleware
     {
-        private RequestDelegate _next;
+        private readonly RequestDelegate _next;
+
         public ExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
@@ -34,39 +35,60 @@ namespace Core.CrossCuttingConcerns.Exceptions
         {
             context.Response.ContentType = "application/json";
 
-            object errors = null;
+            if (exception.GetType() == typeof(ValidationException)) return CreateValidationException(context, exception);
+            if (exception.GetType() == typeof(BusinessException)) return CreateBusinessException(context, exception);
+            if (exception.GetType() == typeof(AuthorizationException))
+                return CreateAuthorizationException(context, exception);
+            return CreateInternalException(context, exception);
+        }
 
-            if (exception.GetType() == typeof(ValidationException))
+        private Task CreateAuthorizationException(HttpContext context, Exception exception)
+        {
+            context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.Unauthorized);
+
+            return context.Response.WriteAsync(new AuthorizationProblemDetails
             {
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                errors = ((ValidationException)exception).Errors;
+                Status = StatusCodes.Status401Unauthorized,
+                Type = "https://example.com/probs/authorization",
+                Title = "Authorization exception",
+                Detail = exception.Message,
+                Instance = ""
+            }.ToString());
+        }
 
-                return context.Response.WriteAsync(new ValidationProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Type = "https://example.com/probs/validation",
-                    Title = "Validation error(s)",
-                    Detail = "",
-                    Instance = "",
-                    Errors = errors
-                }.ToString());
+        private Task CreateBusinessException(HttpContext context, Exception exception)
+        {
+            context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
 
-            }
-
-            if (exception.GetType() == typeof(BusinessException))
+            return context.Response.WriteAsync(new BusinessProblemDetails
             {
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                Status = StatusCodes.Status400BadRequest,
+                Type = "https://example.com/probs/business",
+                Title = "Business exception",
+                Detail = exception.Message,
+                Instance = ""
+            }.ToString());
+        }
 
-                return context.Response.WriteAsync(new BusinessProblemDetails
-                {
-                    Status = StatusCodes.Status400BadRequest,
-                    Type = "https://example.com/probs/business",
-                    Title = "Business exception",
-                    Detail = exception.Message,
-                    Instance = ""
-                }.ToString());
+        private Task CreateValidationException(HttpContext context, Exception exception)
+        {
+            context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
+            object errors = ((ValidationException)exception).Errors;
 
-            }
+            return context.Response.WriteAsync(new ValidationProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "https://example.com/probs/validation",
+                Title = "Validation error(s)",
+                Detail = "",
+                Instance = "",
+                Errors = errors
+            }.ToString());
+        }
+
+        private Task CreateInternalException(HttpContext context, Exception exception)
+        {
+            context.Response.StatusCode = Convert.ToInt32(HttpStatusCode.InternalServerError);
 
             return context.Response.WriteAsync(new ProblemDetails
             {

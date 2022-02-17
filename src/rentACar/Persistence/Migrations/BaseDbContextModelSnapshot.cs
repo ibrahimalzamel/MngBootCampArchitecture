@@ -48,6 +48,60 @@ namespace Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Security.Entities.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Created");
+
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("CreatedByIp");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Expires");
+
+                    b.Property<string>("ReasonRevoked")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ReasonRevoked");
+
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ReplacedByToken");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("Revoked");
+
+                    b.Property<string>("RevokedByIp")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("RevokedByIp");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Token");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens", (string)null);
+                });
+
             modelBuilder.Entity("Core.Security.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -117,6 +171,43 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserOperationClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdditionalService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("DailyPrice")
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("DailyPrice");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdditionalServices", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DailyPrice = 200m,
+                            Name = "Baby Seat"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DailyPrice = 300m,
+                            Name = "Scooter"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Brand", b =>
@@ -205,7 +296,7 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CarState = 2,
+                            CarState = 1,
                             ColorId = 1,
                             Kilometer = 1000,
                             MinFindeksCreditRate = (short)500,
@@ -310,7 +401,7 @@ namespace Persistence.Migrations
                     b.Property<string>("TaxNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("TaxNumber");
+                        .HasColumnName("TaxNo");
 
                     b.HasKey("Id");
 
@@ -324,7 +415,7 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             CompanyName = "54154512",
-                            CustomerId = 1,
+                            CustomerId = 2,
                             TaxNumber = "Ahmet Çetinkaya"
                         });
                 });
@@ -445,7 +536,7 @@ namespace Persistence.Migrations
                     b.Property<string>("NationalId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("NationalId");
+                        .HasColumnName("NationalIdentity");
 
                     b.HasKey("Id");
 
@@ -459,9 +550,9 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             CustomerId = 1,
-                            FirstName = "Çetinkaya",
-                            LastName = "123123123123",
-                            NationalId = "Ahmet"
+                            FirstName = "Ahmet",
+                            LastName = "Çetinkaya",
+                            NationalId = "123123123123"
                         });
                 });
 
@@ -477,7 +568,7 @@ namespace Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2022, 2, 10, 20, 2, 59, 102, DateTimeKind.Local).AddTicks(3474))
+                        .HasDefaultValue(new DateTime(2022, 2, 17, 10, 44, 36, 292, DateTimeKind.Local).AddTicks(8749))
                         .HasColumnName("CreatedDate");
 
                     b.Property<int>("CustomerId")
@@ -499,7 +590,7 @@ namespace Persistence.Migrations
 
                     b.Property<DateTime>("RentalStratDate")
                         .HasColumnType("datetime2")
-                        .HasColumnName("RentalStratDate");
+                        .HasColumnName("RentalStartDate");
 
                     b.Property<short>("TotalRentalDate")
                         .HasColumnType("smallint")
@@ -515,23 +606,23 @@ namespace Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2022, 2, 17, 0, 0, 0, 0, DateTimeKind.Local),
                             CustomerId = 1,
                             No = "123123",
-                            RentalEndDate = new DateTime(2022, 2, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentalEndDate = new DateTime(2022, 2, 19, 0, 0, 0, 0, DateTimeKind.Local),
                             RentalPrice = 1000m,
-                            RentalStratDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentalStratDate = new DateTime(2022, 2, 17, 0, 0, 0, 0, DateTimeKind.Local),
                             TotalRentalDate = (short)2
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreatedDate = new DateTime(2022, 2, 17, 0, 0, 0, 0, DateTimeKind.Local),
                             CustomerId = 1,
                             No = "123123",
-                            RentalEndDate = new DateTime(2022, 2, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentalEndDate = new DateTime(2022, 2, 19, 0, 0, 0, 0, DateTimeKind.Local),
                             RentalPrice = 2000m,
-                            RentalStratDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentalStratDate = new DateTime(2022, 2, 17, 0, 0, 0, 0, DateTimeKind.Local),
                             TotalRentalDate = (short)2
                         });
                 });
@@ -549,8 +640,8 @@ namespace Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnName("BrandId");
 
-                    b.Property<double>("DailyPrice")
-                        .HasColumnType("float")
+                    b.Property<decimal>("DailyPrice")
+                        .HasColumnType("decimal(18,2)")
                         .HasColumnName("DailyPrice");
 
                     b.Property<int>("FuelId")
@@ -586,21 +677,21 @@ namespace Persistence.Migrations
                         {
                             Id = 1,
                             BrandId = 1,
-                            DailyPrice = 1000.0,
+                            DailyPrice = 1000m,
                             FuelId = 1,
                             ImageUrl = "",
                             Name = "418i",
-                            TransmissionId = 1
+                            TransmissionId = 2
                         },
                         new
                         {
                             Id = 2,
-                            BrandId = 1,
-                            DailyPrice = 600.0,
+                            BrandId = 2,
+                            DailyPrice = 600m,
                             FuelId = 2,
                             ImageUrl = "",
                             Name = "CLA 180D",
-                            TransmissionId = 2
+                            TransmissionId = 1
                         });
                 });
 
@@ -667,10 +758,10 @@ namespace Persistence.Migrations
                             Id = 1,
                             CarId = 2,
                             CustomerId = 1,
-                            RentEndDate = new DateTime(2022, 2, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentEndDate = new DateTime(2022, 2, 19, 0, 0, 0, 0, DateTimeKind.Local),
                             RentEndKilometer = 1200,
                             RentEndRentalBranchId = 2,
-                            RentStartDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentStartDate = new DateTime(2022, 2, 17, 0, 0, 0, 0, DateTimeKind.Local),
                             RentStartKilometer = 1000,
                             RentStartRentalBranchId = 1
                         },
@@ -679,10 +770,10 @@ namespace Persistence.Migrations
                             Id = 2,
                             CarId = 1,
                             CustomerId = 2,
-                            RentEndDate = new DateTime(2022, 2, 12, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentEndDate = new DateTime(2022, 2, 19, 0, 0, 0, 0, DateTimeKind.Local),
                             RentEndKilometer = 1200,
                             RentEndRentalBranchId = 1,
-                            RentStartDate = new DateTime(2022, 2, 10, 0, 0, 0, 0, DateTimeKind.Local),
+                            RentStartDate = new DateTime(2022, 2, 17, 0, 0, 0, 0, DateTimeKind.Local),
                             RentStartKilometer = 1000,
                             RentStartRentalBranchId = 2
                         });
@@ -718,6 +809,32 @@ namespace Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Entities.RentalsAdditionalService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("AdditionalServiceId")
+                        .HasColumnType("int")
+                        .HasColumnName("AdditionalServiceId");
+
+                    b.Property<int>("RentalId")
+                        .HasColumnType("int")
+                        .HasColumnName("RentalId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdditionalServiceId");
+
+                    b.HasIndex("RentalId");
+
+                    b.ToTable("RentalsAdditionalServices", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Transmission", b =>
                 {
                     b.Property<int>("Id")
@@ -747,6 +864,17 @@ namespace Persistence.Migrations
                             Id = 2,
                             Name = "Automatic"
                         });
+                });
+
+            modelBuilder.Entity("Core.Security.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("Core.Security.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Security.Entities.UserOperationClaim", b =>
@@ -921,6 +1049,25 @@ namespace Persistence.Migrations
                     b.Navigation("RentStartRentalBranch");
                 });
 
+            modelBuilder.Entity("Domain.Entities.RentalsAdditionalService", b =>
+                {
+                    b.HasOne("Domain.Entities.AdditionalService", "AdditionalService")
+                        .WithMany()
+                        .HasForeignKey("AdditionalServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Rental", "Rental")
+                        .WithMany("RentalsAdditionalServices")
+                        .HasForeignKey("RentalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AdditionalService");
+
+                    b.Navigation("Rental");
+                });
+
             modelBuilder.Entity("Core.Security.Entities.User", b =>
                 {
                     b.Navigation("UserOperationClaims");
@@ -962,6 +1109,11 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Model", b =>
                 {
                     b.Navigation("Cars");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Rental", b =>
+                {
+                    b.Navigation("RentalsAdditionalServices");
                 });
 
             modelBuilder.Entity("Domain.Entities.RentalBranch", b =>

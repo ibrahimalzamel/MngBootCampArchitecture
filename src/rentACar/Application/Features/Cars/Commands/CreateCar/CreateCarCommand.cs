@@ -10,7 +10,7 @@ using MediatR;
 
 namespace Application.Features.Cars.Commands.CreateCar
 {
-    public class CreateCarCommand : IRequest<CreatedCarDto>, ILoggableRequest
+    public class CreateCarCommand : IRequest<CreatedCarDto>
     {
         public int ColorId { get; set; }
         public int ModelId { get; set; }
@@ -31,18 +31,10 @@ namespace Application.Features.Cars.Commands.CreateCar
 
             public async Task<CreatedCarDto> Handle(CreateCarCommand request, CancellationToken cancellationToken)
             {
-
-                var mappedCar = _mapper.Map<Car>(request);
-                mappedCar.CarState = CarState.Avaliable;
-
-                var createdCar = await _carRepository.AddAsync(mappedCar);
-                var carToReturn = _mapper.Map<CreatedCarDto>(createdCar);
-                return carToReturn;
-
-                //Car mappedCar = _mapper.Map<Car>(request);
-                //Car createdCar = await _carRepository.AddAsync(mappedCar);
-                //CreatedCarDto createdCarDto = _mapper.Map<CreatedCarDto>(createdCar);
-                //return createdCarDto;
+                Car mappedCar = _mapper.Map<Car>(request);
+                Car createdCar = await _carRepository.AddAsync(mappedCar);
+                CreatedCarDto createdCarDto = _mapper.Map<CreatedCarDto>(createdCar);
+                return createdCarDto;
             }
         }
     }

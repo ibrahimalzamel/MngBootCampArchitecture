@@ -15,70 +15,58 @@ namespace Persistence.Contexts
 {
     public class BaseDbContext : DbContext
     {
-        protected IConfiguration  Configuration { get; set; }
-
-        public DbSet<Customer> Customers { get; set; }
-
-        public DbSet<Brand> Brands { get; set; } 
+        protected IConfiguration Configuration { get; set; }
+        public DbSet<AdditionalService> AdditionalServices { get; set; }
+        public DbSet<Brand> Brands { get; set; }
         public DbSet<Car> Cars { get; set; }
         public DbSet<CarDamage> CarDamages { get; set; }
         public DbSet<Color> Colors { get; set; }
-        public DbSet<CorporateCustomer> Corporations { get; set; }
+        public DbSet<CorporateCustomer> CorporateCustomers { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<FindeksCreditRate> FindeksCreditRates { get; set; }
-        public DbSet<Fuel> Fuels { get; set; }
-        public DbSet<IndividualCustomer> Individuals { get; set; }
+        public DbSet<Fuel> Fuel { get; set; }
+        public DbSet<IndividualCustomer> IndividualCustomers { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Model> Models { get; set; }
+        public DbSet<Rental> Rentals { get; set; }
+        public DbSet<RentalsAdditionalService> RentalsAdditionalServices { get; set; }
         public DbSet<RentalBranch> RentalBranches { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Transmission> Transmissions { get; set; }
 
-
-        public DbSet<Rental> Rentals { get; set; }
-
-      
         public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
         {
             Configuration = configuration;
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder )
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=RentACarDatebase;Trusted_Connection=true");
-
             //if (!optionsBuilder.IsConfigured)
-            //{
-            //    base.OnConfiguring(optionsBuilder.UseSqlServer(Configuration.GetConnectionString("RentACarConnectionString")));
-            //}
-
+            //    base.OnConfiguring(
+            //        optionsBuilder.UseSqlServer(Configuration.GetConnectionString("RentACarConnectionString")));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-          
-
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-              modelBuilder.Entity<Customer>(c =>
+            modelBuilder.Entity<AdditionalService>(a =>
             {
-                c.ToTable("Customers").HasKey(c => c.Id);
-                c.Property(c => c.Id).HasColumnName("Id");
-                c.Property(c => c.UserId).HasColumnName("UserId");
-                c.HasOne(c => c.User);
-                c.HasOne(c => c.CorporateCustomer);
-                c.HasOne(c => c.FindeksCreditRate);
-                c.HasOne(c => c.IndividualCustomer);
-                c.HasMany(c => c.Invoices);
-                c.HasMany(c => c.Rentals);
+                a.ToTable("AdditionalServices").HasKey(k => k.Id);
+                a.Property(p => p.Id).HasColumnName("Id");
+                a.Property(p => p.Name).HasColumnName("Name");
+                a.Property(p => p.DailyPrice).HasColumnName("DailyPrice");
             });
+
             modelBuilder.Entity<Brand>(b =>
             {
-                b.ToTable("Brands").HasKey(k =>k.Id);
-                b.Property(p=>p.Id).HasColumnName("Id");
-                b.Property(p=>p.Name).HasColumnName("Name");
+                b.ToTable("Brands").HasKey(k => k.Id);
+                b.Property(p => p.Id).HasColumnName("Id");
+                b.Property(p => p.Name).HasColumnName("Name");
                 b.HasMany(p => p.Models);
             });
+
             modelBuilder.Entity<Car>(c =>
             {
                 c.ToTable("Cars").HasKey(k => k.Id);
@@ -95,6 +83,7 @@ namespace Persistence.Contexts
                 c.HasOne(p => p.Model);
                 c.HasOne(c => c.RentalBranch);
             });
+
             modelBuilder.Entity<CarDamage>(c =>
             {
                 c.ToTable("CarDamages").HasKey(k => k.Id);
@@ -103,6 +92,7 @@ namespace Persistence.Contexts
                 c.Property(p => p.IsFixed).HasColumnName("IsFixed").HasDefaultValue(false);
                 c.HasOne(p => p.Car);
             });
+
             modelBuilder.Entity<Color>(c =>
             {
                 c.ToTable("Colors").HasKey(k => k.Id);
@@ -110,17 +100,29 @@ namespace Persistence.Contexts
                 c.Property(p => p.Name).HasColumnName("Name");
                 c.HasMany(p => p.Cars);
             });
+
             modelBuilder.Entity<CorporateCustomer>(c =>
             {
-                c.ToTable("CorporateCustomers").HasKey(K => K.Id);
-                c.Property(p => p.Id).HasColumnName("Id");
-                c.Property(p => p.CustomerId).HasColumnName("CustomerId");
-                c.Property(p => p.CompanyName).HasColumnName("CompanyName");
-                c.Property(p => p.TaxNumber).HasColumnName("TaxNumber");
-                c.HasOne(p => p.Customer);
-
+                c.ToTable("CorporateCustomers").HasKey(c => c.Id);
+                c.Property(c => c.Id).HasColumnName("Id");
+                c.Property(c => c.CustomerId).HasColumnName("CustomerId");
+                c.Property(c => c.CompanyName).HasColumnName("CompanyName");
+                c.Property(c => c.TaxNumber).HasColumnName("TaxNo");
+                c.HasOne(c => c.Customer);
             });
 
+            modelBuilder.Entity<Customer>(c =>
+            {
+                c.ToTable("Customers").HasKey(c => c.Id);
+                c.Property(c => c.Id).HasColumnName("Id");
+                c.Property(c => c.UserId).HasColumnName("UserId");
+                c.HasOne(c => c.User);
+                c.HasOne(c => c.CorporateCustomer);
+                c.HasOne(c => c.FindeksCreditRate);
+                c.HasOne(c => c.IndividualCustomer);
+                c.HasMany(c => c.Invoices);
+                c.HasMany(c => c.Rentals);
+            });
 
             modelBuilder.Entity<FindeksCreditRate>(f =>
             {
@@ -130,71 +132,100 @@ namespace Persistence.Contexts
                 f.Property(f => f.Score).HasColumnName("Score");
                 f.HasOne(f => f.Customer);
             });
+
             modelBuilder.Entity<Fuel>(f =>
             {
-                f.ToTable("Fuels").HasKey(k => k.Id);
-                f.Property(p => p.Id).HasColumnName("Id");
-                f.Property(p => p.Name).HasColumnName("Name");
-                f.HasMany(p => p.Models);
+                f.ToTable("Fuels").HasKey(f => f.Id);
+                f.Property(f => f.Id).HasColumnName("Id");
+                f.Property(f => f.Name).HasColumnName("Name");
+                f.HasMany(f => f.Models);
             });
+
             modelBuilder.Entity<IndividualCustomer>(c =>
             {
-                c.ToTable("IndividualCustomers").HasKey(k => k.Id);
-                c.Property(p => p.Id).HasColumnName("Id");
-                c.Property(p => p.CustomerId).HasColumnName("CustomerId");
-                c.Property(p => p.FirstName).HasColumnName("FirstName");
-                c.Property(p => p.LastName).HasColumnName("LastName");
-                c.Property(p => p.NationalId).HasColumnName("NationalId");
-                c.HasOne(p => p.Customer);
-
+                c.ToTable("IndividualCustomers").HasKey(i => i.Id);
+                c.Property(i => i.Id).HasColumnName("Id");
+                c.Property(i => i.CustomerId).HasColumnName("CustomerId");
+                c.Property(i => i.FirstName).HasColumnName("FirstName");
+                c.Property(i => i.LastName).HasColumnName("LastName");
+                c.Property(i => i.NationalId).HasColumnName("NationalIdentity");
+                c.HasOne(i => i.Customer);
             });
-            modelBuilder.Entity<Invoice>(t =>
+
+            modelBuilder.Entity<Invoice>(i =>
             {
-                t.ToTable("Invoices").HasKey(k => k.Id);
-                t.Property(p => p.Id).HasColumnName("Id");
-                t.Property(p => p.CustomerId).HasColumnName("CustomerId");
-                t.Property(p => p.No).HasColumnName("No");
-                t.Property(p => p.CreatedDate).HasColumnName("CreatedDate").HasDefaultValue(DateTime.Now);
-                t.Property(p => p.RentalStratDate).HasColumnName("RentalStratDate");
-                t.Property(p => p.RentalEndDate).HasColumnName("RentalEndDate");
-                t.Property(p => p.TotalRentalDate).HasColumnName("TotalRentalDate");
-                t.Property(p => p.RentalPrice).HasColumnName("RentalPrice");
-                t.HasOne(p => p.Customer);
+                i.ToTable("Invoices").HasKey(i => i.Id);
+                i.Property(i => i.Id).HasColumnName("Id");
+                i.Property(i => i.CustomerId).HasColumnName("CustomerId");
+                i.Property(i => i.No).HasColumnName("No");
+                i.Property(i => i.CreatedDate).HasColumnName("CreatedDate").HasDefaultValue(DateTime.Now);
+                i.Property(i => i.RentalStratDate).HasColumnName("RentalStartDate");
+                i.Property(i => i.RentalEndDate).HasColumnName("RentalEndDate");
+                i.Property(i => i.TotalRentalDate).HasColumnName("TotalRentalDate");
+                i.Property(i => i.RentalPrice).HasColumnName("RentalPrice");
+                i.HasOne(i => i.Customer);
             });
 
             modelBuilder.Entity<Model>(m =>
             {
                 m.ToTable("Models").HasKey(k => k.Id);
                 m.Property(p => p.Id).HasColumnName("Id");
+                m.Property(p => p.BrandId).HasColumnName("BrandId");
+                m.Property(p => p.FuelId).HasColumnName("FuelId");
+                m.Property(p => p.TransmissionId).HasColumnName("TransmissionId");
                 m.Property(p => p.Name).HasColumnName("Name");
                 m.Property(p => p.DailyPrice).HasColumnName("DailyPrice");
-                m.Property(p => p.TransmissionId).HasColumnName("TransmissionId");
-                m.Property(p => p.FuelId).HasColumnName("FuelId");
-                m.Property(p => p.BrandId).HasColumnName("BrandId");
                 m.Property(p => p.ImageUrl).HasColumnName("ImageUrl");
+                m.HasOne(p => p.Brand);
                 m.HasMany(p => p.Cars);
                 m.HasOne(p => p.Fuel);
                 m.HasOne(p => p.Transmission);
-                m.HasOne(p => p.Brand);
-
             });
-            modelBuilder.Entity<Rental>(t =>
+
+            modelBuilder.Entity<RefreshToken>(r =>
             {
-                t.ToTable("Rentals").HasKey(k => k.Id);
-                t.Property(p => p.Id).HasColumnName("Id");
-                t.Property(p => p.CustomerId).HasColumnName("CustomerId");
-                t.Property(p => p.CarId).HasColumnName("CarId");
-                t.Property(p => p.RentStartRentalBranchId).HasColumnName("RentStartRentalBranchId");
-                t.Property(p => p.RentEndRentalBranchId).HasColumnName("RentEndRentalBranchId");
-                t.Property(p => p.RentStartDate).HasColumnName("RentStartDate");
-                t.Property(p => p.RentEndDate).HasColumnName("RentEndDate");
-                t.Property(p => p.ReturnDate).HasColumnName("ReturnDate");
-                t.Property(p => p.RentStartKilometer).HasColumnName("RentStartKilometer");
-                t.Property(p => p.RentEndKilometer).HasColumnName("RentEndKilometer");
-                t.HasOne(p => p.Car);
-                t.HasOne(p => p.Customer);
-                t.HasOne(p => p.RentStartRentalBranch);
-                t.HasOne(p => p.RentEndRentalBranch);
+                r.ToTable("RefreshTokens").HasKey(r => r.Id);
+                r.Property(r => r.Id).HasColumnName("Id");
+                r.Property(r => r.UserId).HasColumnName("UserId");
+                r.Property(r => r.Token).HasColumnName("Token");
+                r.Property(r => r.Expires).HasColumnName("Expires");
+                r.Property(r => r.Created).HasColumnName("Created");
+                r.Property(r => r.CreatedByIp).HasColumnName("CreatedByIp");
+                r.Property(r => r.Revoked).HasColumnName("Revoked");
+                r.Property(r => r.RevokedByIp).HasColumnName("RevokedByIp");
+                r.Property(r => r.ReplacedByToken).HasColumnName("ReplacedByToken");
+                r.Property(r => r.ReasonRevoked).HasColumnName("ReasonRevoked");
+                r.HasOne(r => r.User);
+            });
+
+            modelBuilder.Entity<Rental>(r =>
+            {
+                r.ToTable("Rentals").HasKey(k => k.Id);
+                r.Property(r => r.Id).HasColumnName("Id");
+                r.Property(r => r.CustomerId).HasColumnName("CustomerId");
+                r.Property(r => r.CarId).HasColumnName("CarId");
+                r.Property(r => r.RentStartRentalBranchId).HasColumnName("RentStartRentalBranchId");
+                r.Property(r => r.RentEndRentalBranchId).HasColumnName("RentEndRentalBranchId");
+                r.Property(r => r.RentStartDate).HasColumnName("RentStartDate");
+                r.Property(r => r.RentEndDate).HasColumnName("RentEndDate");
+                r.Property(r => r.ReturnDate).HasColumnName("ReturnDate");
+                r.Property(r => r.RentStartKilometer).HasColumnName("RentStartKilometer");
+                r.Property(r => r.RentEndKilometer).HasColumnName("RentEndKilometer");
+                r.HasOne(r => r.Car);
+                r.HasOne(r => r.Customer);
+                r.HasOne(r => r.RentStartRentalBranch);
+                r.HasOne(r => r.RentEndRentalBranch);
+                r.HasMany(r => r.RentalsAdditionalServices);
+            });
+
+            modelBuilder.Entity<RentalsAdditionalService>(r =>
+            {
+                r.ToTable("RentalsAdditionalServices").HasKey(r => r.Id);
+                r.Property(r => r.Id).HasColumnName("Id");
+                r.Property(r => r.RentalId).HasColumnName("RentalId");
+                r.Property(r => r.AdditionalServiceId).HasColumnName("AdditionalServiceId");
+                r.HasOne(r => r.Rental);
+                r.HasOne(r => r.AdditionalService);
             });
 
             modelBuilder.Entity<RentalBranch>(r =>
@@ -204,6 +235,7 @@ namespace Persistence.Contexts
                 r.Property(r => r.City).HasColumnName("City");
                 r.HasMany(r => r.Cars);
             });
+
             modelBuilder.Entity<OperationClaim>(o =>
             {
                 o.ToTable("OperationClaims").HasKey(o => o.Id);
@@ -223,15 +255,14 @@ namespace Persistence.Contexts
                 u.Property(u => u.Status).HasColumnName("Status").HasDefaultValue(true);
             });
 
-          
-            modelBuilder.Entity<UserOperationClaim>(f =>
+            modelBuilder.Entity<UserOperationClaim>(u =>
             {
-                f.ToTable("UserOperationClaims").HasKey(k => k.Id);
-                f.Property(p => p.Id).HasColumnName("Id");
-                f.Property(p => p.UserId).HasColumnName("UserId");
-                f.Property(p => p.OperationClaimId).HasColumnName("OperationClaimId");
-                f.HasOne(p => p.User);
-                f.HasOne(p => p.OperationClaim);
+                u.ToTable("UserOperationClaims").HasKey(u => u.Id);
+                u.Property(u => u.Id).HasColumnName("Id");
+                u.Property(u => u.UserId).HasColumnName("UserId");
+                u.Property(u => u.OperationClaimId).HasColumnName("OperationClaimId");
+                u.HasOne(u => u.User);
+                u.HasOne(u => u.OperationClaim);
             });
 
             modelBuilder.Entity<Transmission>(t =>
@@ -242,18 +273,15 @@ namespace Persistence.Contexts
                 t.HasMany(p => p.Models);
             });
 
-
-
-
-
-
+            AdditionalService[] additionalServiceSeeds = { new(1, "Baby Seat", 200), new(2, "Scooter", 300) };
+            modelBuilder.Entity<AdditionalService>().HasData(additionalServiceSeeds);
 
             Brand[] brandSeeds = { new(1, "BMW"), new(2, "Mercedes") };
             modelBuilder.Entity<Brand>().HasData(brandSeeds);
 
             Car[] carSeeds =
             {
-            new(1, 1, 1, 1, CarState.Rented, 1000, 2018, "07ABC07", 500),
+            new(1, 1, 1, 1, CarState.Avaliable, 1000, 2018, "07ABC07", 500),
             new(2, 2, 2, 2, CarState.Rented, 1000, 2018, "15ABC15", 1100)
         };
             modelBuilder.Entity<Car>().HasData(carSeeds);
@@ -261,7 +289,7 @@ namespace Persistence.Contexts
             Color[] colorSeeds = { new(1, "Red"), new(2, "Blue") };
             modelBuilder.Entity<Color>().HasData(colorSeeds);
 
-            CorporateCustomer[] corporateCustomers = { new(1, 1, "Ahmet Çetinkaya", "54154512") };
+            CorporateCustomer[] corporateCustomers = { new(1, 2, "Ahmet Çetinkaya", "54154512") };
             modelBuilder.Entity<CorporateCustomer>().HasData(corporateCustomers);
 
             FindeksCreditRate[] findeksCreditRates = { new(1, 1, 1000), new(2, 2, 1900) };
@@ -273,7 +301,7 @@ namespace Persistence.Contexts
             IndividualCustomer[] individualCustomers = { new(1, 1, "Ahmet", "Çetinkaya", "123123123123") };
             modelBuilder.Entity<IndividualCustomer>().HasData(individualCustomers);
 
-            Model[] modelSeeds = { new(1, "418i",1000,1,1,1,""), new(2,"CLA 180D",  600,2, 2, 1,  "") };
+            Model[] modelSeeds = { new(1, 1, 1, 2, "418i", 1000, ""), new(2, 2, 2, 1, "CLA 180D", 600, "") };
             modelBuilder.Entity<Model>().HasData(modelSeeds);
 
             Rental[] rentalSeeds =

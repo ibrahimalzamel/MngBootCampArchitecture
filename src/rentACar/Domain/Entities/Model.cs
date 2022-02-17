@@ -10,7 +10,7 @@ namespace Domain.Entities
     public class Model : Entity
     {
         public string Name { get; set; }
-        public double DailyPrice { get; set; }
+        public decimal DailyPrice { get; set; }
         public int TransmissionId { get; set; }
         public int FuelId { get; set; }
         public int BrandId { get; set; }
@@ -26,16 +26,15 @@ namespace Domain.Entities
             Cars = new HashSet<Car>();
         }
 
-        public Model(int id, string name, double dailyPrice, 
-            int transmissionId, int fuelId,
-            int brandId, string imageUrl ):this() 
+        public Model(int id, int brandId, int fuelId, int transmissionId, string name, decimal dailyPrice,
+                 string imageUrl) : this()
         {
             Id = id;
+            BrandId = brandId;
+            FuelId = fuelId;
+            TransmissionId = transmissionId;
             Name = name;
             DailyPrice = dailyPrice;
-            TransmissionId = transmissionId;
-            FuelId = fuelId;
-            BrandId = brandId;
             ImageUrl = imageUrl;
         }
     }

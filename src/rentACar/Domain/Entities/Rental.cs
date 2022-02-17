@@ -20,19 +20,19 @@ namespace Domain.Entities
         public int? RentEndKilometer { get; set; }
 
 
-        public virtual Car Car { get; set; }
+        public virtual Car? Car { get; set; }
         public virtual Customer? Customer { get; set; }
-        public virtual RentalBranch RentStartRentalBranch { get; set; }
-        public virtual RentalBranch RentEndRentalBranch { get; set; }
+        public virtual RentalBranch? RentStartRentalBranch { get; set; }
+        public virtual RentalBranch? RentEndRentalBranch { get; set; }
+        public virtual ICollection<RentalsAdditionalService> RentalsAdditionalServices { get; set; }
+
         public Rental()
         {
+            RentalsAdditionalServices = new HashSet<RentalsAdditionalService>();
         }
 
-        public Rental(int id, int customerId, int carId, int rentStartRentalBranchId, 
-            int rentEndRentalBranchId,
-                      DateTime rentStartDate, DateTime rentEndDate,
-                      DateTime? returnDate ,
-                      int rentStartKilometer,
+        public Rental(int id, int customerId, int carId, int rentStartRentalBranchId,  int rentEndRentalBranchId,
+                      DateTime rentStartDate, DateTime rentEndDate, DateTime? returnDate ,int rentStartKilometer,
                   int rentEndKilometer) :this()
         {
             Id = id;

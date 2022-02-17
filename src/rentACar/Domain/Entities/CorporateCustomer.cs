@@ -12,14 +12,15 @@ namespace Domain.Entities
         public int CustomerId { get; set; }
         public string TaxNumber { get; set; }
         public string CompanyName { get; set; }
-        public virtual Customer Customer { get; set; }
+
+        public virtual Customer? Customer { get; set; }
+        
         public CorporateCustomer()
         {
         }
 
-        public CorporateCustomer(int id , int customerId ,string taxNumber, string companyName):this()
+        public CorporateCustomer(int id , int customerId ,string taxNumber, string companyName):base(id)
         {
-            Id = id;
             CustomerId = customerId;    
             TaxNumber = taxNumber;
             CompanyName = companyName;

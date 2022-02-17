@@ -23,6 +23,8 @@ namespace Application.Features.IndividualCustomers.Profiles
             CreateMap<IndividualCustomer, IndividualCustomerDto>().ReverseMap();
             CreateMap<IndividualCustomer, IndividualCustomerListDto>().ReverseMap();
             CreateMap<IPaginate<IndividualCustomer>, IndividualCustomerListModel>().ReverseMap();
+
+            // .ForMember(c => c.ModelName, opt => opt.MapFrom(c => c.Model.Name))
         }
     }
 }

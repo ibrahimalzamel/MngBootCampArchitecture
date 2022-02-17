@@ -10,10 +10,7 @@ using System.Threading.Tasks;
 
 namespace Core.Application.Pipelines.Caching
 {
-    public class CacheSettings
-    {
-        public int SlidingExpiration { get; set; }
-    }
+  
     public class CachingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : ICachableRequest, IRequest<TResponse>
     {
         IDistributedCache _cache;

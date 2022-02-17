@@ -24,16 +24,17 @@ Belirli tarih aralığında tüm faturalar listelenebilmelidir.
         public DateTime RentalEndDate { get; set; }
         public short TotalRentalDate { get; set; }
         public decimal RentalPrice { get; set; }
+
         public virtual Customer? Customer { get; set; }
         public Invoice()
         {
         }
+
         public Invoice(int id , int customerId, string no,
             DateTime createdDate, DateTime rentalStratDate, 
             DateTime rentalEndDate, short totalRentalDate, 
-            decimal rentalPrice):this()
+            decimal rentalPrice):base(id)
         {
-            Id = id;
             CustomerId = customerId;
             No = no;
             CreatedDate = createdDate;

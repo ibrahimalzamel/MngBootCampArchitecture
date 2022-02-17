@@ -16,13 +16,11 @@ using System.Threading.Tasks;
 namespace Application.Features.Colors.Commands.CreateColor
 {
 
-    public class CreateColorCommand : IRequest<IResult>
+    public class CreateColorCommand : IRequest<CreatedColorDto>
     {
-
-
         public string Name { get; set; }
 
-        public class CreateColorCommandHandler : IRequestHandler<CreateColorCommand, IResult>
+        public class CreateColorCommandHandler : IRequestHandler<CreateColorCommand, CreatedColorDto>
         {
             private readonly IColorRepository _colorRepository;
             private readonly IMapper _mapper;
@@ -36,24 +34,14 @@ namespace Application.Features.Colors.Commands.CreateColor
                 _colorBusinessRules = colorBusinessRules;
             }
 
-            public async Task<IResult> Handle(CreateColorCommand request, CancellationToken cancellationToken)
+            public async Task<CreatedColorDto> Handle(CreateColorCommand request, CancellationToken cancellationToken)
             {
-                //await _colorBusinessRules.ColorNameCanNotBeDuplicatedWhenInserted(request.Name);
-
-                //Color mappedColor = _mapper.Map<Color>(request);
-                //Color createdColor = await _colorRepository.AddAsync(mappedColor);
-                //CreatedColorDto createdColorDto = _mapper.Map<CreatedColorDto>(createdColor);
-                //return createdColorDto;
-                //  var createColor = await _colorRepository.GetAsync(c => c.Name == request.Name);
-                // if (createColor == null) throw new BusinessException("Color is not found");
-                //  if (createColor == null)
-                //    _mapper.Map(request, createColor);
-                //await _colorRepository.AddAsync(createColor);
-               
                 await _colorBusinessRules.ColorNameCanNotBeDuplicatedWhenInserted(request.Name);
+
                 Color mappedColor = _mapper.Map<Color>(request);
-                 await _colorRepository.AddAsync(mappedColor);
-                return new SuccessResult(SuccessMessages.ColorAdded);
+                Color createdColor = await _colorRepository.AddAsync(mappedColor);
+                CreatedColorDto createdColorDto = _mapper.Map<CreatedColorDto>(createdColor);
+                return createdColorDto;
             }
         }
     }

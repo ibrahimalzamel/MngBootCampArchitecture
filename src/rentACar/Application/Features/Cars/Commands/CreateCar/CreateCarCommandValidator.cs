@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.Features.Cars.Validations;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,11 @@ namespace Application.Features.Cars.Commands.CreateCar
     {
         public CreateCarCommandValidator()
         {
-            RuleFor(b => b.ColorId).NotEmpty();
-            RuleFor(b=>b.ModelId).NotEmpty();
-
+            RuleFor(c => c.ModelYear).GreaterThan((short)1900);
+            //RuleFor(c => c.Plate)
+            //    .NotEmpty()
+            //    .Must(CarCustomValidationRules.IsTurkeyPlate)
+            //    .WithMessage("Plate is not valid.");
         }
     }
 }

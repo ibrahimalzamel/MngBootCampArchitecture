@@ -38,6 +38,7 @@ namespace Application.Features.Cars.Queries.GetCarList
                                                                      include:
                                                                      c => c.Include(c => c.Model)
                                                                            .Include(c => c.Model.Brand)
+                                                                           .Include(c => c.Model.Fuel)
                                                                            .Include(c => c.Color),
                                                                      index: request.PageRequest.Page,
                                                                      size: request.PageRequest.PageSize);

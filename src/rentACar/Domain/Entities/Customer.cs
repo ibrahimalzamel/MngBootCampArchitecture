@@ -26,8 +26,9 @@ public class Customer : Entity
         Rentals = new HashSet<Rental>();
     }
 
-    public Customer(int id) : this()
+    public Customer(int id, int userId) : this()
     {
         Id = id;
+        UserId = userId;
     }
 }

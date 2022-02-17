@@ -9,14 +9,12 @@ namespace Application.Features.Models.Dtos
 {
     public class ModelListDto
     {
+        public int Id { get; set; }
+        public string BrandName { get; set; }
+        public string FuelName { get; set; }
+        public string TransmissionName { get; set; }
         public string Name { get; set; }
-        public double DailyPrice { get; set; }
-        public int TransmissionName { get; set; }
-        public int FuelName { get; set; }
-        public int BrandName { get; set; }
+        public decimal DailyPrice { get; set; }
         public string ImageUrl { get; set; }
-        //public virtual Brand Brand { get; set; }
-        //public virtual Transmission Transmission { get; set; }
-        //public virtual Fuel Fuel { get; set; }
     }
 }

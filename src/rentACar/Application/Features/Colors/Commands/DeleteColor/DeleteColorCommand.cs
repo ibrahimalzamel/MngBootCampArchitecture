@@ -17,11 +17,12 @@ namespace Application.Features.Colors.Commands.DeleteColor
 {
 
 
-    public class DeleteColorCommand : IRequest<IResult>
+
+    public class DeleteColorCommand : IRequest<DeletedColorDto>
     {
         public int Id { get; set; }
 
-        public class DeleteColorCommandHandler : IRequestHandler<DeleteColorCommand, IResult>
+        public class DeleteColorCommandHandler : IRequestHandler<DeleteColorCommand, DeletedColorDto>
         {
             private readonly IColorRepository _colorRepository;
             private readonly IMapper _mapper;
@@ -32,15 +33,12 @@ namespace Application.Features.Colors.Commands.DeleteColor
                 _mapper = mapper;
             }
 
-            public async Task<IResult> Handle(DeleteColorCommand request, CancellationToken cancellationToken)
+            public async Task<DeletedColorDto> Handle(DeleteColorCommand request, CancellationToken cancellationToken)
             {
-                var color = await _colorRepository.GetAsync(c => c.Id == request.Id);
-                if (color==null) throw  new BusinessException("Color is not found");
-
                 Color mappedColor = _mapper.Map<Color>(request);
                 Color updatedColor = await _colorRepository.DeleteAsync(mappedColor);
-
-                return new SuccessResult(SuccessMessages.ColorDeleted); 
+                DeletedColorDto deletedColorDto = _mapper.Map<DeletedColorDto>(updatedColor);
+                return deletedColorDto;
             }
         }
     }

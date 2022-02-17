@@ -2,10 +2,15 @@
 using Application.Features.IndividualCustomers.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Caching;
+using Core.Application.Pipelines.Logging;
+using Core.Utilities.Messages;
+using Core.Utilities.Results;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.IndividualCustomers.Commands.CreateIndividualCustomer;
+
 
 public class CreateIndividualCustomerCommand : IRequest<CreatedIndividualCustomerDto>
 {
@@ -34,8 +39,8 @@ public class CreateIndividualCustomerCommand : IRequest<CreatedIndividualCustome
         public async Task<CreatedIndividualCustomerDto> Handle(CreateIndividualCustomerCommand request,
                                                                CancellationToken cancellationToken)
         {
-            await _individualCustomerBusinessRules.IndividualCustomerNationalIdentityCanNotBeDuplicatedWhenInserted(
-                request.NationalIdentity);
+            //await _individualCustomerBusinessRules.IndividualCustomerNationalIdentityCanNotBeDuplicatedWhenInserted(
+            //    request.NationalIdentity);
 
             IndividualCustomer mappedIndividualCustomer = _mapper.Map<IndividualCustomer>(request);
             IndividualCustomer createdIndividualCustomer =

@@ -2,6 +2,7 @@
 using Application.Features.Transmissions.Commands.CreateTransmission;
 using Application.Features.Transmissions.Commands.DeleteTransmission;
 using Application.Features.Transmissions.Commands.UpdateTransmission;
+using Application.Features.Transmissions.Queries.GetTransmissionList;
 using Core.Application.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace WebAPI.Controllers
         [HttpGet("getall")]
         public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
         {
-            var query = new GetModelListQuery();
+            var query = new GetTransmissionListQuery();
             query.PageRequest = pageRequest;
             var result = await Mediator.Send(query);
             return Ok(result);

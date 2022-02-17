@@ -7,26 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Features\AdditionalServices\Tests\" />
     <Folder Include="Features\Brands\Tests\" />
     <Folder Include="Features\CarDamages\Tests\" />
     <Folder Include="Features\Cars\Tests\" />
-    <Folder Include="Features\Cars\Validations\" />
     <Folder Include="Features\Colors\Tests\" />
     <Folder Include="Features\Customers\Tests\" />
-    <Folder Include="Features\FindeksCreditRates\Commands\" />
-    <Folder Include="Features\FindeksCreditRates\Dtos\" />
-    <Folder Include="Features\FindeksCreditRates\Models\" />
-    <Folder Include="Features\FindeksCreditRates\Profiles\" />
-    <Folder Include="Features\FindeksCreditRates\Queries\" />
-    <Folder Include="Features\FindeksCreditRates\Rules\" />
     <Folder Include="Features\FindeksCreditRates\Tests\" />
     <Folder Include="Features\Fuels\Tests\" />
     <Folder Include="Features\Invoices\Tests\" />
     <Folder Include="Features\Models\Tests\" />
     <Folder Include="Features\OperationClaims\Tests\" />
+    <Folder Include="Features\RentalBranches\Tests\" />
     <Folder Include="Features\Rentals\Tests\" />
     <Folder Include="Features\Transmissions\Tests\" />
-    <Folder Include="Features\UserOperationClaims\" />
+    <Folder Include="Features\UserOperationClaims\Tests\" />
     <Folder Include="Features\Users\Tests\" />
   </ItemGroup>
 

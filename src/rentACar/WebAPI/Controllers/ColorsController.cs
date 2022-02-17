@@ -2,6 +2,8 @@
 using Application.Features.Colors.Commands.DeleteColor;
 using Application.Features.Colors.Commands.UpdateColor;
 using Application.Features.Colors.Dtos;
+using Application.Features.Colors.Models;
+using Application.Features.Colors.Queries.GetByIdColor;
 using Application.Features.Colors.Queries.GetColorList;
 using Core.Application.Requests;
 using Domain.Entities;
@@ -17,27 +19,34 @@ namespace WebAPI.Controllers
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] CreateColorCommand createColorCommand)
         {
-            var result = await Mediator.Send(createColorCommand);
+            CreatedColorDto result = await Mediator.Send(createColorCommand);
             return Created("", result);
         }
-        [HttpGet("getall")]
-        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById([FromRoute] GetByIdColorQuery getByIdColorQuery)
         {
-            var query = new GetColorListQuery();
-            query.PageRequest = pageRequest;
-            var result = await Mediator.Send(query);
+            ColorDto result = await Mediator.Send(getByIdColorQuery);
             return Ok(result);
         }
+        [HttpGet("getall")]
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+        {
+            GetListColorQuery getListColorQuery = new() { PageRequest = pageRequest };
+            ColorListModel result = await Mediator.Send(getListColorQuery);
+            return Ok(result);
+        }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> Update([FromBody] UpdateColorCommand updateColorCommand)
+        {
+            UpdatedColorDto result = await Mediator.Send(updateColorCommand);
+            return Ok(result);
+        }
+
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromBody] DeleteColorCommand deleteColorCommand)
         {
-            var result = await Mediator.Send(deleteColorCommand);
-            return Ok(result);
-        }
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateColorCommand uptadeColorCommand)
-        {
-            var result = await Mediator.Send(uptadeColorCommand);
+            DeletedColorDto result = await Mediator.Send(deleteColorCommand);
             return Ok(result);
         }
 

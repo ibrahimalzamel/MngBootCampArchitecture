@@ -1,8 +1,11 @@
-﻿using Application.Services.Repositories;
+﻿using Application.Features.Invoices.Dtos;
+using Application.Features.Invoices.Rules;
+using Application.Services.Repositories;
 using AutoMapper;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
+using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -12,25 +15,32 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Invoices.Commands.DeleteInvoice
 {
-    public class DeleteInvoiceCommand : IRequest<IResult>
+    public class DeleteInvoiceCommand : IRequest<DeletedInvoiceDto>
     {
         public int Id { get; set; }
-        public class DeleteInvoiceCommandHandler : IRequestHandler<DeleteInvoiceCommand, IResult>
-        {
-            IInvoiceRepository _invoiceRepository;
 
-            public DeleteInvoiceCommandHandler(IInvoiceRepository invoiceRepository)
+        public class DeleteInvoiceCommandHandler : IRequestHandler<DeleteInvoiceCommand, DeletedInvoiceDto>
+        {
+            private readonly IInvoiceRepository _invoiceRepository;
+            private readonly IMapper _mapper;
+            private readonly InvoiceBusinessRules _invoiceBusinessRules;
+
+            public DeleteInvoiceCommandHandler(IInvoiceRepository invoiceRepository, IMapper mapper,
+                                               InvoiceBusinessRules invoiceBusinessRules)
             {
                 _invoiceRepository = invoiceRepository;
+                _mapper = mapper;
+                _invoiceBusinessRules = invoiceBusinessRules;
             }
 
-            public async Task<IResult> Handle(DeleteInvoiceCommand request, CancellationToken cancellationToken)
+            public async Task<DeletedInvoiceDto> Handle(DeleteInvoiceCommand request, CancellationToken cancellationToken)
             {
-                var deleteRental = await _invoiceRepository.GetAsync(r => r.Id == request.Id);
-                if (deleteRental == null) throw new BusinessException("");
+                await _invoiceBusinessRules.InvoiceIdShouldExistWhenSelected(request.Id);
 
-                await _invoiceRepository.DeleteAsync(deleteRental);
-                return new SuccessResult(SuccessMessages.RentalUpdated);
+                Invoice mappedInvoice = _mapper.Map<Invoice>(request);
+                Invoice deletedInvoice = await _invoiceRepository.DeleteAsync(mappedInvoice);
+                DeletedInvoiceDto deletedInvoiceDto = _mapper.Map<DeletedInvoiceDto>(deletedInvoice);
+                return deletedInvoiceDto;
             }
         }
     }

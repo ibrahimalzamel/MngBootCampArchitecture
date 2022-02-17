@@ -35,6 +35,7 @@ namespace Application.Features.Cars.Queries.GetByIdCar
                 await _carBusinessRules.CarIdShouldExistWhenSelected(request.Id);
 
                 Car? car = await _carRepository.GetAsync(c => c.Id == request.Id);
+
                 CarDto carDto = _mapper.Map<CarDto>(car);
                 return carDto;
             }

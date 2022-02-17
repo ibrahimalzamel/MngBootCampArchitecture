@@ -19,7 +19,7 @@ namespace WebAPI.Controllers
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetById([FromRoute] GetByIdUserQuery getByIdUserQuery)
         {
-            UserDto result = await Mediator.Send(getByIdUserQuery);
+            var result = await Mediator.Send(getByIdUserQuery);
             return Ok(result);
         }
 
@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
             GetListUserQuery getListUserQuery = new() { PageRequest = pageRequest };
-            UserListModel result = await Mediator.Send(getListUserQuery);
+            var result = await Mediator.Send(getListUserQuery);
             return Ok(result);
         }
 
@@ -41,14 +41,14 @@ namespace WebAPI.Controllers
         [HttpPut("update")]
         public async Task<IActionResult> Update([FromBody] UpdateUserCommand updateUserCommand)
         {
-            UpdatedUserDto result = await Mediator.Send(updateUserCommand);
+            var result = await Mediator.Send(updateUserCommand);
             return Ok(result);
         }
 
         [HttpDelete("delete")]
         public async Task<IActionResult> Delete([FromBody] DeleteUserCommand deleteUserCommand)
         {
-            DeletedUserDto result = await Mediator.Send(deleteUserCommand);
+            var result = await Mediator.Send(deleteUserCommand);
             return Ok(result);
         }
     }
