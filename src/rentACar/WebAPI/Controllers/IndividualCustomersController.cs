@@ -1,6 +1,9 @@
 ﻿using Application.Features.IndividualCustomers.Commands.CreateIndividualCustomer;
 using Application.Features.IndividualCustomers.Commands.DeleteIndividualCustomer;
 using Application.Features.IndividualCustomers.Commands.UpdateIndividualCustomer;
+using Application.Features.IndividualCustomers.Dtos;
+using Application.Features.IndividualCustomers.Models;
+using Application.Features.IndividualCustomers.Queries.GetByIdIndividualCustomer;
 using Application.Features.IndividualCustomers.Queries.GetIndividualCustomerList;
 using Core.Application.Requests;
 using MediatR;
@@ -13,30 +16,39 @@ namespace WebAPI.Controllers
     [ApiController]
     public class IndividualCustomersController : BaseController
     {
-        [HttpPost("add")]
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById([FromRoute] GetByIdIndividualCustomerQuery getByIdIndividualCustomerQuery)
+        {
+            IndividualCustomerDto result = await Mediator.Send(getByIdIndividualCustomerQuery);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+        {
+            GetIndividualCustomerListQuery getListIndividualCustomerQuery = new() { PageRequest = pageRequest };
+            IndividualCustomerListModel result = await Mediator.Send(getListIndividualCustomerQuery);
+            return Ok(result);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateIndividualCustomerCommand createIndividualCustomerCommand)
         {
-            var result = await Mediator.Send(createIndividualCustomerCommand);
+            CreatedIndividualCustomerDto result = await Mediator.Send(createIndividualCustomerCommand);
             return Created("", result);
         }
-        [HttpGet("getall")]
-        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateIndividualCustomerCommand updateIndividualCustomerCommand)
         {
-            var query = new GetIndividualCustomerListQuery();
-            query.PageRequest = pageRequest;
-            var result = await Mediator.Send(query);
+            UpdatedIndividualCustomerDto result = await Mediator.Send(updateIndividualCustomerCommand);
             return Ok(result);
         }
-        [HttpDelete("delete")]
+
+        [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] DeleteIndividualCustomerCommand deleteIndividualCustomerCommand)
         {
-            var result = await Mediator.Send(deleteIndividualCustomerCommand);
-            return Ok(result);
-        }
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateIndividualCustomerCommand uptadeIndividualCustomerCommand)
-        {
-            var result = await Mediator.Send(uptadeIndividualCustomerCommand);
+            DeletedIndividualCustomerDto result = await Mediator.Send(deleteIndividualCustomerCommand);
             return Ok(result);
         }
     }

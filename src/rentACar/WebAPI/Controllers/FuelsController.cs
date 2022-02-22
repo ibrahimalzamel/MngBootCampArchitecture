@@ -1,6 +1,9 @@
 ﻿using Application.Features.Fuels.Commands.CreateFuel;
 using Application.Features.Fuels.Commands.DeleteFuel;
 using Application.Features.Fuels.Commands.UpdateFuel;
+using Application.Features.Fuels.Dtos;
+using Application.Features.Fuels.Models;
+using Application.Features.Fuels.Queries.GetByIdFuel;
 using Application.Features.Fuels.Queries.GetFuelList;
 using Core.Application.Requests;
 using Microsoft.AspNetCore.Http;
@@ -12,30 +15,39 @@ namespace WebAPI.Controllers
     [ApiController]
     public class FuelsController : BaseController
     {
-        [HttpPost("add")]
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById([FromRoute] GetByIdFuelQuery getByIdFuelQuery)
+        {
+            FuelDto result = await Mediator.Send(getByIdFuelQuery);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+        {
+            GetFuelListQuery getListFuelQuery = new() { PageRequest = pageRequest };
+            FuelListModel result = await Mediator.Send(getListFuelQuery);
+            return Ok(result);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateFuelCommand createFuelCommand)
         {
-            var result = await Mediator.Send(createFuelCommand);
+            CreatedFuelDto result = await Mediator.Send(createFuelCommand);
             return Created("", result);
         }
-        [HttpGet("getall")]
-        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateFuelCommand updateFuelCommand)
         {
-            var query = new GetFuelListQuery();
-            query.PageRequest = pageRequest;
-            var result = await Mediator.Send(query);
+            UpdatedFuelDto result = await Mediator.Send(updateFuelCommand);
             return Ok(result);
         }
-        [HttpDelete("delete")]
+
+        [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] DeleteFuelCommand deleteFuelCommand)
         {
-            var result = await Mediator.Send(deleteFuelCommand);
-            return Ok(result);
-        }
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateFuelCommand uptadeFuelCommand)
-        {
-            var result = await Mediator.Send(uptadeFuelCommand);
+            DeletedFuelDto result = await Mediator.Send(deleteFuelCommand);
             return Ok(result);
         }
 

@@ -2,6 +2,7 @@
 using Application.Features.Colors.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
@@ -12,13 +13,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.Colors.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Colors.Commands.CreateColor
 {
 
-    public class CreateColorCommand : IRequest<CreatedColorDto>
+    public class CreateColorCommand : IRequest<CreatedColorDto>, ISecuredRequest
     {
         public string Name { get; set; }
+        public string[] Roles => new[] { Admin, ColorAdd };
 
         public class CreateColorCommandHandler : IRequestHandler<CreateColorCommand, CreatedColorDto>
         {

@@ -2,6 +2,7 @@
 using Application.Features.AdditionalServices.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
@@ -12,15 +13,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.AdditionalServices.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.AdditionalServices.Commands.UpdateAdditionalService
 {
 
-    public class UpdateAdditionalServiceCommand : IRequest<UpdatedAdditionalServiceDto>
+    public class UpdateAdditionalServiceCommand : IRequest<UpdatedAdditionalServiceDto>, ISecuredRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal DailyPrice { get; set; }
+        public string[] Roles => new[] { Admin, AdditionalServiceUpdate };
 
         public class UpdateAdditionalServiceCommandHandler : IRequestHandler<UpdateAdditionalServiceCommand, UpdatedAdditionalServiceDto>
         {

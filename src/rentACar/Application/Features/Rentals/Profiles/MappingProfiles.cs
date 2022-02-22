@@ -19,28 +19,22 @@ namespace Application.Features.Rentals.Profiles
         public MappingProfiles()
         {
             CreateMap<Rental, CreateRentalCommand>().ReverseMap();
-            CreateMap<Rental, DeleteRentalCommand>().ReverseMap();
+            CreateMap<Rental, CreatedRentalDto>().ReverseMap();
             CreateMap<Rental, UpdateRentalCommand>().ReverseMap();
-            CreateMap<Rental, RentalListDto>().ForMember(c => c.ModelName, opt => opt.MapFrom(c => c.Car.Model.Name))
-                                              .ForMember(c => c.Plate, opt => opt.MapFrom(c => c.Car.Plate))
-                                              .ForMember(c => c.Fule, opt => opt.MapFrom(c => c.Car.Model.Fuel.Name))
-                                              .ForMember(c => c.ModelYear, opt => opt.MapFrom(c => c.Car.ModelYear))
-                                              .ForMember(c => c.CustomerName, opt => opt.MapFrom(c => c.Customer.IndividualCustomer.FirstName))
-                                              .ForMember(c => c.ColorName, opt => opt.MapFrom(c => c.Car.Color.Name))
-                                              .ForMember(c => c.RentEndDate, opt => opt.MapFrom(c => c.RentEndDate))
-                                              .ForMember(c => c.RentStartDate, opt => opt.MapFrom(c => c.RentStartDate))
-                                              .ForMember(c => c.ReturnDate, opt => opt.MapFrom(c => c.ReturnDate))  ;
-
-            /*
-               public string ColorName { get; set; }
-        public string ModelName { get; set; }
-        public string Fule { get; set; }
-        public string Plate { get; set; }
-        public short ModelYear { get; set; }
-        public int CustomerName { get; set; }
-        public DateTime RentStartDate { get; set; }
-        public DateTime RentEndDate { get; set; }
-        public DateTime? ReturnDate { get; set; }*/
+            CreateMap<Rental, UpdatedRentalDto>().ReverseMap();
+            CreateMap<Rental, DeleteRentalCommand>().ReverseMap();
+            CreateMap<Rental, DeletedRentalDto>().ReverseMap();
+            CreateMap<Rental, RentalDto>();
+            CreateMap<Rental, RentalListDto>()
+                .ForMember(r => r.CarModelBrandName, opt => opt.MapFrom(r => r.Car.Model.Brand.Name))
+                .ForMember(r => r.CarModelName, opt => opt.MapFrom(r => r.Car.Model.Name))
+                .ForMember(r => r.CustomerFullName,
+                           opt => opt.MapFrom(
+                               r =>
+                                   r.Customer.IndividualCustomer != null
+                                       ? $"{r.Customer.IndividualCustomer.FirstName} {r.Customer.IndividualCustomer.FirstName}"
+                                       : r.Customer.CorporateCustomer.CompanyName))
+                .ReverseMap();
             CreateMap<IPaginate<Rental>, RentalListModel>().ReverseMap();
         }
     }

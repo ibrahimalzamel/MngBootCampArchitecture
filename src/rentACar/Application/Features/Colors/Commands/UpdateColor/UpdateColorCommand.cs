@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.Colors.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Colors.Commands.UpdateColor
 {
@@ -20,6 +22,7 @@ namespace Application.Features.Colors.Commands.UpdateColor
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string[] Roles => new[] { Admin, ColorUpdate };
 
         public class UpdateColorCommandHandler : IRequestHandler<UpdateColorCommand, UpdatedColorDto>
         {

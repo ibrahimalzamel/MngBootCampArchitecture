@@ -2,22 +2,24 @@
 using Application.Features.Cars.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
-
+using static Application.Features.Cars.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Cars.Commands.CreateCar
 {
-    public class CreateCarCommand : IRequest<CreatedCarDto>
+    public class CreateCarCommand : IRequest<CreatedCarDto>, ISecuredRequest
     {
         public int ColorId { get; set; }
         public int ModelId { get; set; }
         public CarState CarState { get; set; }
         public short ModelYear { get; set; }
         public string Plate { get; set; }
-
+        public string[] Roles => new[] { Admin, CarAdd };
         public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, CreatedCarDto>
         {
             private readonly ICarRepository _carRepository;

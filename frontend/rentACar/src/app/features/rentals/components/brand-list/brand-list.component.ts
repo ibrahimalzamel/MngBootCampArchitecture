@@ -16,7 +16,8 @@ export class BrandListComponent implements OnInit {
   constructor(private brandService: BrandService) {}
 
   ngOnInit(): void {
-    this.brandService.getList(0, 100).subscribe(data => {
+    this.brandService.getList(0, 100).subscribe
+    (data => {
       this.brands = data;
     });
   }

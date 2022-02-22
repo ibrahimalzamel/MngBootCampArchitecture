@@ -1,5 +1,7 @@
 ﻿using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions;
+using Core.Persistence.Paging;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,28 +12,46 @@ namespace Application.Features.Rentals.Rules
 {
     public class RentalBusinessRules
     {
-        IRentalRepository _rentalRepository;
+        private readonly IRentalRepository _rentalRepository;
 
-        public RentalBusinessRules(IRentalRepository rentalRepository)
+        public RentalBusinessRules(IRentalRepository rentalRepository, ICarRepository carRepository)
         {
             _rentalRepository = rentalRepository;
         }
-        //Gerkhin dili 
-        public async Task RentalIdCanNotBeDuplicatedWhenInserted(int id)
+
+        public async Task RentalIdShouldExistWhenSelected(int id)
         {
-            var result = await _rentalRepository.GetListAsync(b => b.Id == id);
-            if (result.Items.Any())
-            {
-                throw new BusinessException("Rental Id exists");
-            }
+            Rental? result = await _rentalRepository.GetAsync(b => b.Id == id);
+            if (result == null) throw new BusinessException("Rental not exists.");
         }
-        public async Task RentalCarIdCanNotBeDuplicatedWhenInserted(int carId)
+
+        public async Task RentalCanNotBeCreateWhenCarIsRented(int carId, DateTime rentStartDate, DateTime rentEndDate)
         {
-            var result = await _rentalRepository.GetListAsync(b => b.CarId== carId);
-            if (result.Items.Any())
-            {
-                throw new BusinessException("Rental Car Id exists");
-            }
+            IPaginate<Rental> rentals = await _rentalRepository.GetListAsync(
+                                            r => r.CarId == carId &&
+                                                 r.RentEndDate >= rentStartDate &&
+                                                 r.RentStartDate <= rentEndDate);
+            if (rentals.Items.Any()) throw new BusinessException("Rental can't be create when car is rented.");
+        }
+
+        public async Task RentalCanNotBeUpdateWhenThereIsARentedCarInDate(int id, int carId, DateTime rentStartDate,
+                                                                          DateTime rentEndDate)
+        {
+            IPaginate<Rental> rentals = await _rentalRepository.GetListAsync(
+                                            r => r.Id != id && r.CarId == carId &&
+                                                 r.RentEndDate >= rentStartDate &&
+                                                 r.RentStartDate <= rentEndDate);
+            if (rentals.Items.Any())
+                throw new BusinessException("Rental can't be updated when there is another rented car for the date.");
+        }
+
+        public Task RentalCanNotBeCreatedWhenCustomerFindeksScoreLowerThanCarMinFindeksScore(
+            short customerFindeksCreditRate, short carMinFindeksCreditRate)
+        {
+            if (customerFindeksCreditRate < carMinFindeksCreditRate)
+                throw new BusinessException(
+                    "Rental can not be created when customer findeks credit score lower than car min findeks score.");
+            return Task.CompletedTask;
         }
     }
 }

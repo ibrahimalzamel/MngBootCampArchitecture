@@ -33,6 +33,14 @@ import { PasswordInputComponent } from './core/components/password-input/passwor
 import { RegisterComponent } from './core/pages/register/register.component';
 import { StoreModule } from '@ngrx/store';
 import { ToastrModule } from 'ngx-toastr';
+import { ColorListComponent } from './features/rentals/components/color-list/color-list.component';
+import { ColorPipe } from './features/rentals/pipes/color.pipe';
+import { FilterColorsPipe } from './features/rentals/pipes/filter-colors.pipe';
+import { BrandsDashboardComponent } from './features/admin/pages/brands-dashboard/brands-dashboard.component';
+import { BrandAddFormComponent } from './features/admin/pages/brands-dashboard/brand-add-form/brand-add-form.component';
+import { BrandEditFormComponent } from './features/admin/pages/brands-dashboard/brand-edit-form/brand-edit-form.component';
+import { ColorsDashboardComponent } from './features/admin/pages/colors-dashboard/colors-dashboard.component';
+import { CarsDashboardComponent } from './features/admin/pages/cars-dashboard/cars-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +65,15 @@ import { ToastrModule } from 'ngx-toastr';
     ModelsDashboardModelFormComponent,
     FilterBrandsPipe,
     FilterFuelsPipe,
-    FilterTransmissionsPipe
+    FilterTransmissionsPipe,
+    ColorListComponent,
+    ColorPipe,
+    FilterColorsPipe,
+    BrandsDashboardComponent,
+    BrandAddFormComponent,
+    BrandEditFormComponent,
+    ColorsDashboardComponent,
+    CarsDashboardComponent
   ],
   imports: [
     BrowserModule,

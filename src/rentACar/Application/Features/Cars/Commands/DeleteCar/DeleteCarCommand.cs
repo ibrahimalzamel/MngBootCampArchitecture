@@ -2,6 +2,7 @@
 using Application.Features.Cars.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions;
 using Domain.Entities;
 using MediatR;
@@ -10,12 +11,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.Cars.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Cars.Commands.DeleteCar
 {
-    public class DeleteCarCommand : IRequest<DeletedCarDto>
+    public class DeleteCarCommand : IRequest<DeletedCarDto>, ISecuredRequest
     {
         public int Id { get; set; }
+        public string[] Roles => new[] { Admin, CarDelete };
 
         public class DeleteCarCommandHandler : IRequestHandler<DeleteCarCommand, DeletedCarDto>
         {

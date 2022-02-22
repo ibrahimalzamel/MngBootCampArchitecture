@@ -3,6 +3,8 @@ using Application.Features.CorporateCustomers.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Domain.Entities;
+using static Application.Features.CorporateCustomers.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 using MediatR;
 
 namespace Application.Features.CorporateCustomers.Commands.DeleteCorporateCustomer;
@@ -10,6 +12,7 @@ namespace Application.Features.CorporateCustomers.Commands.DeleteCorporateCustom
 public class DeleteCorporateCustomerCommand : IRequest<DeletedCorporateCustomerDto>
 {
     public int Id { get; set; }
+    public string[] Roles => new[] { Admin, CorporateCustomersDelete };
 
     public class
         DeleteCorporateCustomerCommandHandler : IRequestHandler<DeleteCorporateCustomerCommand,

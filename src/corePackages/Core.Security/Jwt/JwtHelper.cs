@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using Core.Security.Encyption;
 using Core.Security.Entities;
 using Core.Security.Extensions;
@@ -11,6 +12,8 @@ namespace Core.Security.JWT;
 
 public class JwtHelper : ITokenHelper
 {
+
+    //JWT(JSON Web Tokens)
     public IConfiguration Configuration { get; }
     private readonly TokenOptions _tokenOptions;
     private DateTime _accessTokenExpiration;
@@ -35,6 +38,20 @@ public class JwtHelper : ITokenHelper
             Token = token,
             Expiration = _accessTokenExpiration
         };
+    }
+
+    public RefreshToken CreateRefreshToken(User user, string ipAddress)
+    {
+        RefreshToken refreshToken = new()
+        {
+            UserId = user.Id,
+            Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+            Expires = DateTime.UtcNow.AddDays(7),
+            Created = DateTime.UtcNow,
+            CreatedByIp = ipAddress
+        };
+
+        return refreshToken;
     }
 
     public JwtSecurityToken CreateJwtSecurityToken(TokenOptions tokenOptions, User user,

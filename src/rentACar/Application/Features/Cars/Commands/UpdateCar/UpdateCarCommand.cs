@@ -2,6 +2,7 @@
 using Application.Features.Cars.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions;
 using Domain.Entities;
 using Domain.Enums;
@@ -11,10 +12,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.Cars.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Cars.Commands.UpdateCar
 {
-    public class UpdateCarCommand : IRequest<UpdatedCarDto>
+    public class UpdateCarCommand : IRequest<UpdatedCarDto>, ISecuredRequest
     {
         public int Id { get; set; }
         public int ColorId { get; set; }
@@ -22,6 +25,7 @@ namespace Application.Features.Cars.Commands.UpdateCar
         public CarState CarState { get; set; }
         public short ModelYear { get; set; }
         public string Plate { get; set; }
+        public string[] Roles => new[] { Admin, CarUpdate };
 
         public class UpdateCarCommandHandler : IRequestHandler<UpdateCarCommand, UpdatedCarDto>
         {

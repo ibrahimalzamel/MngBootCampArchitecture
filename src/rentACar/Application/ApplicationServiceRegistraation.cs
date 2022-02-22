@@ -45,12 +45,13 @@ using Application.Features.UserOperationClaims.Rules;
 using Application.Services.RentalsIAdditionalServiceService;
 using Application.Services.AdditionalServiceService;
 using Core.Application.Pipelines.Authorization;
+using Application.Services.UserService;
 
 namespace Application
 {
     public static class ApplicationServiceRegistraation
     {
-        public static IServiceCollection AddApplicationService(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(Assembly.GetExecutingAssembly());
@@ -78,7 +79,7 @@ namespace Application
            
 
 
-            services.AddScoped<ITokenHelper, JwtHelper>();
+           // services.AddScoped<ITokenHelper, JwtHelper>();
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
@@ -95,6 +96,7 @@ namespace Application
             services.AddScoped<IInvoiceService, InvoiceManager>();
             services.AddScoped<IModelService, ModelManager>();
             services.AddScoped<IRentalsAdditionalServiceService, RentalsAdditionalServiceManager>();
+            services.AddScoped<IUserService, UserManager>();
 
             services.AddSingleton<IMailService, MailkitMailService>();
             services.AddSingleton<LoggerServiceBase, FileLogger>();

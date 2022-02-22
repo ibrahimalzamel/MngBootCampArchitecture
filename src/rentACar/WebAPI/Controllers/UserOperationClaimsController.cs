@@ -16,7 +16,6 @@ namespace WebAPI.Controllers
     [ApiController]
     public class UserOperationClaimsController : BaseController
     {
-
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetById([FromRoute] GetByIdUserOperationClaimQuery getByIdUserOperationClaimQuery)
         {

@@ -16,6 +16,7 @@ namespace WebAPI.Controllers
     public class RentalBranchesController : BaseController
     {
 
+
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetById([FromRoute] GetByIdRentalBranchQuery getByIdRentalBranchQuery)
         {

@@ -2,6 +2,9 @@
 using Application.Features.Transmissions.Commands.CreateTransmission;
 using Application.Features.Transmissions.Commands.DeleteTransmission;
 using Application.Features.Transmissions.Commands.UpdateTransmission;
+using Application.Features.Transmissions.Dtos;
+using Application.Features.Transmissions.Models;
+using Application.Features.Transmissions.Queries.GetByIdTransmission;
 using Application.Features.Transmissions.Queries.GetTransmissionList;
 using Core.Application.Requests;
 using Microsoft.AspNetCore.Http;
@@ -13,30 +16,39 @@ namespace WebAPI.Controllers
     [ApiController]
     public class TransmissionsController : BaseController
     {
-        [HttpPost("add")]
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById([FromRoute] GetByIdTransmissionQuery getByIdTransmissionQuery)
+        {
+            TransmissionDto result = await Mediator.Send(getByIdTransmissionQuery);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+        {
+            GetListTransmissionQuery getListTransmissionQuery = new() { PageRequest = pageRequest };
+            TransmissionListModel result = await Mediator.Send(getListTransmissionQuery);
+            return Ok(result);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateTransmissionCommand createTransmissionCommand)
         {
-            var result = await Mediator.Send(createTransmissionCommand);
+            CreatedTransmissionDto result = await Mediator.Send(createTransmissionCommand);
             return Created("", result);
         }
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateTransmissionCommand updateCarCommand)
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateTransmissionCommand updateTransmissionCommand)
         {
-            var result = await Mediator.Send(updateCarCommand);
+            UpdatedTransmissionDto result = await Mediator.Send(updateTransmissionCommand);
             return Ok(result);
         }
-        [HttpDelete("delete")]
-        public async Task<IActionResult> Delete([FromBody] DeleteTransmissionCommand deleteCarCommand)
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] DeleteTransmissionCommand deleteTransmissionCommand)
         {
-            var result = await Mediator.Send(deleteCarCommand);
-            return Ok(result);
-        }
-        [HttpGet("getall")]
-        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
-        {
-            var query = new GetTransmissionListQuery();
-            query.PageRequest = pageRequest;
-            var result = await Mediator.Send(query);
+            DeletedTransmissionDto result = await Mediator.Send(deleteTransmissionCommand);
             return Ok(result);
         }
     }

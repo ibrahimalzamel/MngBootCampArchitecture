@@ -16,19 +16,14 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ColorsController : BaseController
     {
-        [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody] CreateColorCommand createColorCommand)
-        {
-            CreatedColorDto result = await Mediator.Send(createColorCommand);
-            return Created("", result);
-        }
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetById([FromRoute] GetByIdColorQuery getByIdColorQuery)
         {
             ColorDto result = await Mediator.Send(getByIdColorQuery);
             return Ok(result);
         }
-        [HttpGet("getall")]
+
+        [HttpGet]
         public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
             GetListColorQuery getListColorQuery = new() { PageRequest = pageRequest };
@@ -36,14 +31,21 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPut("update")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] CreateColorCommand createColorCommand)
+        {
+            CreatedColorDto result = await Mediator.Send(createColorCommand);
+            return Created("", result);
+        }
+
+        [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateColorCommand updateColorCommand)
         {
             UpdatedColorDto result = await Mediator.Send(updateColorCommand);
             return Ok(result);
         }
 
-        [HttpDelete("delete")]
+        [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] DeleteColorCommand deleteColorCommand)
         {
             DeletedColorDto result = await Mediator.Send(deleteColorCommand);

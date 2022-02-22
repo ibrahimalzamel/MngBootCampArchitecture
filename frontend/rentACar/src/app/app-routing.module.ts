@@ -11,6 +11,7 @@ import { NgModule } from '@angular/core';
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomepageComponent },
   { path: 'login', component: LoginComponent },
+  
   {
     path: 'admin',
     component: AdminDashboardComponent,

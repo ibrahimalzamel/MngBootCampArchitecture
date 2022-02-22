@@ -1,4 +1,4 @@
-export interface Fuel {
+export interface Color {
   id: number;
   name: string;
 }

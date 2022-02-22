@@ -1,45 +1,62 @@
-﻿using Application.Features.Rentals.Rules;
+﻿using Application.Features.Rentals.Dtos;
+using Application.Features.Rentals.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
+using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.Rentals.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Rentals.Commands.UpdateRental
 {
-    public class UpdateRentalCommand : IRequest<IResult>
+    public class UpdateRentalCommand : IRequest<UpdatedRentalDto>, ISecuredRequest
     {
         public int Id { get; set; }
-        public int  CarId { get; set; }
+        public int CarId { get; set; }
+        public int CustomerId { get; set; }
+        public int RentStartRentalBranchId { get; set; }
+        public int? RentEndRentalBranchId { get; set; }
+        public DateTime RentStartDate { get; set; }
+        public DateTime RentEndDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
+        public int RentStartKilometer { get; set; }
+        public int? RentEndKilometer { get; set; }
 
-        public class UpdateRentalCommandHandler : IRequestHandler<UpdateRentalCommand, IResult>
+        public string[] Roles => new[] { Admin, RentalUpdate };
+
+        public class UpdateRentalCommandHandler : IRequestHandler<UpdateRentalCommand, UpdatedRentalDto>
         {
-            IRentalRepository _rentalRepository;
-            IMapper _mapper;
-            RentalBusinessRules _rentalBusinessRules;
-            public UpdateRentalCommandHandler(IRentalRepository rentalRepository, IMapper mapper, RentalBusinessRules rentalBusinessRules)
+            private readonly IRentalRepository _rentalRepository;
+            private readonly IMapper _mapper;
+            private readonly RentalBusinessRules _rentalBusinessRules;
+
+            public UpdateRentalCommandHandler(IRentalRepository rentalRepository, IMapper mapper,
+                                              RentalBusinessRules rentalBusinessRules)
             {
                 _rentalRepository = rentalRepository;
                 _mapper = mapper;
                 _rentalBusinessRules = rentalBusinessRules;
             }
 
-            public async Task<IResult> Handle(UpdateRentalCommand request, CancellationToken cancellationToken)
+            public async Task<UpdatedRentalDto> Handle(UpdateRentalCommand request, CancellationToken cancellationToken)
             {
-                var updateRental = await _rentalRepository.GetAsync(c => c.Id == request.Id);
-                if (updateRental == null) throw new BusinessException("Rental is not found");
+                await _rentalBusinessRules.RentalCanNotBeUpdateWhenThereIsARentedCarInDate(request.Id,
+                    request.CarId, request.RentStartDate,
+                    request.RentEndDate);
 
-                await _rentalBusinessRules.RentalCarIdCanNotBeDuplicatedWhenInserted(request.CarId);
-                _mapper.Map(request, updateRental);
-                await _rentalRepository.UpdateAsync(updateRental);
-
-                return new SuccessResult(SuccessMessages.CarUpdated);
+                Rental mappedRental = _mapper.Map<Rental>(request);
+                Rental updatedRental = await _rentalRepository.UpdateAsync(mappedRental);
+                UpdatedRentalDto updatedRentalDto = _mapper.Map<UpdatedRentalDto>(updatedRental);
+                return updatedRentalDto;
             }
         }
     }

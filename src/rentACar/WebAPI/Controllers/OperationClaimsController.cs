@@ -1,6 +1,9 @@
 ﻿using Application.Features.OperationClaims.Commands.CreateOperationClaim;
 using Application.Features.OperationClaims.Commands.DeleteOperationClaim;
 using Application.Features.OperationClaims.Commands.UpdateOperationClaim;
+using Application.Features.OperationClaims.Dtos;
+using Application.Features.OperationClaims.Models;
+using Application.Features.OperationClaims.Queries.GetByIdOperationClaim;
 using Application.Features.OperationClaims.Queries.GetListOperationClaim;
 using Core.Application.Requests;
 using MediatR;
@@ -13,30 +16,39 @@ namespace WebAPI.Controllers
     [ApiController]
     public class OperationClaimsController : BaseController
     {
-        [HttpPost("add")]
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById([FromRoute] GetByIdOperationClaimQuery getByIdOperationClaimQuery)
+        {
+            OperationClaimDto result = await Mediator.Send(getByIdOperationClaimQuery);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
+        {
+            GetListOperationClaimQuery getListOperationClaimQuery = new() { PageRequest = pageRequest };
+            OperationClaimListModel result = await Mediator.Send(getListOperationClaimQuery);
+            return Ok(result);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateOperationClaimCommand createOperationClaimCommand)
         {
-            var result = await Mediator.Send(createOperationClaimCommand);
+            CreatedOperationClaimDto result = await Mediator.Send(createOperationClaimCommand);
             return Created("", result);
         }
-        [HttpGet("getall")]
-        public async Task<IActionResult> GetAll([FromQuery] PageRequest pageRequest)
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateOperationClaimCommand updateOperationClaimCommand)
         {
-            var query = new GetListOperationClaimQuery();
-            query.PageRequest = pageRequest;
-            var result = await Mediator.Send(query);
+            UpdatedOperationClaimDto result = await Mediator.Send(updateOperationClaimCommand);
             return Ok(result);
         }
-        [HttpDelete("delete")]
+
+        [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] DeleteOperationClaimCommand deleteOperationClaimCommand)
         {
-            var result = await Mediator.Send(deleteOperationClaimCommand);
-            return Ok(result);
-        }
-        [HttpPut("update")]
-        public async Task<IActionResult> Update([FromBody] UpdateOperationClaimCommand uptadeOperationClaimCommand)
-        {
-            var result = await Mediator.Send(uptadeOperationClaimCommand);
+            DeletedOperationClaimDto result = await Mediator.Send(deleteOperationClaimCommand);
             return Ok(result);
         }
     }

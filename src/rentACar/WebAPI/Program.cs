@@ -18,7 +18,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddApplicationService();
+builder.Services.AddApplicationServices();
 builder.Services.AddSecurityServices();
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfrastructureServices();
@@ -67,6 +67,7 @@ builder.Services.AddSwaggerGen(opt =>
         }
     });
 });
+
 
 WebApplication app = builder.Build();
 

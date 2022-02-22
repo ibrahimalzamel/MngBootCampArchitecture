@@ -8,7 +8,8 @@ import { Brand } from '../models/brand';
 export class FilterBrandsPipe<T> implements PipeTransform {
   transform(value: Brand[], filterText: string): Brand[] {
     return value.filter((b: Brand) =>
-      b.name.toLocaleLowerCase().includes(filterText.toLocaleLowerCase())
+      b.name.toLocaleLowerCase().
+      includes(filterText.toLocaleLowerCase())
     );
   }
 }

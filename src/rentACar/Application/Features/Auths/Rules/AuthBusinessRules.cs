@@ -15,15 +15,23 @@ namespace Application.Features.Auths.Rules
     {
         private readonly IUserRepository _userRepository;
 
-        public AuthBusinessRules(IUserRepository userRepository)
+        public Task UserShouldBeExists(User? user)
         {
-            _userRepository = userRepository;
+            if (user == null) throw new BusinessException("User don't exists.");
+            return Task.CompletedTask;
         }
 
-        public async Task UserEmailShouldBeExists(string email)
+        public Task RefreshTokenShouldBeExists(RefreshToken? refreshToken)
         {
-            User? user = await _userRepository.GetAsync(u => u.Email == email);
-            if (user == null) throw new BusinessException("User mail do not exists.");
+            if (refreshToken == null) throw new BusinessException("Refresh don't exists.");
+            return Task.CompletedTask;
+        }
+
+        public Task RefreshTokenShouldBeActive(RefreshToken refreshToken)
+        {
+            if (refreshToken.Revoked != null && DateTime.UtcNow >= refreshToken.Expires)
+                throw new BusinessException("Invalid refresh token.");
+            return Task.CompletedTask;
         }
 
         public async Task UserEmailShouldBeNotExists(string email)

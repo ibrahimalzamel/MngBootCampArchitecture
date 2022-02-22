@@ -4,6 +4,8 @@ using Application.Services.Repositories;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using static Application.Features.CorporateCustomers.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.CorporateCustomers.Commands.CreateCorporateCustomer;
 
@@ -12,6 +14,8 @@ public class CreateCorporateCustomerCommand : IRequest<CreatedCorporateCustomerD
     public int CustomerId { get; set; }
     public string CompanyName { get; set; }
     public string TaxNo { get; set; }
+    public string[] Roles => new[] { Admin, CorporateCustomersAdd };
+
 
     public class
         CreateCorporateCustomerCommandHandler : IRequestHandler<CreateCorporateCustomerCommand,

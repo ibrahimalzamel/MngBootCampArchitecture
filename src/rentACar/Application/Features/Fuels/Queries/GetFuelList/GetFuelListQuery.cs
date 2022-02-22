@@ -2,8 +2,10 @@
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Requests;
+using Core.Persistence.Paging;
 using Core.Utilities.DataResults;
 using Core.Utilities.Messages;
+using Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -14,11 +16,11 @@ using System.Threading.Tasks;
 namespace Application.Features.Fuels.Queries.GetFuelList
 {
    // internal class GetFuelListQuery
-    public class GetFuelListQuery : IRequest<IDataResult<FuelListModel>>
+    public class GetFuelListQuery : IRequest<FuelListModel>
     {
         public PageRequest PageRequest { get; set; }
 
-        public class GetFuelListQueryHandler : IRequestHandler<GetFuelListQuery, IDataResult<FuelListModel>>
+        public class GetFuelListQueryHandler : IRequestHandler<GetFuelListQuery, FuelListModel>
         {
             IFuelRepository _fuelRepository;
             IMapper _mapper;
@@ -29,14 +31,12 @@ namespace Application.Features.Fuels.Queries.GetFuelList
                 _mapper = mapper;
             }
 
-            public async Task<IDataResult<FuelListModel>> Handle(GetFuelListQuery request, CancellationToken cancellationToken)
+            public async Task<FuelListModel> Handle(GetFuelListQuery request, CancellationToken cancellationToken)
             {
-                var fuels = await _fuelRepository.GetListAsync(
-                    index: request.PageRequest.Page,
-                    size: request.PageRequest.PageSize);
-
-                var mappedFuels = _mapper.Map<FuelListModel>(fuels);
-                return new SuccessDataResult<FuelListModel>(mappedFuels, SuccessMessages.ColorListed);
+                IPaginate<Fuel> fuels = await _fuelRepository.GetListAsync(index: request.PageRequest.Page,
+                                                                      size: request.PageRequest.PageSize);
+                FuelListModel mappedFuelListModel = _mapper.Map<FuelListModel>(fuels);
+                return mappedFuelListModel;
             }
         }
     }

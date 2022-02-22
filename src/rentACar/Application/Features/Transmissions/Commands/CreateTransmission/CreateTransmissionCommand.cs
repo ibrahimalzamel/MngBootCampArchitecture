@@ -1,6 +1,8 @@
-﻿using Application.Features.Transmissions.Rules;
+﻿using Application.Features.Transmissions.Dtos;
+using Application.Features.Transmissions.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -8,32 +10,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.Transmissions.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Transmissions.Commands.CreateTransmission
 {
     //Transmission
-    public class CreateTransmissionCommand : IRequest<Transmission>
+    public class CreateTransmissionCommand : IRequest<CreatedTransmissionDto>, ISecuredRequest
     {
         public string Name { get; set; }
-        public class CreateTransmissionCommandHandler : IRequestHandler<CreateTransmissionCommand, Transmission>
-        {
-            ITransmissionRepository _transmissionRepository;
-            IMapper _mapper;
-            TransmissionBusinessRules _transmissionBusinessRules;
 
-            public CreateTransmissionCommandHandler(ITransmissionRepository transmissionRepository, IMapper mapper, TransmissionBusinessRules transmissionBusinessRules)
+        public string[] Roles => new[] { Admin, TransmissionAdd };
+
+        public class CreateTransmissionCommandHandler : IRequestHandler<CreateTransmissionCommand, CreatedTransmissionDto>
+        {
+            private readonly ITransmissionRepository _transmissionRepository;
+            private readonly IMapper _mapper;
+            private readonly TransmissionBusinessRules _transmissionBusinessRules;
+
+            public CreateTransmissionCommandHandler(ITransmissionRepository transmissionRepository, IMapper mapper,
+                                                    TransmissionBusinessRules transmissionBusinessRules)
             {
                 _transmissionRepository = transmissionRepository;
                 _mapper = mapper;
                 _transmissionBusinessRules = transmissionBusinessRules;
             }
-            public async Task<Transmission> Handle(CreateTransmissionCommand request, CancellationToken cancellationToken)
+
+            public async Task<CreatedTransmissionDto> Handle(CreateTransmissionCommand request,
+                                                             CancellationToken cancellationToken)
             {
                 await _transmissionBusinessRules.TransmissionNameCanNotBeDuplicatedWhenInserted(request.Name);
-                var mappedTransmission = _mapper.Map<Transmission>(request);
 
-                var createTransmission = await _transmissionRepository.AddAsync(mappedTransmission);
-                return createTransmission;
+                Transmission mappedTransmission = _mapper.Map<Transmission>(request);
+                Transmission createdTransmission = await _transmissionRepository.AddAsync(mappedTransmission);
+                CreatedTransmissionDto createdTransmissionDto = _mapper.Map<CreatedTransmissionDto>(createdTransmission);
+                return createdTransmissionDto;
             }
         }
     }

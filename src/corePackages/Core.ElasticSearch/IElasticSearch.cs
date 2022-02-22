@@ -11,6 +11,8 @@ namespace Core.ElasticSearch
 {
     public interface IElasticSearch
     {
+
+       // Big Data
         Task<IResult> CreateNewIndexAsync(IndexModel indexModel);
         Task<IResult> InsertAsync(ElasticSearchInsertUpdateModel model);
         Task<IResult> InsertManyAsync(string indexName, object[] items);

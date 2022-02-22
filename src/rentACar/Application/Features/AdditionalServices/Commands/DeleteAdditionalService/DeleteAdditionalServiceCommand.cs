@@ -2,6 +2,7 @@
 using Application.Features.AdditionalServices.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
@@ -12,14 +13,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.AdditionalServices.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.AdditionalServices.Commands.DeleteAdditionalService
 {
 
 
-    public class DeleteAdditionalServiceCommand : IRequest<DeletedAdditionalServiceDto>
+    public class DeleteAdditionalServiceCommand : IRequest<DeletedAdditionalServiceDto>, ISecuredRequest
     {
         public int Id { get; set; }
+        public string[] Roles => new[] { Admin, AdditionalServiceDelete };
 
         public class DeleteAdditionalServiceCommandHandler : IRequestHandler<DeleteAdditionalServiceCommand, DeletedAdditionalServiceDto>
         {
@@ -40,8 +44,10 @@ namespace Application.Features.AdditionalServices.Commands.DeleteAdditionalServi
                 await _additionalServiceBusinessRules.AdditionalServiceIdShouldExistWhenSelected(request.Id);
 
                 AdditionalService mappedAdditionalService = _mapper.Map<AdditionalService>(request);
-                AdditionalService deletedAdditionalService = await _additionalServiceRepository.DeleteAsync(mappedAdditionalService);
-                DeletedAdditionalServiceDto deletedAdditionalServiceDto = _mapper.Map<DeletedAdditionalServiceDto>(deletedAdditionalService);
+                AdditionalService deletedAdditionalService = 
+                    await _additionalServiceRepository.DeleteAsync(mappedAdditionalService);
+                DeletedAdditionalServiceDto deletedAdditionalServiceDto = 
+                    _mapper.Map<DeletedAdditionalServiceDto>(deletedAdditionalService);
                 return deletedAdditionalServiceDto;
             }
         }

@@ -2,6 +2,7 @@
 using Application.Features.CarDamages.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -9,14 +10,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using static Application.Features.CarDamages.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 namespace Application.Features.CarDamages.Commands.CreateCarDamage
 {
-    public class CreateCarDamageCommand : IRequest<CreatedCarDamageDto>
+    public class CreateCarDamageCommand : IRequest<CreatedCarDamageDto>, ISecuredRequest
     {
         public int CarId { get; set; }
         public string DamageDescription { get; set; }
-
+        public string[] Roles => new[] { Admin, CarDamageAdd };
         public class CreateCarDamageCommandHandler : IRequestHandler<CreateCarDamageCommand, CreatedCarDamageDto>
         {
             private readonly ICarDamageRepository _carDamageRepository;

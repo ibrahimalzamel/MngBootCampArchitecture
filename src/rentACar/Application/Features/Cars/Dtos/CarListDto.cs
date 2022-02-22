@@ -20,5 +20,10 @@ namespace Application.Features.Cars.Dtos
         public string ColorName { get; set; }
         public CarState CarState { get; set; }
         public short ModelYear { get; set; }
+        public string Plate { get; set; }
+        public City RentalBranchCity { get; set; }
+        public int Kilometer { get; set; }
+        public short MinFindeksCreditRate { get; set; }
+
     }
 }

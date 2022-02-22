@@ -1,5 +1,7 @@
 ﻿using Application.Services.Repositories;
 using Core.CrossCuttingConcerns.Exceptions;
+using Core.Persistence.Paging;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +12,23 @@ namespace Application.Features.Fuels.Rules
 {
     public class FuelBusinessRules
     {
-        IFuelRepository _fuelRepository;
+        private readonly IFuelRepository _fuelRepository;
 
         public FuelBusinessRules(IFuelRepository fuelRepository)
         {
             _fuelRepository = fuelRepository;
         }
-        //Gerkhin dili 
+
+        public async Task FuelIdShouldExistWhenSelected(int id)
+        {
+            Fuel? result = await _fuelRepository.GetAsync(b => b.Id == id);
+            if (result == null) throw new BusinessException("Fuel not exists.");
+        }
+
         public async Task FuelNameCanNotBeDuplicatedWhenInserted(string name)
         {
-            var result = await _fuelRepository.GetListAsync(b => b.Name == name);
-            if (result.Items.Any())
-            {
-                throw new BusinessException("Fuel name exists");
-            }
+            IPaginate<Fuel> result = await _fuelRepository.GetListAsync(b => b.Name == name);
+            if (result.Items.Any()) throw new BusinessException("Fuel name exists.");
         }
     }
 }
