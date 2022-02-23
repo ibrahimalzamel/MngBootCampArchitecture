@@ -31,6 +31,13 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        //[HttpGet("{BrandId}")]
+        //public async Task<IActionResult> GetByBrandIdList([FromQuery] PageRequest pageRequest)
+        //{
+        //    GetListModelByBrandIdQuery getListModelByBrandIdQuery = new() { PageRequest = pageRequest };
+        //    var result = await Mediator.Send(getListModelByBrandIdQuery);
+        //    return Ok(result);
+        //}
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateModelCommand createModelCommand)
         {

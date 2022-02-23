@@ -16,7 +16,13 @@ namespace Application.Features.Invoices.Commands.CreateInvoice
     public class CreateInvoiceCommand : IRequest<CreatedInvoiceDto>
     {
 
+        public int CustomerId { get; set; }
         public string No { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime RentalStratDate { get; set; }
+        public DateTime RentalEndDate { get; set; }
+        public short TotalRentalDate { get; set; }
+        public decimal RentalPrice { get; set; }
         public class CreateRentalCommandHandler : IRequestHandler<CreateInvoiceCommand, CreatedInvoiceDto>
         {
             IInvoiceRepository _rentalRepository;
@@ -37,7 +43,6 @@ namespace Application.Features.Invoices.Commands.CreateInvoice
                 return createdInvoiceDto;
             }
         }
-
     }
 }
 

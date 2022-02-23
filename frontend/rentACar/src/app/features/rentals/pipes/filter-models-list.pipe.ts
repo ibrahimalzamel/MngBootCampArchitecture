@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { ModelListModel } from './../models/modelListModel';
+import { ModelListModel } from '../models/modelModels/modelListModel';
 
 @Pipe({
   name: 'filterModelList'

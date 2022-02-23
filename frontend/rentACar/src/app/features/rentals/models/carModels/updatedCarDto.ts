@@ -1,3 +1,5 @@
+import { CarState } from "src/app/core/models/enum/carState";
+
 export interface UpdatedCarDto {
   id: number;
   modelId:number;
@@ -6,7 +8,7 @@ export interface UpdatedCarDto {
   kilometer : number;
   modelYear:number;
   rentalBranchId : number;
- // CarState CarState
+  CarState :CarState;
   minFindeksCreditRate : number;
 
 }

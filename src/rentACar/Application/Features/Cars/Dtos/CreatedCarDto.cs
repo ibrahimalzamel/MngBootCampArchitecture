@@ -9,12 +9,13 @@ namespace Application.Features.Cars.Dtos
 {
     public class CreatedCarDto
     {
-        public int Id { get; set; }
-        public string BrandName { get; set; }
-        public string ModelName { get; set; }
-        public string FuelName { get; set; }
-        public string ColorName { get; set; }
-        public CarState CarState { get; set; }
+        public int ColorId { get; set; }
+        public int ModelId { get; set; }
+        public string Plate { get; set; }
+        public int RentalBranchId { get; set; }
+        public int Kilometer { get; set; }
         public short ModelYear { get; set; }
+        public CarState CarState { get; set; }
+        public short MinFindeksCreditRate { get; set; }
     }
 }

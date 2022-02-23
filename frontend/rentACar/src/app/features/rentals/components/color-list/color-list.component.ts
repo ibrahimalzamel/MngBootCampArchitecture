@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ListResponseModel } from 'src/app/core/models/listResponseModel';
-import { Color } from '../../models/color';
+import { Color } from '../../models/colorModels/color';
 import { ColorService } from '../../services/color.service';
 
 @Component({

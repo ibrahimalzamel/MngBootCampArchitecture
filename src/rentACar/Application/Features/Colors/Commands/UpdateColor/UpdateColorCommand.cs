@@ -28,15 +28,17 @@ namespace Application.Features.Colors.Commands.UpdateColor
         {
             private IColorRepository _colorRepository { get; }
             private IMapper _mapper { get; }
-
-            public UpdateColorCommandHandler(IColorRepository colorRepository, IMapper mapper)
+            private ColorBusinessRules _colorBusinessRules { get; }
+            public UpdateColorCommandHandler(IColorRepository colorRepository, IMapper mapper, ColorBusinessRules colorBusinessRules)
             {
                 _colorRepository = colorRepository;
                 _mapper = mapper;
+                _colorBusinessRules = colorBusinessRules;
             }
 
             public async Task<UpdatedColorDto> Handle(UpdateColorCommand request, CancellationToken cancellationToken)
             {
+                await _colorBusinessRules.ColorNameCanNotBeDuplicatedWhenInserted(request.Name);    
                 Color mappedColor = _mapper.Map<Color>(request);
                 Color updatedColor = await _colorRepository.UpdateAsync(mappedColor);
                 UpdatedColorDto updatedColorDto = _mapper.Map<UpdatedColorDto>(updatedColor);

@@ -41,6 +41,13 @@ import { BrandAddFormComponent } from './features/admin/pages/brands-dashboard/b
 import { BrandEditFormComponent } from './features/admin/pages/brands-dashboard/brand-edit-form/brand-edit-form.component';
 import { ColorsDashboardComponent } from './features/admin/pages/colors-dashboard/colors-dashboard.component';
 import { CarsDashboardComponent } from './features/admin/pages/cars-dashboard/cars-dashboard.component';
+import { CarAddFormComponent } from './features/admin/pages/cars-dashboard/car-add-form/car-add-form.component';
+import { CarEditFormComponent } from './features/admin/pages/cars-dashboard/car-edit-form/car-edit-form.component';
+import { ColorAddFormComponent } from './features/admin/pages/colors-dashboard/color-add-form/color-add-form.component';
+import { ColorEditFormComponent } from './features/admin/pages/colors-dashboard/color-edit-form/color-edit-form.component';
+import { TransmissionDashboardComponent } from './features/admin/pages/transmission-dashboard/transmission-dashboard.component';
+import { TransmissionAddFormComponent } from './features/admin/pages/transmission-dashboard/transmission-add-form/transmission-add-form.component';
+import { TransmissionEditFormComponent } from './features/admin/pages/transmission-dashboard/transmission-edit-form/transmission-edit-form.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +80,14 @@ import { CarsDashboardComponent } from './features/admin/pages/cars-dashboard/ca
     BrandAddFormComponent,
     BrandEditFormComponent,
     ColorsDashboardComponent,
-    CarsDashboardComponent
+    CarsDashboardComponent,
+    CarAddFormComponent,
+    CarEditFormComponent,
+    ColorAddFormComponent,
+    ColorEditFormComponent,
+    TransmissionDashboardComponent,
+    TransmissionAddFormComponent,
+    TransmissionEditFormComponent
   ],
   imports: [
     BrowserModule,

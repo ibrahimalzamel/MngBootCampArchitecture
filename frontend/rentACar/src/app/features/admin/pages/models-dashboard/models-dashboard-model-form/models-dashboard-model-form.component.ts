@@ -2,14 +2,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Brand } from 'src/app/features/rentals/models/brand';
+import { Brand } from 'src/app/features/rentals/models/brandModels/brand';
 import { BrandService } from 'src/app/features/rentals/services/brand.service';
-import { Fuel } from 'src/app/features/rentals/models/fuel';
+import { Fuel } from 'src/app/features/rentals/models/fuelModels/fuel';
 import { FuelService } from 'src/app/features/rentals/services/fuel.service';
-import { Model } from 'src/app/features/rentals/models/model';
+import { Model } from 'src/app/features/rentals/models/modelModels/model';
 import { ModelService } from './../../../../rentals/services/model.service';
 import { ToastrService } from 'ngx-toastr';
-import { Transmission } from './../../../../rentals/models/transmission';
+import { Transmission } from '../../../../rentals/models/transmissionModels/transmission';
 import { TransmissionService } from 'src/app/features/rentals/services/transmission.service';
 
 @Component({
@@ -80,7 +80,8 @@ export class ModelsDashboardModelFormComponent implements OnInit {
   getTransmissionList() {
     this.transmissionService
       .getList(0, 999)
-      .subscribe(response => (this.transmissions = response.items));
+      .subscribe(response =>
+         (this.transmissions = response.items));
   }
 
   add() {
@@ -91,7 +92,7 @@ export class ModelsDashboardModelFormComponent implements OnInit {
     let modelToAdd: Model = { ...this.modelForm.value };
     this.modelService.add(modelToAdd).subscribe(() => {
       this.toastrService.success('Model has been added.');
-      this.router.navigate(['admin', 'models']);
+      this.router.navigate([ 'models']);
     });
   }
 
@@ -103,7 +104,7 @@ export class ModelsDashboardModelFormComponent implements OnInit {
     let modelToUpdate: Model = { id: this.modelToEdit.id, ...this.modelForm.value };
     this.modelService.update(modelToUpdate).subscribe(() => {
       this.toastrService.success('Model has been updated.');
-      this.router.navigate(['admin', 'models']);
+      this.router.navigate([ 'models']);
     });
   }
 
@@ -112,7 +113,7 @@ export class ModelsDashboardModelFormComponent implements OnInit {
     let modelToDelete: Model = { id: this.modelToEdit.id, ...this.modelForm.value };
     this.modelService.delete(modelToDelete).subscribe(() => {
       this.toastrService.success('Model has been deleted.');
-      this.router.navigate(['admin', 'models']);
+      this.router.navigate([ 'models']);
     });
   }
 }

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { ActivatedRoute } from '@angular/router';
-import { ModelListModel } from './../../models/modelListModel';
+import { ModelListModel } from '../../models/modelModels/modelListModel';
 import { ModelService } from './../../services/model.service';
 
 @Component({

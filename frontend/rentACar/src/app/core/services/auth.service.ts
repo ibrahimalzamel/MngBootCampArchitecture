@@ -57,7 +57,7 @@ export class AuthService {
   }
 
   setTokenUserModel(tokenUserModel: TokenUserModel) {
-    this.store.dispatch(setTokenUserModel({ tokenUserModel }));
+    this.store.dispatch(setTokenUserModel({ tokenUserModel:tokenUserModel }));
   }
 
   refleshTokenUserModel() {

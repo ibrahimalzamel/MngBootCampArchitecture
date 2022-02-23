@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ListResponseModel } from 'src/app/core/models/listResponseModel';
-import { ModelListModel } from './../../../rentals/models/modelListModel';
+import { ModelListModel } from '../../../rentals/models/modelModels/modelListModel';
 import { ModelService } from './../../../rentals/services/model.service';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { Transmission } from './../models/transmission';
+import { Transmission } from '../models/transmissionModels/transmission';
 
 @Pipe({
   name: 'filterTransmissions'

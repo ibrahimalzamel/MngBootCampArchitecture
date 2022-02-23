@@ -30,15 +30,17 @@ namespace Application.Features.Brands.Commands.UpdateBrand
         {
             private IBrandRepository _brandRepository { get; }
             private IMapper _mapper { get; }
-
-            public UpdateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper)
+            private BrandBusinessRules _brandBusinessRules { get; }
+            public UpdateBrandCommandHandler(IBrandRepository brandRepository, IMapper mapper, BrandBusinessRules brandBusinessRules)
             {
                 _brandRepository = brandRepository;
                 _mapper = mapper;
+                _brandBusinessRules = brandBusinessRules;
             }
 
             public async Task<UpdatedBrandDto> Handle(UpdateBrandCommand request, CancellationToken cancellationToken)
             {
+                await _brandBusinessRules.BrandNameCanNotBeDuplicatedWhenInserted(request.Name);
                 Brand mappedBrand = _mapper.Map<Brand>(request);
                 Brand updatedBrand = await _brandRepository.UpdateAsync(mappedBrand);
                 UpdatedBrandDto updatedBrandDto = _mapper.Map<UpdatedBrandDto>(updatedBrand);

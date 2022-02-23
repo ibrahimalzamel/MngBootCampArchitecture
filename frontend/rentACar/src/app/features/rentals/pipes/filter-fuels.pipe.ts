@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { Fuel } from './../models/fuel';
+import { Fuel } from '../models/fuelModels/fuel';
 
 @Pipe({
   name: 'filterFuels'

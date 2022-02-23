@@ -30,15 +30,17 @@ namespace Application.Features.Fuels.Commands.UpdateFuel
         {
             private IFuelRepository _fuelRepository { get; }
             private IMapper _mapper { get; }
-
-            public UpdateFuelCommandHandler(IFuelRepository fuelRepository, IMapper mapper)
+            private FuelBusinessRules _fuelBusinessRules { get; }
+            public UpdateFuelCommandHandler(IFuelRepository fuelRepository, IMapper mapper, FuelBusinessRules fuelBusinessRules)
             {
                 _fuelRepository = fuelRepository;
                 _mapper = mapper;
+                _fuelBusinessRules = fuelBusinessRules;
             }
 
             public async Task<UpdatedFuelDto> Handle(UpdateFuelCommand request, CancellationToken cancellationToken)
             {
+                _fuelBusinessRules.FuelNameCanNotBeDuplicatedWhenInserted(request.Name);
                 Fuel mappedFuel = _mapper.Map<Fuel>(request);
                 Fuel updatedFuel = await _fuelRepository.UpdateAsync(mappedFuel);
                 UpdatedFuelDto updatedFuelDto = _mapper.Map<UpdatedFuelDto>(updatedFuel);

@@ -14,21 +14,19 @@ namespace WebAPI.Controllers
     public class AuthController : BaseController
     {
         [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto)
+        public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
-            LoginCommand loginCommand = new() { UserForLoginDto = userForLoginDto, IPAddress = getIpAddress() };
-            AuthenticateTokensDto result = await Mediator.Send(loginCommand);
-            setRefreshTokenToCookie(result.RefreshToken);
+            //LoginCommand loginCommand = new() { UserForLoginDto = userForLoginDto, IPAddress = getIpAddress() };
+            var result = await Mediator.Send(command);
             return Ok(result.AccessToken);
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto)
+        public async Task<IActionResult> Register([FromBody] RegisterCommand command)
         {
-            RegisterCommand registerCommand = new() { UserForRegisterDto = userForRegisterDto, IPAddress = getIpAddress() };
-            AuthenticateTokensDto result = await Mediator.Send(registerCommand);
-            setRefreshTokenToCookie(result.RefreshToken);
-            return Created("", result.AccessToken);
+            //RegisterCommand registerCommand = new() { UserForRegisterDto = userForRegisterDto, IPAddress = getIpAddress() };
+           var  result = await Mediator.Send(command);
+            return Created("", result);
         }
 
         [HttpGet("RefreshToken")]

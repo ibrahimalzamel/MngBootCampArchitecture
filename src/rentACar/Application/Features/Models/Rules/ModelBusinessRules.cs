@@ -24,5 +24,10 @@ namespace Application.Features.Models.Rules
             Model? result = await _modelRepository.GetAsync(c => c.Id == id);
             if (result == null) throw new BusinessException("Model not exists.");
         }
+        public async Task ModelBrandIdShouldExistWhenSelected(int id)
+        {
+            Model? result = await _modelRepository.GetAsync(c => c.BrandId == id);
+            if (result == null) throw new BusinessException("Model not exists.");
+        }
     }
 }

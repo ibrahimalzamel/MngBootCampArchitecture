@@ -1,7 +1,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { Brand } from '../../models/brand';
+import { Brand } from '../../models/brandModels/brand';
 import { BrandService } from './../../services/brand.service';
 
 @Component({

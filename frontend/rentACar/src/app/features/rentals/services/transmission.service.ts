@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ListResponseModel } from 'src/app/core/models/listResponseModel';
 import { Observable } from 'rxjs';
-import { Transmission } from './../models/transmission';
+import { Transmission } from '../models/transmissionModels/transmission';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

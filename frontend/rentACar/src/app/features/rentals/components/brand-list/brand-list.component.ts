@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Brand } from '../../models/brand';
+import { Brand } from '../../models/brandModels/brand';
 import { BrandService } from './../../services/brand.service';
 import { ListResponseModel } from './../../../../core/models/listResponseModel';
 

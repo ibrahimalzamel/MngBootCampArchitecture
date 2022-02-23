@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ListResponseModel } from 'src/app/core/models/listResponseModel';
-import { Brand } from 'src/app/features/rentals/models/brand';
+import { Brand } from 'src/app/features/rentals/models/brandModels/brand';
 import { BrandService } from 'src/app/features/rentals/services/brand.service';
 
 @Component({
@@ -9,17 +9,25 @@ import { BrandService } from 'src/app/features/rentals/services/brand.service';
   styleUrls: ['./brands-dashboard.component.css']
 })
 export class BrandsDashboardComponent implements OnInit {
-  brands: ListResponseModel<Brand> = { items: [] };
+  brands: ListResponseModel<Brand> = {
+    index: 0,
+    size: 10,
+    items: []
 
+  };
+  dataLoaded: boolean = false;
   constructor(private brandService: BrandService) { }
 
   ngOnInit(): void {
- this.getAll();
+ this.getBrandList();
   }
-  getAll() {
-    this.brandService.getList(0,100).subscribe
-    (data =>{
+  getBrandList() {
+    this.brandService
+    .getList(this.brands.index,this.brands.size)
+    .subscribe(data =>{
       this.brands=data;
+      this.dataLoaded = true;
+
     })
   }
 }

@@ -31,6 +31,7 @@ namespace Application.Features.Invoices.Profiles
                                                        : i.Customer.CorporateCustomer.CompanyName))
                 .ReverseMap();
             CreateMap<IPaginate<Invoice>, InvoiceListModel>().ReverseMap();
+            CreateMap<Invoice, InvoiceListModel>().ReverseMap();
         }
     }
 }

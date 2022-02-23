@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { ModelListModel } from '../../models/modelListModel';
+import { ModelListModel } from '../../models/modelModels/modelListModel';
 
 @Component({
   selector: 'app-model-card',
