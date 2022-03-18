@@ -11,9 +11,9 @@ namespace Application.Features.Brands.Commands.CreateBrand
     {
         public CreateBrandCommandValidator()
         {
-            RuleFor(b =>b.Name).NotEmpty().MinimumLength(2);
-           
-
+            RuleFor(b =>b.Name)
+                .NotEmpty()
+                .MinimumLength(2);
         }
     }
 }

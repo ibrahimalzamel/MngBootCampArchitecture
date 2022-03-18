@@ -3,6 +3,7 @@ using Application.Features.Brands.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Caching;
 using Core.CrossCuttingConcerns.Exceptions;
 
 using Domain.Entities;
@@ -17,7 +18,7 @@ using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Brands.Commands.UpdateBrand
 {
-    public class UpdateBrandCommand : IRequest<UpdatedBrandDto>, ISecuredRequest
+    public class UpdateBrandCommand : IRequest<UpdatedBrandDto>, ISecuredRequest, ICacheRemoverRequest
     {
         public int Id { get; set; }
         public string Name { get; set; }

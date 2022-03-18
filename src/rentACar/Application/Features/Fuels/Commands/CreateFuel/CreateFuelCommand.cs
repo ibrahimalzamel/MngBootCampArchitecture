@@ -3,15 +3,8 @@ using Application.Features.Fuels.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
-using Core.Utilities.Messages;
-using Core.Utilities.Results;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Application.Features.Fuels.Constants.OperationClaims;
 using static Domain.Constants.OperationClaims;
 

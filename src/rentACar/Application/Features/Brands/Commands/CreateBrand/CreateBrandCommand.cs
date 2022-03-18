@@ -3,9 +3,10 @@ using Application.Features.Brands.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Caching;
 using Core.Application.Pipelines.Logging;
 using Core.Mailing;
-
 using Domain.Entities;
 using MediatR;
 using System;
@@ -18,7 +19,10 @@ using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Brands.Commands.CreateBrand
 {
-    public class CreateBrandCommand:IRequest<CreateBrandDto>/*, ILoggableRequest , ISecuredRequest, ICacheRemoverRequest*/, ISecuredRequest
+    public class CreateBrandCommand:IRequest<CreateBrandDto>
+        , ISecuredRequest
+      //, ILoggableRequest
+        , ICacheRemoverRequest
     { 
         public string Name { get; set; }
         public bool BypassCache { get; }

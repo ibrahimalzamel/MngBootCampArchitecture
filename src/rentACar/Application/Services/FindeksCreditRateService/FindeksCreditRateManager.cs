@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Services.FindeksCreditRateService
 {
-    internal class FindeksCreditRateManager : IFindeksCreditRateService
+    public class FindeksCreditRateManager : IFindeksCreditRateService
     {
         private readonly IFindeksCreditRateRepository _findeksCreditRateRepository;
 
@@ -24,6 +24,12 @@ namespace Application.Services.FindeksCreditRateService
                 await _findeksCreditRateRepository.GetAsync(f => f.CustomerId == customerId);
             if (findeksCreditRate == null) throw new BusinessException("Customer's findeks score do not exists.");
             return findeksCreditRate;
+        }
+
+        public async Task<FindeksCreditRate> Add(FindeksCreditRate findeksCreditRate)
+        {
+            FindeksCreditRate addedFindeksCreditRate = await _findeksCreditRateRepository.AddAsync(findeksCreditRate);
+            return addedFindeksCreditRate;
         }
     }
 }

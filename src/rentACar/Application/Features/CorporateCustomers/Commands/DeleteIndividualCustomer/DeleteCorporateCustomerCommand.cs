@@ -6,10 +6,11 @@ using Domain.Entities;
 using static Application.Features.CorporateCustomers.Constants.OperationClaims;
 using static Domain.Constants.OperationClaims;
 using MediatR;
+using Core.Application.Pipelines.Authorization;
 
 namespace Application.Features.CorporateCustomers.Commands.DeleteCorporateCustomer;
 
-public class DeleteCorporateCustomerCommand : IRequest<DeletedCorporateCustomerDto>
+public class DeleteCorporateCustomerCommand : IRequest<DeletedCorporateCustomerDto>, ISecuredRequest
 {
     public int Id { get; set; }
     public string[] Roles => new[] { Admin, CorporateCustomersDelete };

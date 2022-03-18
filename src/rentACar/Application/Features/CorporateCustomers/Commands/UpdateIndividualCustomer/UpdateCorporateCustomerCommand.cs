@@ -2,6 +2,7 @@
 using Application.Features.CorporateCustomers.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using static Application.Features.CorporateCustomers.Constants.OperationClaims;
@@ -9,13 +10,13 @@ using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.CorporateCustomers.Commands.UpdateCorporateCustomer;
 
-public class UpdateCorporateCustomerCommand : IRequest<UpdatedCorporateCustomerDto>
+public class UpdateCorporateCustomerCommand : IRequest<UpdatedCorporateCustomerDto>, ISecuredRequest
 {
     public int Id { get; set; }
     public int CustomerId { get; set; }
     public string CompanyName { get; set; }
     public string TaxNo { get; set; }
-    public string[] Roles => new[] { Admin, CorporateCustomersDelete };
+    public string[] Roles => new[] { Admin, CorporateCustomersUpdate };
 
 
     public class

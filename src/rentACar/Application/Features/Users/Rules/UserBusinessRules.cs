@@ -19,23 +19,17 @@ public class UserBusinessRules
         User? result = await _userRepository.GetAsync(b => b.Id == id);
         if (result == null) throw new BusinessException("User not exists.");
     }
-    public async Task UserEmailShouldBeExists(string email)
+
+    public Task UserShouldBeExist(User? user)
     {
-        User? user = await _userRepository.GetAsync(u => u.Email == email);
-        if (user == null) throw new BusinessException("User mail do not exists.");
+        if (user is null) throw new BusinessException("User not exists.");
+        return Task.CompletedTask;
     }
 
-    public async Task UserEmailShouldBeNotExists(string email)
+    public Task UserPasswordShouldBeMatch(User user, string password)
     {
-        User? user = await _userRepository.GetAsync(u => u.Email == email);
-        if (user != null) throw new BusinessException("User mail already exists.");
-    }
-
-
-    public async Task UserPasswordShouldBeMatch(int id, string password)
-    {
-        User? user = await _userRepository.GetAsync(u => u.Id == id);
         if (!HashingHelper.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             throw new BusinessException("Password don't match.");
+        return Task.CompletedTask;
     }
 }

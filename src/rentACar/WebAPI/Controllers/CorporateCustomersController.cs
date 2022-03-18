@@ -3,6 +3,7 @@ using Application.Features.CorporateCustomers.Commands.DeleteCorporateCustomer;
 using Application.Features.CorporateCustomers.Commands.UpdateCorporateCustomer;
 using Application.Features.CorporateCustomers.Dtos;
 using Application.Features.CorporateCustomers.Models;
+using Application.Features.CorporateCustomers.Queries.GetByCustomerIdCorporateCustomer;
 using Application.Features.CorporateCustomers.Queries.GetByIdCorporateCustomer;
 using Application.Features.CorporateCustomers.Queries.GetCorporateCustomerList;
 using Core.Application.Requests;
@@ -19,6 +20,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetById([FromRoute] GetByIdCorporateCustomerQuery getByIdCorporateCustomerQuery)
         {
             CorporateCustomerDto result = await Mediator.Send(getByIdCorporateCustomerQuery);
+            return Ok(result);
+        }
+
+        [HttpGet("ByCustomerId/{CustomerId}")]
+        public async Task<IActionResult> GetById(
+            [FromRoute] GetByCustomerIdCorporateCustomerQuery getByCustomerIdCorporateCustomerQuery)
+        {
+            CorporateCustomerDto result = await Mediator.Send(getByCustomerIdCorporateCustomerQuery);
             return Ok(result);
         }
 

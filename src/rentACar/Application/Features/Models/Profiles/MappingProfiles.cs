@@ -20,30 +20,18 @@ namespace Application.Features.Models.Profiles
         public MappingProfiles()
         {
 
-            CreateMap<Model, CreateModelCommand>().ReverseMap();
-            CreateMap<Model, CreatedModelDto>().ForMember(c => c.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
-                                               .ForMember(c => c.FuelName, opt => opt.MapFrom(c => c.Fuel.Name))
-                                               .ForMember(c => c.TransmissionName,
-                                                          opt => opt.MapFrom(c => c.Transmission.Name));
-
-            CreateMap<Model, UpdateModelCommand>().ReverseMap();
-            CreateMap<Model, UpdatedModelDto>().ForMember(c => c.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
-                                               .ForMember(c => c.FuelName, opt => opt.MapFrom(c => c.Fuel.Name))
-                                               .ForMember(c => c.TransmissionName,
-                                                          opt => opt.MapFrom(c => c.Transmission.Name));
-
-            CreateMap<Model, DeleteModelCommand>().ReverseMap();
-            CreateMap<Model, DeletedModelDto>().ReverseMap();
-            CreateMap<Model, ModelDto>().ForMember(c => c.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
+             CreateMap<Model, CreateModelCommand>().ReverseMap();
+        CreateMap<Model, CreatedModelDto>().ReverseMap();
+        CreateMap<Model, UpdateModelCommand>().ReverseMap();
+        CreateMap<Model, UpdatedModelDto>().ReverseMap();
+        CreateMap<Model, DeleteModelCommand>().ReverseMap();
+        CreateMap<Model, DeletedModelDto>().ReverseMap();
+        CreateMap<Model, ModelDto>().ReverseMap();
+        CreateMap<Model, ModelListDto>().ForMember(c => c.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
                                         .ForMember(c => c.FuelName, opt => opt.MapFrom(c => c.Fuel.Name))
                                         .ForMember(c => c.TransmissionName,
                                                    opt => opt.MapFrom(c => c.Transmission.Name));
-
-            CreateMap<Model, ModelListDto>().ForMember(c => c.BrandName, opt => opt.MapFrom(c => c.Brand.Name))
-                                            .ForMember(c => c.FuelName, opt => opt.MapFrom(c => c.Fuel.Name))
-                                            .ForMember(c => c.TransmissionName,
-                                                       opt => opt.MapFrom(c => c.Transmission.Name));
-            CreateMap<IPaginate<Model>, ModelListModel>().ReverseMap();
+        CreateMap<IPaginate<Model>, ModelListModel>().ReverseMap();
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.CrossCuttingConcerns.Exceptions
 {
+    //Don't repeat yourself
     public class BusinessProblemDetails : ProblemDetails
     {
         public override string ToString() => JsonConvert.SerializeObject(this);

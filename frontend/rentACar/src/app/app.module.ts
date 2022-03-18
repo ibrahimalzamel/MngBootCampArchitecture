@@ -48,6 +48,8 @@ import { ColorEditFormComponent } from './features/admin/pages/colors-dashboard/
 import { TransmissionDashboardComponent } from './features/admin/pages/transmission-dashboard/transmission-dashboard.component';
 import { TransmissionAddFormComponent } from './features/admin/pages/transmission-dashboard/transmission-add-form/transmission-add-form.component';
 import { TransmissionEditFormComponent } from './features/admin/pages/transmission-dashboard/transmission-edit-form/transmission-edit-form.component';
+import { LoadingspinnerComponent } from './core/components/loadingspinner/loadingspinner.component';
+import { HoverDirective } from './core/directives/hover.directive';
 
 @NgModule({
   declarations: [
@@ -87,7 +89,9 @@ import { TransmissionEditFormComponent } from './features/admin/pages/transmissi
     ColorEditFormComponent,
     TransmissionDashboardComponent,
     TransmissionAddFormComponent,
-    TransmissionEditFormComponent
+    TransmissionEditFormComponent,
+    LoadingspinnerComponent,
+    HoverDirective
   ],
   imports: [
     BrowserModule,

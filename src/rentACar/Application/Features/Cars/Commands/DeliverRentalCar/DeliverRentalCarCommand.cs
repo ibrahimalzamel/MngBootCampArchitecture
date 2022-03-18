@@ -2,6 +2,7 @@
 using Application.Features.Cars.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
@@ -10,13 +11,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.Cars.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Cars.Commands.DeliverRentalCar
 {
-    public class DeliverRentalCarCommand : IRequest<UpdatedCarDto>
+    public class DeliverRentalCarCommand : IRequest<UpdatedCarDto>, ISecuredRequest
     {
         public int Id { get; set; }
-
+        public string[] Roles => new[] { Admin, CarUpdate };
         public class DeliverRentalCarCommandHandler : IRequestHandler<DeliverRentalCarCommand, UpdatedCarDto>
         {
             private readonly ICarRepository _carRepository;

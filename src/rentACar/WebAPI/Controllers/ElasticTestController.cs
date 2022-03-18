@@ -21,13 +21,13 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            //    IElasticSearchResult result = await _elasticSearch.CreateNewIndexAsync(new IndexModel
-            //    {
-            //        IndexName = "models",
-            //        AliasName = "amodels",
-            //        NumberOfReplicas = 1,
-            //        NumberOfShards = 1
-            //    });
+            IElasticSearchResult result = await _elasticSearch.CreateNewIndexAsync(new IndexModel
+            {
+                IndexName = "models",
+                AliasName = "amodels",
+                NumberOfReplicas = 1,
+                NumberOfShards = 1
+            });
 
             ElasticSearchInsertUpdateModel model = new()
             {
@@ -36,7 +36,7 @@ namespace WebAPI.Controllers
                 { BrandId = 1, FuelId = 1, TransmissionId = 1, DailyPrice = 1000, Name = "BMW" }
             };
 
-            //IElasticSearchResult result2 = await _elasticSearch.InsertAsync(model);
+            IElasticSearchResult result2 = await _elasticSearch.InsertAsync(model);
 
             IEnumerable<IndexName> result3 = _elasticSearch.GetIndexList().Keys;
 
@@ -50,6 +50,7 @@ namespace WebAPI.Controllers
                                                                         });
 
             return Ok(result4);
+
         }
     }
 }

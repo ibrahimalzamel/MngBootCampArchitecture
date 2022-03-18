@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Core.CrossCuttingConcerns.Exceptions
 {
+    //Don't repeat yourself
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;

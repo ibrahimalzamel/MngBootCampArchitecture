@@ -2,6 +2,7 @@
 using Application.Features.RentalBranchs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.CrossCuttingConcerns.Exceptions;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
@@ -12,12 +13,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.RentalBranches.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.RentalBranchs.Commands.DeleteRentalBranch
 {
-    public class DeleteRentalBranchCommand : IRequest<DeletedRentalBranchDto>
+    public class DeleteRentalBranchCommand : IRequest<DeletedRentalBranchDto>, ISecuredRequest
     {
         public int Id { get; set; }
+
+        public string[] Roles => new[] { Admin, RentalBranchDelete };
 
         public class DeleteRentalBranchCommandHandler : IRequestHandler<DeleteRentalBranchCommand, DeletedRentalBranchDto>
         {

@@ -1,6 +1,7 @@
 ﻿using Application.Features.Models.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Caching;
 using Domain.Entities;
 using MediatR;
@@ -9,16 +10,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.Models.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Models.Commands.DeleteModel
 {
-    public class DeleteModelCommand : IRequest<DeletedModelDto>, ICacheRemoverRequest
+    public class DeleteModelCommand : IRequest<DeletedModelDto>, ISecuredRequest, ICacheRemoverRequest
     {
         public int Id { get; set; }
 
         public bool BypassCache { get; }
         public string CacheKey => "models-list";
-
+        public string[] Roles => new[] { Admin, ModelsDelete };
         public class DeleteModelCommandHandler : IRequestHandler<DeleteModelCommand, DeletedModelDto>
         {
             private readonly IModelRepository _modelRepository;

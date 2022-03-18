@@ -2,6 +2,7 @@
 using Application.Features.RentalBranchs.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Utilities.Messages;
 using Core.Utilities.Results;
 using Domain.Entities;
@@ -12,12 +13,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.RentalBranches.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
+
 
 namespace Application.Features.RentalBranchs.Commands.CreateRentalBranch
 {
-    public class CreateRentalBranchCommand : IRequest<CreatedRentalBranchDto>
+    public class CreateRentalBranchCommand : IRequest<CreatedRentalBranchDto>, ISecuredRequest
     {
         public City City { get; set; }
+
+        public string[] Roles => new[] { Admin, RentalBranchAdd };
 
         public class CreateRentalBranchCommandHandler : IRequestHandler<CreateRentalBranchCommand, CreatedRentalBranchDto>
         {

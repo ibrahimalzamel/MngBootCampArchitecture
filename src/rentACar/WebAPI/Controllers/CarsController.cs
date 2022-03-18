@@ -7,7 +7,9 @@ using Application.Features.Cars.Dtos;
 using Application.Features.Cars.Models;
 using Application.Features.Cars.Queries.GetByIdCar;
 using Application.Features.Cars.Queries.GetCarList;
+using Application.Features.Cars.Queries.GetListCarByDynamic;
 using Core.Application.Requests;
+using Core.Persistence.Dynamic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,8 +29,18 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetList([FromQuery] PageRequest pageRequest)
         {
-            GetCarListQuery getListCarQuery = new() { PageRequest = pageRequest };
+            GetCarListQuery getListCarQuery = new()
+            { PageRequest = pageRequest };
             CarListModel result = await Mediator.Send(getListCarQuery);
+            return Ok(result);
+        }
+
+        [HttpPost("GetList/ByDynamic")]
+        public async Task<IActionResult> GetListByDynamic([FromQuery] PageRequest pageRequest,
+                                                          [FromBody] Dynamic? dynamic = null)
+        {
+            GetListCarByDynamicQuery getListCarByDynamicQuery = new() { PageRequest = pageRequest, Dynamic = dynamic };
+            CarListModel result = await Mediator.Send(getListCarByDynamicQuery);
             return Ok(result);
         }
 
@@ -66,6 +78,5 @@ namespace WebAPI.Controllers
             DeletedCarDto result = await Mediator.Send(deleteCarCommand);
             return Ok(result);
         }
-
     }
 }

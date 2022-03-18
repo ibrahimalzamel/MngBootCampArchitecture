@@ -2,18 +2,25 @@
 using Application.Features.Users.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Logging;
 using Core.Security.Dtos;
 using Core.Security.Entities;
 using Core.Security.Hashing;
 using MediatR;
+using static Domain.Constants.OperationClaims;
+using static Application.Features.Users.Constants.OperationClaims;
 
 namespace Application.Features.Users.Commands.CreateUser;
 
-public class CreateUserCommand : IRequest<CreatedUserDto>/*,ILoggableRequest*/
+public class CreateUserCommand : IRequest<CreatedUserDto>, ISecuredRequest
 {
-    public UserForRegisterDto UserForRegisterDto { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
 
+    public string[] Roles => new[] { Admin, UserAdd };
 
     public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, CreatedUserDto>
     {
@@ -31,34 +38,16 @@ public class CreateUserCommand : IRequest<CreatedUserDto>/*,ILoggableRequest*/
 
         public async Task<CreatedUserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
+            User mappedUser = _mapper.Map<User>(request);
 
             byte[] passwordHash, passwordSalt;
-            HashingHelper.CreatePasswordHash(request.UserForRegisterDto.Password, out passwordHash, out passwordSalt);
-            User newUser = new() {
-            Email = request.UserForRegisterDto.Email,
-            FirstName = request.UserForRegisterDto.FirstName,
-            LastName = request.UserForRegisterDto.LastName, 
-            PasswordHash = passwordHash,
-            PasswordSalt = passwordSalt,
-             Status = true
-            };
-            await _userBusinessRules.UserEmailShouldBeNotExists(request.UserForRegisterDto.Email);
-            User createdUser = await _userRepository.AddAsync(newUser);
+            HashingHelper.CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+            mappedUser.PasswordHash = passwordHash;
+            mappedUser.PasswordSalt = passwordSalt;
+
+            User createdUser = await _userRepository.AddAsync(mappedUser);
             CreatedUserDto createdUserDto = _mapper.Map<CreatedUserDto>(createdUser);
             return createdUserDto;
-
-            /* await _authBusinessRules.UserEmailShouldBeExists(request.UserForLoginDto.Email);
-
-                User? user = await _userRepository.GetAsync(u => u.Email == request.UserForLoginDto.Email);
-                await _authBusinessRules.UserPasswordShouldBeMatch(user.Id, request.UserForLoginDto.Password);
-
-                AccessToken accessToken = await _authService.CreateAccessToken(user);
-                return accessToken;*/
-
-            //await _colorBusinessRules.ColorNameCanNotBeDuplicatedWhenInserted(request.Name);
-            //Color mappedColor = _mapper.Map<Color>(request);
-            //await _colorRepository.AddAsync(mappedColor);
-            //return new SuccessResult(SuccessMessages.ColorAdded);
         }
     }
 }

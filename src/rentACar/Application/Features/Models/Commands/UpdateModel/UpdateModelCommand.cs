@@ -1,6 +1,7 @@
 ﻿using Application.Features.Models.Dtos;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Pipelines.Caching;
 using Domain.Entities;
 using MediatR;
@@ -9,11 +10,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.Models.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Models.Commands.UpdateModel
 {
 
-    public class UpdateModelCommand : IRequest<UpdatedModelDto>, ICacheRemoverRequest
+    public class UpdateModelCommand : IRequest<UpdatedModelDto>, ISecuredRequest, ICacheRemoverRequest
     {
         public int Id { get; set; }
         public int BrandId { get; set; }
@@ -25,7 +28,7 @@ namespace Application.Features.Models.Commands.UpdateModel
 
         public bool BypassCache { get; }
         public string CacheKey => "models-list";
-
+        public string[] Roles => new[] { Admin, ModelsUpdate };
         public class UpdateModelCommandHandler : IRequestHandler<UpdateModelCommand, UpdatedModelDto>
         {
             private IModelRepository _modelRepository { get; }

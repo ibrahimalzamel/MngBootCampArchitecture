@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//Kesişen kaygılar
+
 namespace Core.CrossCuttingConcerns.Exceptions
 {
 
-    // İş İstisnası
+    // Don't repeat yourself
     public class BusinessException : Exception
     {
         public BusinessException(string message) : base(message)

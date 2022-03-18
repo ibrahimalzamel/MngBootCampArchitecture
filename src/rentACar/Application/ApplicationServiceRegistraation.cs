@@ -46,6 +46,8 @@ using Application.Services.RentalsIAdditionalServiceService;
 using Application.Services.AdditionalServiceService;
 using Core.Application.Pipelines.Authorization;
 using Application.Services.UserService;
+using Application.Services.CustomerService;
+using Application.Services.RentalService;
 
 namespace Application
 {
@@ -76,11 +78,6 @@ namespace Application
             services.AddScoped<UserOperationClaimBusinessRules>();
             services.AddScoped<TransmissionBusinessRules>();
 
-           
-
-
-           // services.AddScoped<ITokenHelper, JwtHelper>();
-
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
@@ -92,16 +89,17 @@ namespace Application
             services.AddScoped<IAdditionalServiceService, AdditionalServiceManager>();
             services.AddScoped<IAuthService, AuthManager>();
             services.AddScoped<ICarService, CarManager>();
+            services.AddScoped<ICustomerService, CustomerManager>();
             services.AddScoped<IFindeksCreditRateService, FindeksCreditRateManager>();
             services.AddScoped<IInvoiceService, InvoiceManager>();
             services.AddScoped<IModelService, ModelManager>();
+            services.AddScoped<IRentalService, RentalManager>();
             services.AddScoped<IRentalsAdditionalServiceService, RentalsAdditionalServiceManager>();
             services.AddScoped<IUserService, UserManager>();
 
             services.AddSingleton<IMailService, MailkitMailService>();
             services.AddSingleton<LoggerServiceBase, FileLogger>();
-            services.AddSingleton < IElasticSearch, ElasticSearchManager>();
-
+            services.AddSingleton<IElasticSearch, ElasticSearchManager>();
 
             return services;
         }

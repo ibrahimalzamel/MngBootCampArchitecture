@@ -20,34 +20,15 @@ namespace Application.Features.Cars.Profiles
         {
             CreateMap<Car, CreateCarCommand>().ReverseMap();
             CreateMap<Car, CreatedCarDto>().ReverseMap();
-
             CreateMap<Car, UpdateCarCommand>().ReverseMap();
             CreateMap<Car, UpdatedCarDto>().ReverseMap();
-
             CreateMap<Car, DeleteCarCommand>().ReverseMap();
             CreateMap<Car, DeletedCarDto>().ReverseMap();
-                
-
-            CreateMap<Car, CarDto>().ForMember(c => c.ColorName, opt => opt.MapFrom(c => c.Color.Name))
-                                    .ForMember(c => c.ModelName, opt => opt.MapFrom(c => c.Model.Name))
-                                    .ForMember(c => c.BrandName, opt => opt.MapFrom(c => c.Model.Brand.Name)).ReverseMap();
-
-
-                         
-
+            CreateMap<Car, CarDto>().ReverseMap();
             CreateMap<Car, CarListDto>().ForMember(c => c.ColorName, opt => opt.MapFrom(c => c.Color.Name))
                                         .ForMember(c => c.ModelName, opt => opt.MapFrom(c => c.Model.Name))
-                                        .ForMember(c => c.FuelName, opt => opt.MapFrom(c => c.Model.Fuel.Name))
-                                        .ForMember(c => c.CarState, opt => opt.MapFrom(c => c.CarState))
-                                        .ForMember(c => c.Kilometer, opt => opt.MapFrom(c => c.Kilometer))
-                                        .ForMember(c => c.ModelYear, opt => opt.MapFrom(c => c.ModelYear))
-                                        .ForMember(c => c.Plate, opt => opt.MapFrom(c => c.Plate))
-                                        .ForMember(c => c.MinFindeksCreditRate, opt => opt.MapFrom(c => c.MinFindeksCreditRate))
-                                        .ForMember(c => c.RentalBranchCity, opt => opt.MapFrom(c => c.RentalBranch.City))
-                                        .ForMember(c => c.BrandName, opt => opt.MapFrom(c => c.Model.Brand.Name)).ReverseMap();
-
+                                        .ForMember(c => c.BrandName, opt => opt.MapFrom(c => c.Model.Brand.Name));
             CreateMap<IPaginate<Car>, CarListModel>().ReverseMap();
-
         }
     }
 }

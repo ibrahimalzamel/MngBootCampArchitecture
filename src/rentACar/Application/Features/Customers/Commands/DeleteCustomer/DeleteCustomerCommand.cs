@@ -10,9 +10,11 @@ using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Customers.Commands.DeleteCustomer;
 
+
 public class DeleteCustomerCommand : IRequest<DeletedCustomerDto>, ISecuredRequest
 {
     public int Id { get; set; }
+
     public string[] Roles => new[] { Admin, CustomerDelete };
 
     public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerCommand, DeletedCustomerDto>
@@ -31,7 +33,7 @@ public class DeleteCustomerCommand : IRequest<DeletedCustomerDto>, ISecuredReque
 
         public async Task<DeletedCustomerDto> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
         {
-            await _customerBusinessRules.CustomerIdShouldExistWhenSelected(request.Id);
+            await _customerBusinessRules.CustomerIdShouldExist(request.Id);
 
             Customer mappedCustomer = _mapper.Map<Customer>(request);
             Customer deletedCustomer = await _customerRepository.DeleteAsync(mappedCustomer);

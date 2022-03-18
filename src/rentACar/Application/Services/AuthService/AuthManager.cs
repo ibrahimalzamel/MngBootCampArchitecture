@@ -1,9 +1,13 @@
 ﻿using Application.Services.Repositories;
-
+using Core.CrossCuttingConcerns.Exceptions;
+using Core.Mailing;
 using Core.Persistence.Paging;
+using Core.Security.EmailAuthenticator;
 using Core.Security.Entities;
+using Core.Security.Enums;
 using Core.Security.Jwt;
 using Core.Security.JWT;
+using Core.Security.OtpAuthenticator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -16,14 +20,27 @@ namespace Application.Services.AuthService
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly ITokenHelper _tokenHelper;
         private readonly TokenOptions _tokenOptions;
+        private readonly IMailService _mailService;
+        private readonly IEmailAuthenticatorRepository _emailAuthenticatorRepository;
+        private readonly IEmailAuthenticatorHelper _emailAuthenticatorHelper;
+        private readonly IOtpAuthenticatorRepository _otpAuthenticatorRepository;
+        private readonly IOtpAuthenticatorHelper _otpAuthenticatorHelper;
 
         public AuthManager(IUserOperationClaimRepository userOperationClaimRepository,
                            IRefreshTokenRepository refreshTokenRepository, ITokenHelper tokenHelper,
-                           IConfiguration configuration)
+                           IConfiguration configuration, IEmailAuthenticatorHelper emailAuthenticatorHelper,
+                           IMailService mailService, IEmailAuthenticatorRepository emailAuthenticatorRepository,
+                           IOtpAuthenticatorHelper otpAuthenticatorHelper,
+                           IOtpAuthenticatorRepository otpAuthenticatorRepository)
         {
             _userOperationClaimRepository = userOperationClaimRepository;
             _refreshTokenRepository = refreshTokenRepository;
             _tokenHelper = tokenHelper;
+            _emailAuthenticatorHelper = emailAuthenticatorHelper;
+            _mailService = mailService;
+            _emailAuthenticatorRepository = emailAuthenticatorRepository;
+            _otpAuthenticatorHelper = otpAuthenticatorHelper;
+            _otpAuthenticatorRepository = otpAuthenticatorRepository;
             _tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>();
         }
 
@@ -87,7 +104,7 @@ namespace Application.Services.AuthService
         {
             RefreshToken childToken = await _refreshTokenRepository.GetAsync(r => r.Token == refreshToken.ReplacedByToken);
 
-            if (childToken.Revoked != null && childToken.Expires <= DateTime.UtcNow)
+            if (childToken != null && childToken.Revoked != null && childToken.Expires <= DateTime.UtcNow)
                 await RevokeRefreshToken(childToken, ipAddress, reason);
             else await RevokeDescendantRefreshTokens(childToken, ipAddress, reason);
         }
@@ -98,5 +115,85 @@ namespace Application.Services.AuthService
             return Task.FromResult(refreshToken);
         }
 
+        public async Task<EmailAuthenticator> CreateEmailAuthenticator(User user)
+        {
+            EmailAuthenticator emailAuthenticator = new()
+            {
+                UserId = user.Id,
+                ActivationKey = await _emailAuthenticatorHelper.CreateEmailActivationKey(),
+                IsVerified = false
+            };
+            return emailAuthenticator;
+        }
+
+        public async Task<OtpAuthenticator> CreateOtpAuthenticator(User user)
+        {
+            OtpAuthenticator otpAuthenticator = new()
+            {
+                UserId = user.Id,
+                SecretKey = await _otpAuthenticatorHelper.GenerateSecretKey(),
+                IsVerified = false
+            };
+            return otpAuthenticator;
+        }
+
+        public async Task<string> ConvertSecretKeyToString(byte[] secretKey)
+        {
+            string result = await _otpAuthenticatorHelper.ConvertSecretKeyToString(secretKey);
+            return result;
+        }
+
+        public async Task SendAuthenticatorCode(User user)
+        {
+            if (user.AuthenticatorType is AuthenticatorType.Email) await sendAuthenticatorCodeWithEmail(user);
+        }
+
+        public async Task VerifyAuthenticatorCode(User user, string AuthenticatorCode)
+        {
+            if (user.AuthenticatorType is AuthenticatorType.Email)
+                await verifyAuthenticatorCodeWithEmail(user, AuthenticatorCode);
+            else if (user.AuthenticatorType is AuthenticatorType.Otp)
+                await verifyAuthenticatorCodeWithOtp(user, AuthenticatorCode);
+        }
+
+        private async Task sendAuthenticatorCodeWithEmail(User user)
+        {
+            EmailAuthenticator emailAuthenticator = await _emailAuthenticatorRepository.GetAsync(e => e.UserId == user.Id);
+
+            if (!emailAuthenticator.IsVerified) throw new BusinessException("Email Authenticator must be is verified.");
+
+            string authenticatorCode = await _emailAuthenticatorHelper.CreateEmailActivationCode();
+            emailAuthenticator.ActivationKey = authenticatorCode;
+            await _emailAuthenticatorRepository.UpdateAsync(emailAuthenticator);
+
+            _mailService.SendMail(new Mail
+            {
+                ToEmail = user.Email,
+                ToFullName = $"{user.FirstName} {user.LastName}",
+                Subject = "Authenticator Code - RentACar",
+                TextBody = $"Enter your authenticator code: {authenticatorCode}"
+            });
+        }
+
+        private async Task verifyAuthenticatorCodeWithEmail(User user, string authenticatorCode)
+        {
+            EmailAuthenticator emailAuthenticator = await _emailAuthenticatorRepository.GetAsync(e => e.UserId == user.Id);
+
+            if (emailAuthenticator.ActivationKey != authenticatorCode)
+                throw new BusinessException("Authenticator code is invalid.");
+
+            emailAuthenticator.ActivationKey = null;
+            await _emailAuthenticatorRepository.UpdateAsync(emailAuthenticator);
+        }
+
+        private async Task verifyAuthenticatorCodeWithOtp(User user, string authenticatorCode)
+        {
+            OtpAuthenticator otpAuthenticator = await _otpAuthenticatorRepository.GetAsync(e => e.UserId == user.Id);
+
+            bool result = await _otpAuthenticatorHelper.VerifyCode(otpAuthenticator.SecretKey, authenticatorCode);
+
+            if (!result)
+                throw new BusinessException("Authenticator code is invalid.");
+        }
     }
 }

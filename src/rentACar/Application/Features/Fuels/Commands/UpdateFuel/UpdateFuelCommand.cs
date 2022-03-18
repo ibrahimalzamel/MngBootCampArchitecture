@@ -24,7 +24,7 @@ namespace Application.Features.Fuels.Commands.UpdateFuel
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public string[] Roles => new[] { Admin, FuelDelete };
+        public string[] Roles => new[] { Admin, FuelUpdate };
 
         public class UpdateFuelCommandHandler : IRequestHandler<UpdateFuelCommand, UpdatedFuelDto>
         {

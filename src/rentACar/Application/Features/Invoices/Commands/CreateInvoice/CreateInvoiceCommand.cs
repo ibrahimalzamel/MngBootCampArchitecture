@@ -2,7 +2,7 @@
 using Application.Features.Invoices.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
-
+using Core.Application.Pipelines.Authorization;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,10 +10,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Application.Features.Invoices.Constants.OperationClaims;
+using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Invoices.Commands.CreateInvoice
 {
-    public class CreateInvoiceCommand : IRequest<CreatedInvoiceDto>
+    public class CreateInvoiceCommand : IRequest<CreatedInvoiceDto>, ISecuredRequest
     {
 
         public int CustomerId { get; set; }
@@ -23,6 +25,7 @@ namespace Application.Features.Invoices.Commands.CreateInvoice
         public DateTime RentalEndDate { get; set; }
         public short TotalRentalDate { get; set; }
         public decimal RentalPrice { get; set; }
+        public string[] Roles => new[] { Admin, InvoiceAdd };
         public class CreateRentalCommandHandler : IRequestHandler<CreateInvoiceCommand, CreatedInvoiceDto>
         {
             IInvoiceRepository _rentalRepository;

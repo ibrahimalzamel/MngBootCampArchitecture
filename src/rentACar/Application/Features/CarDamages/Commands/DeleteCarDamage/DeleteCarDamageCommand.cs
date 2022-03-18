@@ -17,7 +17,7 @@ namespace Application.Features.CarDamages.Commands.DeleteCarDamage
     public class DeleteCarDamageCommand : IRequest<DeletedCarDamageDto>, ISecuredRequest
     {
         public int Id { get; set; }
-        public string[] Roles => new[] { Admin, CarDamageAdd };
+        public string[] Roles => new[] { Admin, CarDamageDelete };
         public class DeleteCarDamageCommandHandler : IRequestHandler<DeleteCarDamageCommand, DeletedCarDamageDto>
         {
             private readonly ICarDamageRepository _carDamageRepository;

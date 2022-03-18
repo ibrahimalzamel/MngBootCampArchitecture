@@ -3,6 +3,7 @@ using Application.Features.Brands.Rules;
 using Application.Services.Repositories;
 using AutoMapper;
 using Core.Application.Pipelines.Authorization;
+using Core.Application.Pipelines.Caching;
 using Core.CrossCuttingConcerns.Exceptions;
 
 using Domain.Entities;
@@ -17,7 +18,7 @@ using static Domain.Constants.OperationClaims;
 
 namespace Application.Features.Brands.Commands.DeleteBrand
 {
-    public class DeleteBrandCommand : IRequest<DeletedBrandDto>, ISecuredRequest
+    public class DeleteBrandCommand : IRequest<DeletedBrandDto>, ISecuredRequest, ICacheRemoverRequest
     {
         public int Id { get; set; }
         public bool BypassCache { get; }

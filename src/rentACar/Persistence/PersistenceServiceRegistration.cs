@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;
 using Persistence.Repositories;
 
-
 namespace Persistence
 {
     public static class PersistenceServiceRegistration
@@ -22,12 +21,14 @@ namespace Persistence
             services.AddScoped<IColorRepository, ColorRepository>();
             services.AddScoped<ICorporateCustomerRepository, CorporateCustomerRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IEmailAuthenticatorRepository, EmailAuthenticatorRepository>();
             services.AddScoped<IFindeksCreditRateRepository, FindeksCreditRateRepository>();
             services.AddScoped<IFuelRepository, FuelRepository>();
             services.AddScoped<IIndividualCustomerRepository, IndividualCustomerRepository>();
             services.AddScoped<IInvoiceRepository, InvoiceRepository>();
             services.AddScoped<IModelRepository, ModelRepository>();
             services.AddScoped<IOperationClaimRepository, OperationClaimRepository>();
+            services.AddScoped<IOtpAuthenticatorRepository, OtpAuthenticatorRepository>();
             services.AddScoped<IRentalRepository, RentalRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IRentalsAdditionalServiceRepository, RentalsAdditionalServiceRepository>();
@@ -36,7 +37,7 @@ namespace Persistence
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserOperationClaimRepository, UserOperationClaimRepository>();
 
-            return services; 
+            return services;
         }
     }
 }

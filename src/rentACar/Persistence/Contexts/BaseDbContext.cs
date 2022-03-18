@@ -15,6 +15,7 @@ namespace Persistence.Contexts
 {
     public class BaseDbContext : DbContext
     {
+
         protected IConfiguration Configuration { get; set; }
         public DbSet<AdditionalService> AdditionalServices { get; set; }
         public DbSet<Brand> Brands { get; set; }
@@ -23,6 +24,7 @@ namespace Persistence.Contexts
         public DbSet<Color> Colors { get; set; }
         public DbSet<CorporateCustomer> CorporateCustomers { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<EmailAuthenticator> EmailAuthenticators { get; set; }
         public DbSet<FindeksCreditRate> FindeksCreditRates { get; set; }
         public DbSet<Fuel> Fuel { get; set; }
         public DbSet<IndividualCustomer> IndividualCustomers { get; set; }
@@ -36,6 +38,7 @@ namespace Persistence.Contexts
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<Transmission> Transmissions { get; set; }
+        public DbSet<OtpAuthenticator> OtpAuthenticators { get; set; }
 
         public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
         {
@@ -122,6 +125,15 @@ namespace Persistence.Contexts
                 c.HasOne(c => c.IndividualCustomer);
                 c.HasMany(c => c.Invoices);
                 c.HasMany(c => c.Rentals);
+            });
+
+            modelBuilder.Entity<EmailAuthenticator>(e =>
+            {
+                e.ToTable("EmailAuthenticators").HasKey(e => e.Id);
+                e.Property(e => e.UserId).HasColumnName("UserId");
+                e.Property(e => e.ActivationKey).HasColumnName("ActivationKey");
+                e.Property(e => e.IsVerified).HasColumnName("IsVerified");
+                e.HasOne(e => e.User);
             });
 
             modelBuilder.Entity<FindeksCreditRate>(f =>
@@ -253,6 +265,7 @@ namespace Persistence.Contexts
                 u.Property(u => u.PasswordSalt).HasColumnName("PasswordSalt");
                 u.Property(u => u.PasswordHash).HasColumnName("PasswordHash");
                 u.Property(u => u.Status).HasColumnName("Status").HasDefaultValue(true);
+                u.Property(u => u.AuthenticatorType).HasColumnName("AuthenticatorType");
             });
 
             modelBuilder.Entity<UserOperationClaim>(u =>
@@ -271,6 +284,15 @@ namespace Persistence.Contexts
                 t.Property(p => p.Id).HasColumnName("Id");
                 t.Property(p => p.Name).HasColumnName("Name");
                 t.HasMany(p => p.Models);
+            });
+
+            modelBuilder.Entity<OtpAuthenticator>(e =>
+            {
+                e.ToTable("OtpAuthenticators").HasKey(e => e.Id);
+                e.Property(e => e.UserId).HasColumnName("UserId");
+                e.Property(e => e.SecretKey).HasColumnName("SecretKey");
+                e.Property(e => e.IsVerified).HasColumnName("IsVerified");
+                e.HasOne(e => e.User);
             });
 
             AdditionalService[] additionalServiceSeeds = { new(1, "Baby Seat", 200), new(2, "Scooter", 300) };

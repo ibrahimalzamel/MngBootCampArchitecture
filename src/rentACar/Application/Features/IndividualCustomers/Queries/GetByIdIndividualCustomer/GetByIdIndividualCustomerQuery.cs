@@ -31,10 +31,9 @@ public class GetByIdIndividualCustomerQuery : IRequest<IndividualCustomerDto>
         public async Task<IndividualCustomerDto> Handle(GetByIdIndividualCustomerQuery request,
                                                         CancellationToken cancellationToken)
         {
-            await _individualCustomerBusinessRules.IndividualCustomerIdShouldExistWhenSelected(request.Id);
-
             IndividualCustomer? individualCustomer =
                 await _individualCustomerRepository.GetAsync(b => b.Id == request.Id);
+            await _individualCustomerBusinessRules.IndividualCustomerShouldBeExist(individualCustomer);
             IndividualCustomerDto individualCustomerDto = _mapper.Map<IndividualCustomerDto>(individualCustomer);
             return individualCustomerDto;
         }

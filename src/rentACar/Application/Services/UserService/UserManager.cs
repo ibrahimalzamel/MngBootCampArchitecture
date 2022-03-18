@@ -28,5 +28,11 @@ namespace Application.Services.UserService
             User? user = await _userRepository.GetAsync(u => u.Id == id);
             return user;
         }
+
+        public async Task<User> Update(User user)
+        {
+            User updatedUser = await _userRepository.UpdateAsync(user);
+            return updatedUser;
+        }
     }
 }
