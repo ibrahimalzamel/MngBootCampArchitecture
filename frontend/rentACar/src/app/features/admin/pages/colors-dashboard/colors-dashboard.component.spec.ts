@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ColorsDashboardComponent } from './colors-dashboard.component';
 
 describe('ColorsDashboardComponent', () => {
@@ -8,9 +7,8 @@ describe('ColorsDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ColorsDashboardComponent ]
-    })
-    .compileComponents();
+      declarations: [ColorsDashboardComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {

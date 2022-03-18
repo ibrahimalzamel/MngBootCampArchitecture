@@ -1,16 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ModelListComponent } from './models-list.component';
 
-describe('ModelsListComponent', () => {
+describe('ModelListComponent', () => {
   let component: ModelListComponent;
   let fixture: ComponentFixture<ModelListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModelListComponent ]
-    })
-    .compileComponents();
+      declarations: [ModelListComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {

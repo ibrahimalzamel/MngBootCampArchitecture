@@ -1,56 +1,38 @@
-<head>
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
-</head>
-<h2  class="display-4 text-center mb-5">Explore Our Top Deals</h2>
-<div class="d-flex justify-content-center" class="animate__animated animate__bounceInUp">
+<div class="d-flex mb-3">
+  <h1 class="display-6 fw-bold m-0">Cars List</h1>
+  <button class="btn btn-primary ms-4 btn-lg" routerLink="add">
+    <i class="fas fa-plus"></i> Add
+  </button>
 </div>
-<app-models-list class="col-6 col-md-4 col-lg-3 col-xl-2 my-5"></app-models-list>
-
-
-				<div class="owl-carousel owl-chef-team-slider">
-
-					<div class="item-frame-box">
-						<div class="item-bg-box">
-							<app-models-list class="col-6 col-md-4 col-lg-3 col-xl-2 my-5"></app-models-list>
-
-							<div class="info">
-							</div>
-						</div>
-					</div>
-
-
-				</div>
-
-<section class="special-menu parallax-box">
-	<div class="mediaSection-box">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="owl-carousel special-menu-slider">
-
-						<div class="item-frame-box">
-							<div class="item-bg-box">
-
-                <app-models-list class="col-6 col-md-4 col-lg-3 col-xl-2 my-5"></app-models-list>
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-<script type="text/javascript" src="./js/common/jquery-1.9.1.min.js"></script>
-<script type="text/javascript" src="./js/common.js"></script>
-<script type="text/javascript" src="./js/bootstrap-progressbar.js"></script>
-<script type="text/javascript" src="./js/isotope.pkgd.min.js"></script>
-<script type="text/javascript" src="./js/owl.carousel.min.js"></script>
-<script type="text/javascript" src="./js/datepiker/js/moment.js"></script>
-<script type="text/javascript" src="./js/datepiker/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="./js/xpro/js/slider.js"></script>
-<script type="text/javascript" src="./js/scripts.js"></script>
-<script type="text/javascript" src="./js/contact-mail.js"></script>
+<div class="card p-2 rounded-2 shadow-xl">
+  <table class="table table-hover">
+    <thead class="card-header">
+      <tr class="text-uppercase">
+        <th scope="col">Id</th>
+        <th scope="col">Brand</th>
+        <th scope="col">Model</th>
+        <th scope="col">Plate</th>
+        <th scope="col">Color</th>
+        <th scope="col">State</th>
+        <th scope="col">Model Year</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody class="card-body">
+      <tr *ngFor="let car of carListModel.items">
+        <th scope="row">{{ car.id }}</th>
+        <td>{{ car.brandName | titlecase }}</td>
+        <td>{{ car.modelName | titlecase }}</td>
+        <td>{{ car.plate | uppercase }}</td>
+        <td>{{ car.colorName | titlecase }}</td>
+        <td>{{ car.carState }}</td>
+        <td>{{ car.modelYear }}</td>
+        <td>
+          <button routerLink="edit/{{ car.id }}" class="btn btn-sm btn-primary shadow-sm">
+            <i class="pi pi-pencil"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

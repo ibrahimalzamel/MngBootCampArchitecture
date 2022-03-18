@@ -1,8 +1,7 @@
-import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-
-import { Brand } from '../../models/brandModels/brand';
-import { BrandService } from './../../services/brand.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Brand } from 'src/app/shared/models/brand';
+import { BrandService } from 'src/app/shared/services/brandService/brand.service';
 
 @Component({
   selector: 'app-brand-filter-bar',

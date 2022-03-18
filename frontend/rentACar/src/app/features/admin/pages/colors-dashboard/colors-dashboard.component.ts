@@ -1,34 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ListResponseModel } from 'src/app/core/models/listResponseModel';
-import { Color } from 'src/app/features/rentals/models/colorModels/color';
-import { ColorService } from 'src/app/features/rentals/services/color.service';
+import { Color } from 'src/app/shared/models/color';
+import { ColorService } from 'src/app/shared/services/colorService/color.service';
 
 @Component({
   selector: 'app-colors-dashboard',
   templateUrl: './colors-dashboard.component.html',
-  styleUrls: ['./colors-dashboard.component.css']
+  styleUrls: ['./colors-dashboard.component.scss']
 })
 export class ColorsDashboardComponent implements OnInit {
-  colors: ListResponseModel<Color> = {
+  colorListModel: ListResponseModel<Color> = {
     index: 0,
     size: 10,
     items: []
-
   };
-  dataLoaded: boolean = false;
-  constructor(private colorService: ColorService) { }
+
+  constructor(private colorService: ColorService) {}
 
   ngOnInit(): void {
-    this.getColorList();
+    this.getAll();
   }
- getColorList(){
 
-  this.colorService
-    .getList(this.colors.index,this.colors.size)
-    .subscribe(data =>{
-      this.colors=data;
-      this.dataLoaded = true;
-
-    })
- }
+  getAll() {
+    this.colorService
+      .getList(this.colorListModel.index, this.colorListModel.size)
+      .subscribe(response => (this.colorListModel = response));
+  }
 }

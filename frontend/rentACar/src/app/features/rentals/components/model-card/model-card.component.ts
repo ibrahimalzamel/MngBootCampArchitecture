@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-
-import { ModelListModel } from '../../models/modelModels/modelListModel';
+import { ModelList } from 'src/app/shared/models/model';
 
 @Component({
   selector: 'app-model-card',
@@ -8,7 +7,7 @@ import { ModelListModel } from '../../models/modelModels/modelListModel';
   styleUrls: ['./model-card.component.scss']
 })
 export class ModelCardComponent implements OnInit {
-  @Input() modelListModel!: ModelListModel;
+  @Input() modelListModel!: ModelList;
 
   constructor() {}
 

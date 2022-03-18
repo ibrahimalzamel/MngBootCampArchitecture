@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AdminDashboardMenuItemComponent } from './admin-dashboard-menu-item.component';
 
 describe('AdminDashboardMenuItemComponent', () => {
@@ -8,9 +7,8 @@ describe('AdminDashboardMenuItemComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AdminDashboardMenuItemComponent ]
-    })
-    .compileComponents();
+      declarations: [AdminDashboardMenuItemComponent]
+    }).compileComponents();
   });
 
   beforeEach(() => {

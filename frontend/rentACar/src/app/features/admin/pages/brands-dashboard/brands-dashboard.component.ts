@@ -1,33 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ListResponseModel } from 'src/app/core/models/listResponseModel';
-import { Brand } from 'src/app/features/rentals/models/brandModels/brand';
-import { BrandService } from 'src/app/features/rentals/services/brand.service';
+import { Brand } from 'src/app/shared/models/brand';
+import { BrandService } from 'src/app/shared/services/brandService/brand.service';
 
 @Component({
   selector: 'app-brands-dashboard',
   templateUrl: './brands-dashboard.component.html',
-  styleUrls: ['./brands-dashboard.component.css']
+  styleUrls: ['./brands-dashboard.component.scss']
 })
 export class BrandsDashboardComponent implements OnInit {
-  brands: ListResponseModel<Brand> = {
+  brandListModel: ListResponseModel<Brand> = {
     index: 0,
     size: 10,
     items: []
-
   };
-  dataLoaded: boolean = false;
-  constructor(private brandService: BrandService) { }
+
+  constructor(private brandService: BrandService) {}
 
   ngOnInit(): void {
- this.getBrandList();
+    this.getAll();
   }
-  getBrandList() {
-    this.brandService
-    .getList(this.brands.index,this.brands.size)
-    .subscribe(data =>{
-      this.brands=data;
-      this.dataLoaded = true;
 
-    })
+  getAll() {
+    this.brandService
+      .getList(this.brandListModel.index, this.brandListModel.size)
+      .subscribe(response => (this.brandListModel = response));
   }
 }
