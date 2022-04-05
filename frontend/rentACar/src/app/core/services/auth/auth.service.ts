@@ -19,7 +19,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  apiControllerUrl: string = `${environment.apiUrl}/auth`;
+  apiControllerUrl: string = `${environment.apiUrl}/Auth`;
 
   tokenUserModel$: Observable<TokenUserModel | undefined> = this.store
     .select(states => states.appAuth)
@@ -35,7 +35,7 @@ export class AuthService {
 
   login(userForLoginDto: UserForLoginDto): Observable<LoggedResponseDto> {
     return this.httpClient.post<LoggedResponseDto>(
-      `${this.apiControllerUrl}/login`,
+      `${this.apiControllerUrl}/Login`,
       userForLoginDto,
       { withCredentials: true }
     );
@@ -43,7 +43,7 @@ export class AuthService {
 
   register(userForRegisterDto: UserForRegisterDto): Observable<AccessToken> {
     return this.httpClient.post<AccessToken>(
-      `${this.apiControllerUrl}/register`,
+      `${this.apiControllerUrl}/Register`,
       userForRegisterDto,
       { withCredentials: true }
     );
@@ -111,8 +111,7 @@ export class AuthService {
 
   getTokenUserModel(): TokenUserModel | undefined {
     const decodedToken = this.jwtHelperService.decodeToken(this.jwtHelperService.tokenGetter());
-    if (!decodedToken) return ;
-
+    if (!decodedToken) return;
 
     const tokenUserModel: TokenUserModel = {
       id: +decodedToken[JWTTokenClaim.identifier],

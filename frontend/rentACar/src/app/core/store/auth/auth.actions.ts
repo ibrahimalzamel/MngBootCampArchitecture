@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-
 import { TokenUserModel } from './../../models/tokenUserModel';
 
 export const setTokenUserModel = createAction(
